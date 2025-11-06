@@ -1,68 +1,70 @@
-$exec_name = "dsbg.exe"
-
-if (Test-Path $exec_name) {
-    Remove-Item $exec_name
-}
-
-# go build -ldflags="-s -w" .
+cd src
 go get -u
-go get -u ./...
-go mod tidy
-go build .
+go run . -- -help
 
-Remove-Item "docs/*" -Recurse -Force
 
-Copy-Item README.md sample_content/01_readme.md -Force
+# $exec_name = "dsbg.exe"
 
-magick -density 376 -background none "logo.svg" "sample_content/01_dsbg_logo.webp"
-magick -background none "sample_content/01_dsbg_logo.webp" -fill red -opaque black -blur 0x1  -crop 167x167+0+0  "assets/favicon.ico"
-magick -background none "sample_content/01_dsbg_logo.webp"  -crop 167x167+0+0  "thumb.webp"
+# if (Test-Path $exec_name) {
+#     Remove-Item $exec_name
+# }
 
-# ./dsbg.exe -template -title "My Awesome Post from template" -description "A sample template with a very long text to test if it wraps correctly. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." -output-path "sample_content"
+# # go build -ldflags="-s -w" .
+# go get -u
+# go get -u ./...
+# go mod tidy
+# go build .
 
-$description = @'
-A Simple, Open-Source Tool to Create Your Static Blog and Broadcast Your Content.
+# Remove-Item "docs/*" -Recurse -Force
 
-# TLDR:
+# Copy-Item README.md sample_content/01_readme.md -Force
 
-`go install github.com/tesserato/dsbg@latest` or download a [pre-built binary](https://github.com/tesserato/dsbg/releases)
+# magick -density 376 -background none "logo.svg" "sample_content/01_dsbg_logo.webp"
+# magick -background none "sample_content/01_dsbg_logo.webp" -fill red -opaque black -blur 0x1  -crop 167x167+0+0  "assets/favicon.ico"
+# magick -background none "sample_content/01_dsbg_logo.webp"  -crop 167x167+0+0  "thumb.webp"
 
-`dsbg -h` for usage instructions
+# $description = @'
+# A Simple, Open-Source Tool to Create Your Static Blog and Broadcast Your Content.
 
-Check the Readme [here](https://tesserato.github.io/dsbg/01readme/index.html) or at the Github [repo](https://github.com/tesserato/dsbg) for more details
+# # TLDR:
 
-This is a sample blog created with DSBG from the source at [github.com/tesserato/dsbg](https://github.com/tesserato/dsbg/tree/main/sample_content)
+# `go install github.com/tesserato/dsbg@latest` or download a [pre-built binary](https://github.com/tesserato/dsbg/releases)
 
-[![Release Status](https://img.shields.io/github/release/tesserato/dsbg)](https://github.com/tesserato/dsbg/releases)
+# `dsbg -h` for usage instructions
 
-[![License](https://img.shields.io/github/license/tesserato/dsbg)](https://github.com/tesserato/dsbg/blob/main/LICENSE)
+# Check the Readme [here](https://tesserato.github.io/dsbg/01readme/index.html) or at the Github [repo](https://github.com/tesserato/dsbg) for more details
 
-'@
+# This is a sample blog created with DSBG from the source at [github.com/tesserato/dsbg](https://github.com/tesserato/dsbg/tree/main/sample_content)
 
-# [![Build Status](https://github.com/tesserato/dsbg/actions/workflows/go.yml/badge.svg)](https://github.com/tesserato/dsbg/actions/workflows/go.yml)
+# [![Release Status](https://img.shields.io/github/release/tesserato/dsbg)](https://github.com/tesserato/dsbg/releases)
 
-# [![Go Version](https://img.shields.io/github/go-mod/go-version/tesserato/dsbg)](https://go.dev/)
+# [![License](https://img.shields.io/github/license/tesserato/dsbg)](https://github.com/tesserato/dsbg/blob/main/LICENSE)
 
-start chrome http://localhost:666/index.html
+# '@
 
-./dsbg.exe `
-    -title "Dead Simple Blog Generator" `
-    -description "$description" `
-    -watch `
-    -input-path "sample_content/content" `
-    -output-path "docs" `
-    -base-url "https://tesserato.github.io/dsbg/" `
-    -elements-top "sample_content/analytics.html" `
-    -elements-bottom "sample_content/giscus.html" `
-    -theme "dark" `
-    -x-handle "tesserato" `
-    -bluesky-handle "tesserato" `
-    -threads-handle "tesserato" `
-    -mastodon-handle "tesserato" `
-    -telegram-handle "tesserato" `
-    -linkedin-handle "tesserato" `
-    -reddit-handle "tarjano" `
-    --hackernews-handle "tesserato" `
-    -sort "reverse-date-created"
+# # [![Build Status](https://github.com/tesserato/dsbg/actions/workflows/go.yml/badge.svg)](https://github.com/tesserato/dsbg/actions/workflows/go.yml)
+# # [![Go Version](https://img.shields.io/github/go-mod/go-version/tesserato/dsbg)](https://go.dev/)
+
+# Start-Process chrome http://localhost:666/index.html
+
+# ./dsbg.exe `
+#     -title "Dead Simple Blog Generator" `
+#     -description "$description" `
+#     -watch `
+#     -input-path "sample_content/content" `
+#     -output-path "docs" `
+#     -base-url "https://tesserato.github.io/dsbg/" `
+#     -elements-top "sample_content/analytics.html" `
+#     -elements-bottom "sample_content/giscus.html" `
+#     -theme "dark" `
+#     -x-handle "tesserato" `
+#     -bluesky-handle "tesserato" `
+#     -threads-handle "tesserato" `
+#     -mastodon-handle "tesserato" `
+#     -telegram-handle "tesserato" `
+#     -linkedin-handle "tesserato" `
+#     -reddit-handle "tarjano" `
+#     --hackernews-handle "tesserato" `
+#     -sort "reverse-date-created"
     
     
