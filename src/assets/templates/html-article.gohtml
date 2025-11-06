@@ -8,7 +8,7 @@
     <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
     <meta name="keywords" content="{{ stringsJoin .Art.Tags " , "}}">
     <meta name="description" content="{{ .Art.Description }}">
-
+    
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="{{ .Art.Title }}" />
     <meta property="og:description" content="{{ .Art.Description }}" />
@@ -38,7 +38,13 @@
             <div class="sharebuttons">
                 {{if or .Settings.FacebookHandle .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle .Settings.TelegramHandle .Settings.RedditHandle .Settings.LinkedinHandle .Settings.HackernewsHandle}}
                     <img src='{{genRelativeLink .Art.LinkToSelf "follow.svg"}}' class="actionicons" alt="Follow">
-                {{end}}            
+                {{end}}
+                {{if .Settings.FacebookHandle}}
+                <a href="https://www.facebook.com/{{.Settings.FacebookHandle}}" target="_blank" rel="noopener noreferrer"
+                    title="Facebook profile">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "facebook.svg"}}' alt="Facebook Logo">
+                </a>
+                {{end}}
                 {{if .Settings.TelegramHandle}}
                 <a href="https://t.me/{{.Settings.TelegramHandle}}" target="_blank" rel="noopener noreferrer"
                     title="Telegram profile">
@@ -83,15 +89,23 @@
                     <img src='{{genRelativeLink .Art.LinkToSelf "hackernews.svg"}}' alt="Hacker News Logo">
                 </a>
                 {{end}}
-                {{if .Settings.FacebookHandle}}
-                <a href="https://www.facebook.com/{{.Settings.FacebookHandle}}" target="_blank" rel="noopener noreferrer" title="Facebook profile">
-                    <img src='{{genRelativeLink .Art.LinkToSelf "facebook.svg"}}' alt="Facebook Logo">
-                </a>
-                {{end}}
             </div>
             <div class="sharebuttons">       
-                {{if or .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle  .Settings.TelegramHandle .Settings.RedditHandle .Settings.LinkedinHandle .Settings.HackernewsHandle}}
-                    <img src='{{genRelativeLink .Art.LinkToSelf "share.svg"}}' class="actionicons" alt="Share">
+                <img src='{{genRelativeLink .Art.LinkToSelf "share.svg"}}' class="actionicons" alt="Share">
+                <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
+                   onclick="copyMarkdownToClipboard(this)"
+                   data-title="{{.Art.Title}}"
+                   data-description="{{.Art.Description}}"
+                   data-url="{{$.Settings.BaseUrl}}/{{.Art.LinkToSelf}}"
+                   data-image-url="{{if .Art.CoverImagePath}}{{$.Settings.BaseUrl}}/{{.Art.CoverImagePath}}{{end}}"
+                   data-tags="{{range $i, $tag := .Art.Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy Markdown">
+                </a>
+                {{if .Settings.FacebookHandle}}
+                <a href={{gen_share_url .Art .Settings "facebook" }} target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Facebook">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "facebook.svg"}}' alt="Facebook Logo">
+                </a>
                 {{end}}
                 {{if .Settings.TelegramHandle}}
                 <a href={{gen_share_url .Art .Settings "telegram" }} target="_blank" rel="noopener noreferrer"
@@ -140,11 +154,6 @@
                 <a href={{gen_share_url .Art .Settings "hackernews" }} target="_blank" rel="noopener noreferrer"
                     title="Share this post on Hacker News">
                     <img src='{{genRelativeLink .Art.LinkToSelf "hackernews.svg"}}' alt="Hacker News Logo">
-                </a>
-                {{end}}
-                {{if .Settings.FacebookHandle}}
-                <a href={{gen_share_url .Art .Settings "facebook" }} target="_blank" rel="noopener noreferrer" title="Share this post on Facebook">
-                    <img src='{{genRelativeLink .Art.LinkToSelf "facebook.svg"}}' alt="Facebook Logo">
                 </a>
                 {{end}}
             </div>

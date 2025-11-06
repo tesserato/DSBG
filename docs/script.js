@@ -133,7 +133,7 @@ function initializeTagFilters() {
 
     // Add event listener to the "Hide All" button.
     hideAllBtn.addEventListener("click", function (e) {
-         // Set all filter buttons to 'off' to hide all posts.
+        // Set all filter buttons to 'off' to hide all posts.
         for (const btn of filterButtons) {
             btn.className = "off";
         }
@@ -143,3 +143,56 @@ function initializeTagFilters() {
 
 // Call the function to initialize the tag filters when the script runs.
 initializeTagFilters();
+
+
+/**
+ * Copies a generated Markdown summary of an article to the clipboard.
+ * Reads article data from the data-* attributes of the clicked element.
+ * Provides user feedback by changing the button icon.
+ * @param {HTMLElement} element The button element that was clicked.
+ */
+function copyMarkdownToClipboard(element) {
+    // 1. Read all the data from the element's data attributes.
+    const title = element.dataset.title;
+    const description = element.dataset.description;
+    const articleUrl = element.dataset.url;
+    const imageUrl = element.dataset.imageUrl;
+    const tags = element.dataset.tags ? element.dataset.tags.split(',') : [];
+
+    // 2. Build the Markdown string in the new, cleaner format.
+    let markdownString = `# ${title}\n\n`;
+
+    if (description) {
+        markdownString += `${description}\n\n`;
+    }
+
+    if (imageUrl) {
+        markdownString += `![${title}](${imageUrl})\n\n`;
+    }
+
+    markdownString += `${articleUrl}\n\n`;
+
+    if (tags.length > 0) {
+        const hashtags = tags.map(tag => `#${tag.trim().replace(/ /g, '')}`).join(' ');
+        markdownString += `${hashtags}`;
+    }
+
+    // 3. Use the modern Navigator API to copy to the clipboard.
+    navigator.clipboard.writeText(markdownString).then(() => {
+        // 4. Provide user feedback on success.
+        const originalContent = element.innerHTML;
+        const originalClass = element.className;
+
+        element.innerHTML = 'Copied!';
+        element.className += ' copied'; // Add a class for styling
+
+        setTimeout(() => {
+            element.innerHTML = originalContent;
+            element.className = originalClass; // Revert back to original class
+        }, 2000); // Revert back after 2 seconds
+    }).catch(err => {
+        // 5. Log an error if copying fails.
+        console.error('Failed to copy Markdown: ', err);
+        alert('Failed to copy Markdown. See console for details.');
+    });
+}

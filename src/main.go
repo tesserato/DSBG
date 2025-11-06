@@ -114,7 +114,7 @@ func main() {
 	// Custom Usage function to display help for both default and template modes.
 	defaultFlagSet.Usage = func() {
 		fmt.Fprintf(os.Stderr, "DSBG (Dead Simple Blog Generator) - Generate static blogs from Markdown and HTML.\n")
-		fmt.Fprintf(os.Stderr, "For complete documentation, visit: https://github.com/tesserato/DSBG\n\n")
+		fmt.Fprintf(os.Stderr, "For complete documentation, visit: https://github.com/tesserato/dsbg\n\n")
 		fmt.Fprintf(os.Stderr, "Usage: dsbg [flags] or dsbg -template [flags]\n\n") // Added usage instructions
 
 		fmt.Fprintf(os.Stderr, "Default mode flags (dsbg [flags]):\n")
@@ -550,6 +550,7 @@ func buildWebsite(settings parse.Settings) {
 	saveAsset("linkedin.svg", "linkedin.svg", settings.OutputDirectory)
 	saveAsset("hackernews.svg", "hackernews.svg", settings.OutputDirectory)
 	saveAsset("facebook.svg", "facebook.svg", settings.OutputDirectory)
+	saveAsset("copy.svg", "copy.svg", settings.OutputDirectory)
 
 	log.Println("Website generated successfully in:", settings.OutputDirectory) // Success log message
 }
