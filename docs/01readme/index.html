@@ -1,0 +1,437 @@
+### `assets/templates/html-article.gohtml`
+
+```gohtml
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWLT2BCLJ3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-VWLT2BCLJ3');
+</script>
+
+<!-- GoatCounter -->
+<script data-goatcounter="https://dsbg.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<!-- Counter.dev -->
+<script src="https://cdn.counter.dev/script.js" data-id="af32e278-52c0-4ad4-8cf7-496cee1e447f"
+    data-utcoffset="-3"></script>
+
+<!-- Giscus -->
+<script src="https://giscus.app/client.js" data-repo="tesserato/dsbg_comments" data-repo-id="R_kgDON9M2Vw"
+    data-category="Announcements" data-category-id="DIC_kwDON9M2V84CnK7O" data-mapping="pathname" data-strict="0"
+    data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="dark" data-lang="en"
+    crossorigin="anonymous" async>
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
+    <meta name="keywords" content="">
+    <meta name="description" content="How to install and use Dead Simple Blog Generator.">
+    <link rel="canonical" href="https://tesserato.github.io/dsbg/01readme/index.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <title>README - Getting Started with DSBG</title>
+</head>
+
+<body>
+    <header>
+        <div class="articlelinks">
+            <a href="https://tesserato.github.io/dsbg" > ◁ Dead Simple Blog Generator
+            </a>
+            <div class="sharebuttons">
+                
+                    <img src='../follow.svg' class="actionicons" alt="Follow">
+                            
+                
+                <a href="https://t.me/tesserato" target="_blank" rel="noopener noreferrer"
+                    title="Telegram profile">
+                    <img src='../telegram.svg' alt="Telegram Logo">
+                </a>
+                
+                
+                <a href="https://bsky.app/profile/tesserato.bsky.social" target="_blank"
+                    rel="noopener noreferrer" title="Bluesky profile">
+                    <img src='../bluesky.svg' alt="Bluesky Logo">
+                </a>
+                
+                
+                <a href="https://mastodon.social/@tesserato" target="_blank" rel="noopener noreferrer"
+                    title="Mastodon profile">
+                    <img src='../mastodon.svg' alt="Mastodon Logo">
+                </a>
+                
+                
+                <a href="https://www.threads.net/@tesserato" target="_blank" rel="noopener noreferrer"
+                    title="Threads profile">
+                    <img src='../threads.svg' alt="Threads Logo">
+                </a>
+                
+                
+                <a href="https://x.com/tesserato" target="_blank" rel="noopener noreferrer" title="X profile">
+                    <img src='../x.svg' alt="X Logo">
+                </a>
+                
+                
+                <a href="https://www.reddit.com/user/tarjano" target="_blank" rel="noopener noreferrer" title="Reddit profile">
+                    <img src='../reddit.svg' alt="Reddit Logo">
+                </a>
+                
+                
+                <a href="https://www.linkedin.com/in/tesserato" target="_blank" rel="noopener noreferrer" title="LinkedIn profile">
+                    <img src='../linkedin.svg' alt="LinkedIn Logo">
+                </a>
+                
+                
+                <a href="https://news.ycombinator.com/user?id=tesserato" target="_blank" rel="noopener noreferrer" title="Hacker News profile">
+                    <img src='../hackernews.svg' alt="Hacker News Logo">
+                </a>
+                
+            </div>
+            <div class="sharebuttons">       
+                
+                    <img src='../share.svg' class="actionicons" alt="Share">
+                
+                
+                <a href=https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html&text=How+to+install+and+use+Dead+Simple+Blog+Generator. target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Telegram">
+                    <img src='../telegram.svg' alt="Telegram Logo">
+                </a>
+                
+                
+                
+                <a href=https://bsky.app/intent/compose?text=How+to+install+and+use+Dead+Simple+Blog+Generator.%0A%0Ahttps%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Bluesky">
+                    <img src='../bluesky.svg' alt="Bluesky Logo">
+                </a>
+                
+                
+                <a href=https://mastodon.social/?text=How+to+install+and+use+Dead+Simple+Blog+Generator.%0A%0Ahttps%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Mastodon">
+                    <img src='../mastodon.svg' alt="Mastodon Logo">
+                </a>
+                
+                
+                <a href=https://www.threads.net/intent/post?text=How+to+install+and+use+Dead+Simple+Blog+Generator.%0A%0Ahttps%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Threads">
+                    <img src='../threads.svg' alt="Threads Logo">
+                </a>
+                
+                
+                <a href=https://twitter.com/intent/tweet?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html&text=How+to+install+and+use+Dead+Simple+Blog+Generator.&hashtags= target="_blank" rel="noopener noreferrer"
+                    title="Share this post on X">
+                    <img src='../x.svg' alt="X Logo">
+                </a>
+                
+                
+                <a href=https://www.reddit.com/submit?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html&title=README+-+Getting+Started+with+DSBG target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Reddit">
+                    <img src='../reddit.svg' alt="Reddit Logo">
+                </a>
+                
+                
+                <a href=https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on LinkedIn">
+                    <img src='../linkedin.svg' alt="LinkedIn Logo">
+                </a>
+                
+                
+                <a href=https://news.ycombinator.com/submitlink?u=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F01readme%2Findex.html&t=README+-+Getting+Started+with+DSBG target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Hacker News">
+                    <img src='../hackernews.svg' alt="Hacker News Logo">
+                </a>
+                
+            </div>
+        </div>
+        <h1>README - Getting Started with DSBG</h1>
+        <h2>How to install and use Dead Simple Blog Generator.</h2>
+    </header>
+
+    <html><head></head><body><p>DSBG (Dead Simple Blog Generator) is a free and open-source command-line tool that transforms a directory of Markdown and/or HTML files into a static website. It’s designed for ease of use, allowing you to quickly create and deploy a personal blog, documentation site, or a website with minimal configuration.</p>
+<p>The ethos behind it is to automate your virtual presence as much as possible, while retaining control over the created content. To that end, the following features are available:</p>
+<ul>
+<li>Easy installation: Download a <a href="https://github.com/tesserato/dsbg/releases">pre-built binary</a> or use <code>go install github.com/tesserato/dsbg@latest</code>,</li>
+<li>Support for Markdown &amp; HTML source files as inputs,</li>
+<li>Automatic tag generation from paths and built-in tag filtering,</li>
+<li>Client-side fuzzy search over all content,</li>
+<li>Automatic RSS feed generation,</li>
+<li>Watch mode with automatic rebuild for continuous feedback,</li>
+<li>3 different themes, with the ability to add your own via custom CSS.</li>
+<li>Automatic share buttons for major social networks</li>
+<li>Responsive websites out of the box, with MathJax, footnotes and syntax highlighting,</li>
+<li>Easy to extend with analytics, comments, and more.</li>
+</ul>
+<p><strong>TOC</strong></p>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a>
+<ul>
+<li><a href="#creating-a-markdown-template">Creating a Markdown Template</a></li>
+<li><a href="#building-a-blog-with-a-theme-and-watch-mode">Building a Blog with a Theme and Watch Mode</a></li>
+<li><a href="#building-a-blog-with-custom-css">Building a Blog with Custom CSS</a></li>
+<li><a href="#including-custom-html-elements">Including Custom HTML Elements</a></li>
+<li><a href="#special-page-tag-usage">Special “PAGE” Tag Usage</a></li>
+</ul>
+</li>
+<li><a href="#features">Features</a></li>
+<li><a href="#command-line-arguments">Command-Line Arguments</a></li>
+<li><a href="#caveats">Caveats</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#blogs-using-dsbg">Blogs using DSBG</a></li>
+<li><a href="#star-history">Star History</a></li>
+</ul>
+<h1 id="installation">Installation</h1>
+<p>To get started with DSBG, you’ll first need to install it on your system. If you have Go installed, you can use the following command in your terminal:</p>
+<pre><code class="language-bash">go install github.com/tesserato/dsbg@latest
+</code></pre>
+<p>This command will download and install the latest version of DSBG.</p>
+<p>Alternatively, you can download a pre-built binary for your operating system from the <a href="https://github.com/tesserato/dsbg/releases">releases page</a> and add it to your system’s <code>PATH</code> environment variable or place it in the same directory where your source files are located.</p>
+<p>After installation, verify that DSBG is working correctly by running the help command:</p>
+<pre><code class="language-bash">dsbg -h
+</code></pre>
+<p>This command will print the help message, displaying all available options and flags.</p>
+<h1 id="usage">Usage</h1>
+<p>Assuming you are running <code>dsbg</code> from a directory containing a <code>content</code> folder with your Markdown or HTML files, just running <code>dsbg</code> without any flags will generate a website in a folder named <code>public</code>. You’ll probably want to change the name and description of the blog, in which case you can use the <code>-title</code> and <code>-description</code> flags:</p>
+<pre><code class="language-bash">dsbg -title &#34;My First Blog&#34; -description &#34;A simple test blog&#34;
+</code></pre>
+<h2 id="creating-a-markdown-template">Creating a Markdown Template</h2>
+<p>To create a new Markdown file with a pre-filled frontmatter template, run:</p>
+<pre><code class="language-bash">dsbg -template -title &#34;My Awesome Post&#34; -description &#34;A sample template&#34;
+</code></pre>
+<p>This command generates a Markdown file named with the current date in the current directory. You can use this as a starting point to fill with content. If no title is given, the file will be named with the date.</p>
+<h2 id="building-a-blog-with-a-theme-and-watch-mode">Building a Blog with a Theme and Watch Mode</h2>
+<p>To build a blog using a predefined theme (<code>dark</code>) and enable watch mode (which automatically rebuilds the site on changes), use:</p>
+<pre><code class="language-bash">dsbg -title &#34;My Awesome Blog&#34; -description &#34;My blog description&#34; -watch -style dark
+</code></pre>
+<p>This command generates a blog with the “dark” theme and watches for changes in the <code>content</code> folder, rebuilding the website on each change. A local server will also start to serve the blog in your browser.</p>
+<h2 id="building-a-blog-with-custom-css">Building a Blog with Custom CSS</h2>
+<p>To use a custom CSS file to style your blog, use:</p>
+<pre><code class="language-bash">dsbg -title &#34;My Awesome Blog&#34; -description &#34;My blog description&#34; -watch -css-path path/to/custom-style.css
+</code></pre>
+<p>This command creates a blog that is watched for changes, while using a custom CSS file for styling. Make sure that the path given with <code>-css-path</code> is the correct path to your CSS file.</p>
+<h2 id="including-custom-html-elements">Including Custom HTML Elements</h2>
+<p>To include custom HTML elements (like analytics code, headers, or footers) in your blog, use:</p>
+<pre><code class="language-bash">dsbg -title &#34;My Awesome Blog&#34; -description &#34;My blog description&#34; -watch -elements-top elements-top.html -elements-bottom elements-bottom.html
+</code></pre>
+<p>This command adds the contents of <code>elements-top.html</code> at the top of each generated page, and the content of <code>elements-bottom.html</code> at the bottom of each generated page. The files given to these flags must be basic HTML files.</p>
+<h2 id="special-page-tag-usage">Special “PAGE” Tag Usage</h2>
+<p>If your source files are in HTML and have obscure dependencies (beyond the usual links to images, CSS, and JavaScript), you can add the tag <code>PAGE</code> to your Markdown or HTML file. This tag tells DSBG to copy the entire directory containing that file and all its contents to the output folder.</p>
+<ul>
+<li><strong>HTML:</strong> Add <code>&lt;meta name=&#34;keywords&#34; content=&#34;PAGE&#34;&gt;</code> in the <code>&lt;head&gt;</code> section of your HTML file.</li>
+<li><strong>Markdown:</strong> Add <code>tags: [PAGE]</code> in the frontmatter of your Markdown file.</li>
+</ul>
+<h1 id="features">Features</h1>
+<p>Here’s a breakdown of the core features of DSBG:</p>
+<ul>
+<li><strong>Markdown &amp; HTML Support:</strong> Write your content using Markdown for ease of use, or use HTML for more complex layouts. You can mix and match these formats freely within the same site.</li>
+<li><strong>Frontmatter:</strong>
+<ul>
+<li>Use YAML frontmatter in Markdown files to define metadata such as:
+<ul>
+<li><code>title</code>: The title of the article or page.</li>
+<li><code>description</code>: A brief description of the article or page.</li>
+<li><code>created</code>: The creation date of the article or page.</li>
+<li><code>updated</code>: The last update date of the article or page.</li>
+<li><code>tags</code>: Tags for categorizing the article or page.</li>
+<li><code>coverImagePath</code>: The path to an image used as a cover for the article or page.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Tag Filtering:</strong>
+<ul>
+<li>DSBG automatically generates tag-based filters on the main index page for easy navigation.</li>
+<li>Tags can be defined in the frontmatter of Markdown files, in the <code>keywords</code> meta tag of HTML files, or extracted from directory names.</li>
+</ul>
+</li>
+<li><strong>Theming:</strong>
+<ul>
+<li>Choose between pre-defined themes: <code>default</code>, <code>dark</code>, or <code>colorful</code>.</li>
+<li>Use your own custom CSS file with the <code>-css-path</code> flag to style your website.</li>
+</ul>
+</li>
+<li><strong>RSS Feed Generation:</strong> DSBG automatically generates an RSS feed (<code>rss.xml</code>) for your blog, allowing your readers to subscribe to your content updates.</li>
+<li><strong>Client-Side Search:</strong> A simple client-side search powered by Fuse.js is included, enabling users to easily search for content within your website. The search input is at the top of the main page and supports some basic search commands (like the ones used by UNIX).</li>
+<li><strong>Resource Handling:</strong> DSBG automatically identifies and copies resources (images, scripts, etc.) linked in your Markdown or HTML content to the output directory.</li>
+<li><strong>Automatic Date Handling:</strong> DSBG extracts and displays date information from frontmatter fields, filenames, or file metadata, ensuring your content displays with accurate dates. If no date is provided, the file modification date is used.</li>
+<li><strong>Watch Mode:</strong> When enabled with the <code>-watch</code> flag, DSBG monitors your content directory for changes, automatically rebuilds the website, and starts a local server, allowing for a smooth writing experience.</li>
+<li><strong>“PAGE” Tag:</strong> Use the <code>PAGE</code> tag in the frontmatter of a file or the <code>keywords</code> meta tag of an HTML file to tell DSBG to copy the entire directory (with all its contents) to the output folder. This is useful when creating custom pages or adding resources.</li>
+<li><strong>Open Links in New Tabs:</strong> When enabled with the <code>-open-in-new-tab</code> flag, external links from your articles will open in a new browser tab, providing a smoother user experience for your readers.</li>
+<li><strong>Social Media Share Buttons</strong>: Easily add share buttons for Bluesky, Mastodon, Threads, and X (Twitter) to your articles, making it simple for readers to share your content.</li>
+<li><strong>Social Media Profile Links</strong>: Include links to your profiles on Bluesky, Mastodon, Threads, and X (Twitter) in the header of your blog, enhancing your online presence and making it easier for readers to follow you.</li>
+<li><strong>Article Sorting</strong>: Control the order in which articles are displayed on the index page. Sort by creation date, update date, title, or file path, in ascending or descending order.</li>
+</ul>
+<h1 id="command-line-arguments">Command-Line Arguments</h1>
+<p>The following flags are available when using the <code>dsbg</code> command-line tool:</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-title</code></td>
+<td>The title of your blog or website.</td>
+<td><code>Blog</code></td>
+</tr>
+<tr>
+<td><code>-base-url</code></td>
+<td>The base URL for your website (e.g., <code>https://example.com</code>). Required for generating a correct RSS feed.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-description</code></td>
+<td>A brief description of your blog or website. Can be in Markdown format.</td>
+<td><code>This is my blog</code></td>
+</tr>
+<tr>
+<td><code>-input-path</code></td>
+<td>The path to the directory containing your source content files (Markdown and HTML).</td>
+<td><code>content</code></td>
+</tr>
+<tr>
+<td><code>-output-path</code></td>
+<td>The path to the directory where the generated website files will be saved.</td>
+<td><code>public</code></td>
+</tr>
+<tr>
+<td><code>-date-format</code></td>
+<td>The format for displaying dates on the website using Go’s time formatting syntax (e.g., <code>2006-01-02</code>).</td>
+<td><code>2006 01 02</code></td>
+</tr>
+<tr>
+<td><code>-index-name</code></td>
+<td>The filename for your main index page.</td>
+<td><code>index.html</code></td>
+</tr>
+<tr>
+<td><code>-css-path</code></td>
+<td>The path to a custom CSS file to override default styles.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-js-path</code></td>
+<td>The path to a custom JavaScript file to add functionality to your site.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-favicon-path</code></td>
+<td>The path to a custom favicon file (e.g., <code>.ico</code>) for your site.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-ignore-tags-from-paths</code></td>
+<td>Disable extracting tags from directory names.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>-keep-date-in-paths</code></td>
+<td>Do not remove date patterns from the generated file paths.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>-keep-date-in-titles</code></td>
+<td>Do not remove date patterns from article titles.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>-open-in-new-tab</code></td>
+<td>Open external links in new browser tabs.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>-style</code></td>
+<td>Choose a pre-defined theme: <code>default</code>, <code>dark</code>, or <code>colorful</code>.</td>
+<td><code>default</code></td>
+</tr>
+<tr>
+<td><code>-elements-top</code></td>
+<td>The path to an HTML file with elements to include at the top of each generated page (e.g., analytics scripts).</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-elements-bottom</code></td>
+<td>The path to an HTML file with elements to include at the bottom of each generated page.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-help</code></td>
+<td>Display this help message and exit.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>-watch</code></td>
+<td>Enable watch mode, automatically rebuild the site on changes, and start a local server.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>-template</code></td>
+<td>Create a basic Markdown template file with frontmatter in the current directory.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>-sort</code></td>
+<td>Define the sorting order of articles on the index page. Options: <code>date-created</code>, <code>reverse-date-created</code>, <code>date-updated</code>, <code>reverse-date-updated</code>, <code>title</code>, <code>reverse-title</code>, <code>path</code>, <code>reverse-path</code>.</td>
+<td><code>date-created</code></td>
+</tr>
+<tr>
+<td><code>-x-handle</code></td>
+<td>X (formerly Twitter) handle for profile link and share buttons.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-bluesky-handle</code></td>
+<td>Bluesky handle for profile link and share buttons.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-threads-handle</code></td>
+<td>Threads handle for profile link and share buttons.</td>
+<td>none</td>
+</tr>
+<tr>
+<td><code>-mastodon-handle</code></td>
+<td>Mastodon handle for profile link and share buttons.</td>
+<td>none</td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="caveats">Caveats</h1>
+<ul>
+<li>The output directory (<code>public</code> by default) is completely reset (deleted and re-created) every time the program is run. Any files in this folder will be removed, so make sure not to store any important files there. This means that any custom JavaScript, CSS, or other files not in your input directory will be lost when you rebuild the blog. To include custom files, you must place them in the source directory or use the <code>-css-path</code>, <code>-js-path</code>, or <code>-favicon-path</code> flags.</li>
+<li>Links to images or other resources in your source files must not have any whitespace characters.</li>
+</ul>
+<h1 id="contributing">Contributing</h1>
+<p>Contributions are welcome! If you find a bug, have a feature request, or would like to improve the documentation, feel free to submit a pull request or create an issue on <a href="https://github.com/tesserato/dsbg">GitHub</a>.</p>
+<p>If you use DSBG in your own project, please consider giving it a star on <a href="https://github.com/tesserato/dsbg">GitHub</a> and sharing it with your friends. Also, send me the link to your project so I can add it to the list of projects that use DSBG.</p>
+<p>If you come up with a nice theme for DSBG, please contact me so I can add it to the list of themes.</p>
+<h1 id="blogs-using-dsbg">Blogs using DSBG</h1>
+<ul>
+<li><a href="https://tesserato.web.app/">The Fortnightly Tambourine</a></li>
+</ul>
+<p>My personal blog, and the motivation for DSBG. If you want to know more about why I made this, check out <a href="https://tesserato.web.app/posts/2022-02-16-Why-I-made-yet-another-blog-generator/index.html">Why I made yet another blog generator</a>.</p>
+<h1 id="star-history">Star History</h1>
+<p><a href="https://star-history.com/#tesserato/dsbg&amp;Date"><img src="https://api.star-history.com/svg?repos=tesserato/dsbg&amp;type=Date" alt="Star History Chart"/></a></p>
+<p><a href="https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_souce=badge-dead-simple-blog-generator" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=912370&amp;theme=light&amp;t=1740653394729" alt="Dead Simple Blog Generator - Static Site Generator That Fast-Tracks Your Digital Presence | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a></p>
+</body></html>
+
+    <div class="giscus"></div>
+
+    <footer>
+        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+    </footer>
+</body>
+
+</html>

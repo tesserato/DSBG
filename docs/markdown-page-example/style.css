@@ -1,0 +1,697 @@
+/*
+    -------------------------------------------
+    GLOBAL VARIABLES & BOX-SIZING
+    -------------------------------------------
+*/
+:root {
+    /* Fonts */
+    --header-font: "Georgia";
+    --body-font: "Garamond";
+
+    /* Colors */
+    --background: #eaeaea;
+    --text: #555555;
+    --card: #f2f2f2;
+    --link: #c92626;
+    --shadow: rgba(0, 0, 0, 0.25);
+
+}
+
+* {
+    box-sizing: border-box;
+    /* Use border-box for easier sizing */
+}
+
+
+/*
+    -------------------------------------------
+    TAG FILTER BUTTONS (Show All / Hide All)
+    -------------------------------------------
+*/
+#hide_all_btn,
+#show_all_btn.off {
+    border-radius: 50%;
+    color: transparent;
+    box-shadow:
+        0.2rem 0.2rem .3rem 0 var(--shadow) inset,
+        -.0rem -.0rem .1rem 0 var(--card);
+}
+
+#show_all_btn,
+#hide_all_btn.off {
+    border-radius: 50%;
+    color: transparent;
+    box-shadow:
+        0.3rem 0.3rem .3rem 0 var(--shadow),
+        -.0rem -.0rem .1rem 0 var(--card);
+}
+
+#hide_all_btn:hover,
+#show_all_btn:hover {
+    color: var(--text);
+    text-shadow: 0 0 0.4rem var(--text);
+}
+
+
+/*
+    -------------------------------------------
+    BASIC HTML STYLES
+    -------------------------------------------
+*/
+html {
+    padding: 0;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* align-items: center; */
+    /* Center content horizontally */
+    font-family: var(--body-font);
+    background-color: var(--background);
+    color: var(--text);
+    max-width: 950px;
+    min-width: 300px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+html * {
+    transition: all 0.1s ease-in-out;
+    /* Smooth transition for all elements */
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    /* Improve font rendering on webkit browsers */
+    -moz-osx-font-smoothing: grayscale;
+    /* Improve font rendering on macOS */
+    padding: 1rem;
+    margin: 0 auto;
+    /* Center the body content and set margin */
+    line-height: 1.5;
+}
+
+pre {
+    /* display: none; */
+    /* padding: 0%; */
+    /* margin: 0%; */
+    height: auto;
+    /* Changed from fit-content to auto to allow vertical expansion */
+    max-width: 100%;
+    width: fit-content;
+    /* Ensure pre doesn't exceed parent width */
+    border-radius: 0.4em;
+    /* Added border-radius to match surrounding */
+    background-color: var(--card);
+    box-shadow:
+        0.3rem 0.3rem .3rem 0 var(--shadow) inset,
+        -.0rem -.0rem .3rem 0 var(--card) inset;
+    /* Added inset box-shadow to match buttons */
+}
+
+code {
+    font-size: 1rem;
+    word-break: break-all;
+    /* padding: 0%; */
+    /* margin: 0%; */
+    /* color: rgba(255, 255, 255, 0); */
+    /* Added background color to match surrounding */
+    /* width: auto; */
+    /* Changed from fit-content to auto to allow content to dictate width */
+}
+
+code.hljs {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+/*
+    -------------------------------------------
+    NAVIGATION
+    -------------------------------------------
+*/
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    font-size: 1rem;
+    color: var(--text);
+    gap: 0.7rem;
+    margin-bottom: .7rem;
+    flex-wrap: wrap;
+    /* Allow nav items to wrap on smaller screens */
+}
+
+nav a {
+    display: block;
+    padding: 0.1rem 0.3rem;
+    margin: 0rem;
+    text-decoration: none;
+    color: var(--background);
+    background-color: var(--text);
+    border-radius: 0.15em;
+    filter: opacity(100%);
+    text-shadow: none;
+    box-shadow:
+        0.1rem 0.1rem .3rem 0 var(--shadow),
+        -.0rem -.0rem .1rem 0 var(--text);
+}
+
+nav a:hover {
+    background-color: var(--text);
+    box-shadow: none;
+}
+
+/*
+    -------------------------------------------
+    IMAGES
+    -------------------------------------------
+*/
+header img {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-left: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    align-self: center;
+}
+
+.detail img {
+    max-height: 20rem;
+    padding-bottom: 2rem;
+    align-self: center;
+}
+
+.share {
+    height: 1rem;
+    width: 1rem;
+}
+
+.description img {
+    width: auto;
+    height: auto;
+    align-self: center;
+}
+
+.actionicons {
+    width: 2.2rem;
+    height: 2.2rem;
+    margin: 0;
+    padding: 0;
+    filter: invert(80%);
+}
+
+
+/*
+    -------------------------------------------
+    ARTICLE DETAIL BOX
+    -------------------------------------------
+*/
+.detail {
+    border-radius: 0.4em;
+    background-color: var(--card);
+    padding: 1.0rem;
+    margin: 0 0 1rem;
+    border: none;
+    box-shadow:
+        .5rem .5rem 1.2rem 0 var(--shadow),
+        -.0rem -.0rem 1rem 0 var(--card);
+    color: var(--text);
+}
+
+details summary {
+    cursor: pointer;
+    padding-bottom: 1rem;
+}
+
+.articlelinks {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 0 2rem;
+    margin: 0%;
+    /* gap: 0.5rem; */
+}
+
+.headline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1rem;
+    margin: 0 0 .5rem;
+}
+
+.imagendescription {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    column-gap: 1rem;
+    margin: 0 0 .5rem;
+}
+
+.description {
+    margin: 0 0 1rem;
+    word-break: break-all;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.sharebuttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-left: auto;
+    padding-left: 1rem;
+}
+
+/*
+    -------------------------------------------
+    TABLE STYLES
+    -------------------------------------------
+*/
+table {
+    width: 100%; /* Make tables responsive and full-width within their container */
+    border-collapse: collapse; /*  Single border for the whole table */
+    margin-bottom: 1rem; /* Spacing below tables */
+    background-color: var(--card); /* Table background color to match cards */
+    border-radius: 0.4em; /* Rounded corners to match cards */
+    box-shadow:
+        .3rem .3rem .5rem 0 var(--shadow), /* Shadow to match cards */
+        -.0rem -.0rem .1rem 0 var(--card);
+    overflow-x: auto; /* Enable horizontal scrolling for tables if content is wider than container */
+    display: block; /* Required for overflow-x to work correctly in some layouts */
+}
+
+th,
+td {
+    padding: 0.4rem; /* Comfortable padding within cells */
+    text-align: left; /* Left-align text in cells by default */
+}
+
+thead th {
+    font-weight: bold; /* Make header cells bold */
+    /* filter: invert(80%); */
+    /* background-color: var(--background);  */
+    color: var(--text); /* Header text color */
+    border-bottom: 2px solid var(--text); /* Stronger bottom border for header */
+}
+
+/* Optional: Zebra striping for tbody rows for better readability */
+tbody tr:nth-child(odd) {
+    background-color: var(--background);
+}
+
+/* Optional: Style for table footer if you use tfoot */
+tfoot td {
+    font-weight: bold; /* Example: Make footer cells bold */
+    background-color: var(--background); /* Example: Footer background color */
+}
+
+/* Optional: Style for table caption if you use caption */
+caption {
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--text);
+}
+
+/* Ensure table doesn't get too wide on very small screens and introduce horizontal scroll on body if needed */
+body {
+    overflow-x: auto; /* Or scroll if preferred */
+}
+
+/*
+    -------------------------------------------
+    BUTTONS
+    -------------------------------------------
+*/
+button {
+    width: fit-content;
+    border: none;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.15rem;
+    cursor: pointer;
+    font-size: .9rem;
+    font-family: var(--body-font);
+    color: var(--text);
+    background-color: var(--card);
+    box-shadow:
+        0.1rem 0.1rem .3rem 0 var(--shadow),
+        -.0rem -.0rem .1rem 0 var(--card);
+}
+
+button:hover {
+    box-shadow: none;
+}
+
+.off {
+    box-shadow:
+        0.1rem 0.1rem .3rem 0 var(--shadow) inset,
+        -.0rem -.0rem .1rem 0 var(--card) inset;
+}
+
+.off:hover {
+    opacity: 30%;
+    box-shadow:
+        0.1rem 0.1rem .3rem 0 var(--shadow) inset,
+        -.0rem -.0rem .1rem 0 var(--card) inset;
+}
+
+
+/*
+    -------------------------------------------
+    HEADER STYLES
+    -------------------------------------------
+*/
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0 0 1rem;
+}
+
+header h1 {
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: var(--header-font);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    /* margin-bottom: 0.5rem; */
+    text-align: center;
+}
+
+header h2 {
+    margin: 0 0 1rem;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: var(--header-font);
+    opacity: 70%;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+header a {
+    align-self: flex-start;
+    text-align: left;
+}
+
+/*
+    -------------------------------------------
+    TYPOGRAPHY
+    -------------------------------------------
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+a {
+    text-align: justify;
+    text-justify: inter-word;
+    margin: 0.5rem 0;
+}
+
+h1,
+h2,
+h3 {
+    letter-spacing: 0.05em;
+    margin-bottom: 1.2em;
+}
+
+p {
+    font-size: 1.2rem;
+    /* text-indent: 1.5rem; */
+    line-height: 120%;
+    font-family: var(--body-font);
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 100;
+    color: var(--link);
+    text-shadow: 0.07rem 0.07rem 0.13rem var(--shadow);
+}
+
+a:hover {
+    color: var(--card);
+    text-shadow: 0.07rem 0.07rem 0.13rem var(--shadow);
+}
+
+h1 {
+    font-size: 1.3rem;
+    font-family: var(--header-font);
+}
+
+h2 {
+    font-size: 1.2rem;
+    font-family: var(--header-font);
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-family: var(--header-font);
+}
+
+h4 {
+    font-size: 1.1rem;
+    font-family: var(--header-font);
+}
+
+h5 {
+    font-size: 1.0rem;
+    font-family: var(--header-font);
+}
+
+
+/*
+    -------------------------------------------
+    ARTICLE INFO / METADATA
+    -------------------------------------------
+*/
+.info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.2rem;
+    align-items: end;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: var(--text);
+    opacity: 0.8;
+    width: min-content;
+    flex-grow: 10;
+}
+
+
+.date {
+    padding: 0;
+    margin: 0;
+    font-size: 0.6rem;
+    color: var(--text);
+    filter: brightness(80%);
+    width: max-content;
+}
+
+.titleandlinks {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 0.2rem;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+
+/*
+    -------------------------------------------
+    LIST STYLES
+    -------------------------------------------
+*/
+/* Unordered list styles */
+ul {
+    margin-left: 1.5rem;
+    /* Initial indentation */
+    padding-left: 0;
+    /* Remove default padding */
+    list-style-type: disc;
+    /* Use bullets for all levels, but sublists will have smaller size.*/
+    margin-bottom: 1rem;
+}
+
+ul ul {
+    margin-left: 2rem;
+    /* Increased indentation for nested ul */
+    list-style-type: circle;
+}
+
+ul ul ul {
+    margin-left: 2.5rem;
+    /* Increased indentation for nested ul */
+    list-style-type: square;
+}
+
+/* Ordered list styles */
+ol {
+    margin-left: 1.5rem;
+    /* Initial indentation */
+    padding-left: 0;
+    /* Remove default padding */
+    list-style-type: decimal;
+    margin-bottom: 1rem;
+    /* Add some bottom margin for spacing */
+
+}
+
+ol ol {
+    margin-left: 2rem;
+    /* Increased indentation for nested ol */
+    list-style-type: upper-roman;
+}
+
+ol ol ol {
+    margin-left: 2.5rem;
+    /* Increased indentation for nested ol */
+    list-style-type: decimal;
+}
+
+li {
+    margin-bottom: .5rem;
+    font-size: 1.2rem;
+}
+
+
+/*
+    -------------------------------------------
+    INPUTS
+    -------------------------------------------
+*/
+input[type=checkbox] {
+    accent-color: var(--link);
+    filter: saturate(1.5);
+}
+
+
+/*
+    -------------------------------------------
+    ASIDE ELEMENT
+    -------------------------------------------
+*/
+aside {
+    margin: 0 0 0 1rem;
+    padding: 0;
+    display: flex;
+}
+
+aside img {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: 0.5rem;
+}
+
+aside img:hover {
+    filter: opacity(25%);
+}
+
+
+/*
+    -------------------------------------------
+    TAGS CONTAINER & FILTER
+    -------------------------------------------
+*/
+#buttons,
+.tags {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: .8rem;
+    margin: 0 0 0.1rem;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+
+/*
+    -------------------------------------------
+    FOOTER
+    -------------------------------------------
+*/
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/*
+    -------------------------------------------
+   SEARCH STYLES
+    -------------------------------------------
+*/
+#search-input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 0.7rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: var(--card-background-color);
+    box-shadow:
+        0.1rem 0.1rem .3rem 0 var(--shadow) inset,
+        -.0rem -.0rem .1rem 0 var(--background) inset;
+}
+
+#search-input:focus {
+    border-radius: 0.15rem;
+    box-shadow:
+        0.1rem 0.1rem .5rem 0 var(--shadow),
+        -.0rem -.0rem .2rem 0 var(--background);
+}
+
+#search-results {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: var(--card-background-color);
+    box-shadow:
+        0.1rem 0.1rem .5rem 0 var(--shadow),
+        -.0rem -.0rem .2rem 0 var(--background);
+}
+
+#search-results li {
+    padding: 0.5rem 1rem;
+}
+
+#search-results li a {
+    color: var(--link);
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+#search-results li a:hover {
+    color: var(--text);
+}

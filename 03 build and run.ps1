@@ -7,10 +7,9 @@ go build .
 Remove-Item "../docs/*" -Recurse -Force
 
 Copy-Item "../README.md" "../sample_content/01_readme.md" -Force
-
-# magick -density 376 -background none "logo.svg" "sample_content/01_dsbg_logo.webp"
-# magick -background none "sample_content/01_dsbg_logo.webp" -fill red -opaque black -blur 0x1  -crop 167x167+0+0  "assets/favicon.ico"
-# magick -background none "sample_content/01_dsbg_logo.webp"  -crop 167x167+0+0  "thumb.webp"
+magick "../art/logo.webp" "../sample_content/01_dsbg_logo.webp"
+magick -background none "../sample_content/01_dsbg_logo.webp" -fill red -opaque black -blur 0x1  -crop 167x167+0+0  "assets/favicon.ico"
+magick -background none "../sample_content/01_dsbg_logo.webp"  -crop 167x167+0+0  "thumb.webp"
 
 $description = @'
 A Simple, Open-Source Tool to Create Your Static Blog and Broadcast Your Content.
@@ -41,7 +40,7 @@ Start-Process chrome http://localhost:666/index.html
 dsbg.exe -title "Dead Simple Blog Generator" `
     -description "$description" `
     -watch `
-    -input-path "../sample_content/content" `
+    -input-path "../sample_content" `
     -output-path "../docs" `
     -base-url "https://tesserato.github.io/dsbg/" `
     -elements-top "../sample_content/analytics.html" `

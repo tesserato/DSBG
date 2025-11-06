@@ -2,14 +2,14 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="55.535862mm"
-   height="20.556723mm"
-   viewBox="0 0 55.535863 20.556723"
+   width="55.535892mm"
+   height="20.556726mm"
+   viewBox="0 0 55.535894 20.556727"
    version="1.1"
    id="svg1"
-   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    sodipodi:docname="logo.svg"
-   inkscape:export-filename="content\logo.webp"
+   inkscape:export-filename="content\content\logo.webp"
    inkscape:export-xdpi="376.60117"
    inkscape:export-ydpi="376.60117"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -27,19 +27,19 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.9477379"
-     inkscape:cx="31.831798"
-     inkscape:cy="26.954345"
+     inkscape:zoom="3.8954758"
+     inkscape:cx="106.40549"
+     inkscape:cy="45.822387"
      inkscape:window-width="1920"
-     inkscape:window-height="991"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1">
     <inkscape:grid
        id="grid1"
        units="mm"
-       originx="-85.949593"
+       originx="-85.949596"
        originy="-74.349991"
        spacingx="0.99999998"
        spacingy="1"
@@ -89,7 +89,7 @@
       <path
          id="mask-powermask-path-effect39_box"
          style="fill:#ffffff;fill-opacity:1"
-         d="M 84.949594,73.349992 H 142.48546 V 95.906715 H 84.949594 Z" />
+         d="M 84.949597,73.349992 H 142.48549 V 95.906719 H 84.949597 Z" />
       <g
          inkscape:groupmode="layer"
          id="g39"
@@ -139,7 +139,7 @@
      inkscape:label="base"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-85.949594,-74.349992)"
+     transform="translate(-85.949597,-74.349992)"
      style="display:inline"
      mask="url(#mask-powermask-path-effect39)"
      inkscape:path-effect="#path-effect39">

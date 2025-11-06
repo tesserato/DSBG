@@ -1,0 +1,528 @@
+### `assets/templates/html-article.gohtml`
+
+```gohtml
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWLT2BCLJ3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-VWLT2BCLJ3');
+</script>
+
+<!-- GoatCounter -->
+<script data-goatcounter="https://dsbg.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<!-- Counter.dev -->
+<script src="https://cdn.counter.dev/script.js" data-id="af32e278-52c0-4ad4-8cf7-496cee1e447f"
+    data-utcoffset="-3"></script>
+
+<!-- Giscus -->
+<script src="https://giscus.app/client.js" data-repo="tesserato/dsbg_comments" data-repo-id="R_kgDON9M2Vw"
+    data-category="Announcements" data-category-id="DIC_kwDON9M2V84CnK7O" data-mapping="pathname" data-strict="0"
+    data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="dark" data-lang="en"
+    crossorigin="anonymous" async>
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
+    <meta name="keywords" content="test tag 01 , test tag 02 , test tag 03 , test tag 04 , test tag 05 , test tag 06 , test tag 07 , test tag 08 , test tag 09 , test tag 10 , edge case , markdown feature , citation , table">
+    <meta name="description" content="An extended test post to explore more edge cases and Markdown features, including citations, tables (long and short), and more. This post aims to thoroughly test formatting and rendering capabilities. Lets extend this description, for example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
+    <link rel="canonical" href="https://tesserato.github.io/dsbg/07-test-post/index.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <title>Extended Test Post: Edge Cases and Markdown Features</title>
+</head>
+
+<body>
+    <header>
+        <div class="articlelinks">
+            <a href="https://tesserato.github.io/dsbg" > ◁ Dead Simple Blog Generator
+            </a>
+            <div class="sharebuttons">
+                
+                    <img src='../follow.svg' class="actionicons" alt="Follow">
+                            
+                
+                <a href="https://t.me/tesserato" target="_blank" rel="noopener noreferrer"
+                    title="Telegram profile">
+                    <img src='../telegram.svg' alt="Telegram Logo">
+                </a>
+                
+                
+                <a href="https://bsky.app/profile/tesserato.bsky.social" target="_blank"
+                    rel="noopener noreferrer" title="Bluesky profile">
+                    <img src='../bluesky.svg' alt="Bluesky Logo">
+                </a>
+                
+                
+                <a href="https://mastodon.social/@tesserato" target="_blank" rel="noopener noreferrer"
+                    title="Mastodon profile">
+                    <img src='../mastodon.svg' alt="Mastodon Logo">
+                </a>
+                
+                
+                <a href="https://www.threads.net/@tesserato" target="_blank" rel="noopener noreferrer"
+                    title="Threads profile">
+                    <img src='../threads.svg' alt="Threads Logo">
+                </a>
+                
+                
+                <a href="https://x.com/tesserato" target="_blank" rel="noopener noreferrer" title="X profile">
+                    <img src='../x.svg' alt="X Logo">
+                </a>
+                
+                
+                <a href="https://www.reddit.com/user/tarjano" target="_blank" rel="noopener noreferrer" title="Reddit profile">
+                    <img src='../reddit.svg' alt="Reddit Logo">
+                </a>
+                
+                
+                <a href="https://www.linkedin.com/in/tesserato" target="_blank" rel="noopener noreferrer" title="LinkedIn profile">
+                    <img src='../linkedin.svg' alt="LinkedIn Logo">
+                </a>
+                
+                
+                <a href="https://news.ycombinator.com/user?id=tesserato" target="_blank" rel="noopener noreferrer" title="Hacker News profile">
+                    <img src='../hackernews.svg' alt="Hacker News Logo">
+                </a>
+                
+            </div>
+            <div class="sharebuttons">       
+                
+                    <img src='../share.svg' class="actionicons" alt="Share">
+                
+                
+                <a href=https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html&text=An+extended+test+post+to+explore+more+edge+cases+and+Markdown+features%2C+including+citations%2C+tables+%28long+and+short%29%2C+and+more.+This+post+aims+to+thoroughly+test+formatting+and+rendering+capabilities.+Lets+extend+this+description%2C+for+example%3A+Lorem+ipsum+dolor+sit+amet%2C+consectetur+adipiscing+elit%2C+sed+do+eiusmod+tempor+incididunt+ut+labore+et+dolore+magna+aliqua. target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Telegram">
+                    <img src='../telegram.svg' alt="Telegram Logo">
+                </a>
+                
+                
+                
+                <a href=https://bsky.app/intent/compose?text=An+extended+test+post+to+explore+more+edge+cases+and+Markdown+features%2C+including+citations%2C+tables+%28long+and+short%29%2C+and+more.+This+post+aims+to+thoroughly+test+formatting+and+rendering+capabilities.+Lets+extend+this+description%2C+for+example%3A+Lorem+ipsum+dolor+sit+amet%2C+consectetur+adipiscing+elit%2C+sed+do+eiusmod+tempor+incididunt+ut+labore+et+dolore+magna+aliqua.%0A%23testtag01+%23testtag02+%23testtag03+%23testtag04+%23testtag05+%23testtag06+%23testtag07+%23testtag08+%23testtag09+%23testtag10+%23edgecase+%23markdownfeature+%23citation+%23table%0Ahttps%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Bluesky">
+                    <img src='../bluesky.svg' alt="Bluesky Logo">
+                </a>
+                
+                
+                <a href=https://mastodon.social/?text=An+extended+test+post+to+explore+more+edge+cases+and+Markdown+features%2C+including+citations%2C+tables+%28long+and+short%29%2C+and+more.+This+post+aims+to+thoroughly+test+formatting+and+rendering+capabilities.+Lets+extend+this+description%2C+for+example%3A+Lorem+ipsum+dolor+sit+amet%2C+consectetur+adipiscing+elit%2C+sed+do+eiusmod+tempor+incididunt+ut+labore+et+dolore+magna+aliqua.%0A%23testtag01+%23testtag02+%23testtag03+%23testtag04+%23testtag05+%23testtag06+%23testtag07+%23testtag08+%23testtag09+%23testtag10+%23edgecase+%23markdownfeature+%23citation+%23table%0Ahttps%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Mastodon">
+                    <img src='../mastodon.svg' alt="Mastodon Logo">
+                </a>
+                
+                
+                <a href=https://www.threads.net/intent/post?text=An+extended+test+post+to+explore+more+edge+cases+and+Markdown+features%2C+including+citations%2C+tables+%28long+and+short%29%2C+and+more.+This+post+aims+to+thoroughly+test+formatting+and+rendering+capabilities.+Lets+extend+this+description%2C+for+example%3A+Lorem+ipsum+dolor+sit+amet%2C+consectetur+adipiscing+elit%2C+sed+do+eiusmod+tempor+incididunt+ut+labore+et+dolore+magna+aliqua.%0A%23testtag01+%23testtag02+%23testtag03+%23testtag04+%23testtag05+%23testtag06+%23testtag07+%23testtag08+%23testtag09+%23testtag10+%23edgecase+%23markdownfeature+%23citation+%23table%0Ahttps%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Threads">
+                    <img src='../threads.svg' alt="Threads Logo">
+                </a>
+                
+                
+                <a href=https://twitter.com/intent/tweet?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html&text=An+extended+test+post+to+explore+more+edge+cases+and+Markdown+features%2C+including+citations%2C+tables+%28long+and+short%29%2C+and+more.+This+post+aims+to+thoroughly+test+formatting+and+rendering+capabilities.+Lets+extend+this+description%2C+for+example%3A+Lorem+ipsum+dolor+sit+amet%2C+consectetur+adipiscing+elit%2C+sed+do+eiusmod+tempor+incididunt+ut+labore+et+dolore+magna+aliqua.&hashtags=testtag01,testtag02,testtag03,testtag04,testtag05,testtag06,testtag07,testtag08,testtag09,testtag10,edgecase,markdownfeature,citation,table target="_blank" rel="noopener noreferrer"
+                    title="Share this post on X">
+                    <img src='../x.svg' alt="X Logo">
+                </a>
+                
+                
+                <a href=https://www.reddit.com/submit?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html&title=Extended+Test+Post%3A+Edge+Cases+and+Markdown+Features target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Reddit">
+                    <img src='../reddit.svg' alt="Reddit Logo">
+                </a>
+                
+                
+                <a href=https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html target="_blank" rel="noopener noreferrer"
+                    title="Share this post on LinkedIn">
+                    <img src='../linkedin.svg' alt="LinkedIn Logo">
+                </a>
+                
+                
+                <a href=https://news.ycombinator.com/submitlink?u=https%3A%2F%2Ftesserato.github.io%2Fdsbg%2F07-test-post%2Findex.html&t=Extended+Test+Post%3A+Edge+Cases+and+Markdown+Features target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Hacker News">
+                    <img src='../hackernews.svg' alt="Hacker News Logo">
+                </a>
+                
+            </div>
+        </div>
+        <h1>Extended Test Post: Edge Cases and Markdown Features</h1>
+        <h2>An extended test post to explore more edge cases and Markdown features, including citations, tables (long and short), and more. This post aims to thoroughly test formatting and rendering capabilities. Lets extend this description, for example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h2>
+    </header>
+
+    <html><head></head><body><p>If you are seeing this post through the blog, you can find the source code for this post <a href="https://github.com/tesserato/dsbg/blob/main/sample_content/07%20test%20post.md">here</a>.</p>
+<h1 id="very-long-h1-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H1 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h1>
+<h2 id="very-long-h2-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H2 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h2>
+<h3 id="very-long-h3-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H3 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+<h4 id="very-long-h4-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H4 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h4>
+<h1 id="markdown-content-examples">Markdown Content Examples</h1>
+<p>Here’s a mix of common Markdown elements to show you how they look:</p>
+<h2 id="math">Math</h2>
+<p>Inline math ($ … $): <span class="math inline">\(E = mc^2\)</span></p>
+<p>Paragraph math (\$\$ … \$\$):</p>
+<p>$$ \hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi}dx $$</p>
+<h2 id="lists">Lists</h2>
+<ul>
+<li>Unordered list item</li>
+<li>Another unordered list item
+<ul>
+<li>Nested unordered list item</li>
+<li>Another nested unordered list item
+<ul>
+<li>Doubly nested unordered list item</li>
+<li>Another doubly nested unordered list item
+<ul>
+<li>Triply nested unordered list item</li>
+<li>Another triply nested unordered list item</li>
+<li>Yet another triply nested unordered list item
+<ul>
+<li>Quadruply nested unordered list item</li>
+<li>Another quadruply nested unordered list item</li>
+<li>Yet another quadruply nested unordered list item</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Yet another list item</li>
+<li>Another list item</li>
+</ul>
+<ol>
+<li>Ordered list item</li>
+<li>Another ordered list item
+<ol>
+<li>Nested ordered list item</li>
+<li>Another nested ordered list item
+<ol>
+<li>Doubly nested ordered list item</li>
+<li>Another doubly nested ordered list item
+<ol>
+<li>Triply nested ordered list item</li>
+<li>Another triply nested ordered list item</li>
+<li>Yet another triply nested ordered list item
+<ol>
+<li>Quadruply nested ordered list item</li>
+<li>Another quadruply nested ordered list item</li>
+<li>Yet another quadruply nested ordered list item</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Yet another ordered list item</li>
+<li>Another ordered list item</li>
+</ol>
+<h2 id="code">Code</h2>
+<p>You can include code blocks with syntax highlighting:</p>
+<h2 id="go-example">Go example:</h2>
+<pre><code class="language-go">package main
+
+import &#34;fmt&#34;
+
+func main() {
+    fmt.Println(&#34;Hello, DSBG!&#34;)
+}
+</code></pre>
+<h2 id="rust-example">Rust example:</h2>
+<pre><code class="language-rust">fn main() {
+    println!(&#34;Hello, DSBG!&#34;);
+}
+</code></pre>
+<h2 id="python-example">Python example:</h2>
+<pre><code class="language-python">def main():
+    print(&#34;Hello, DSBG!&#34;)
+
+if __name__ == &#34;__main__&#34;:
+    main()
+</code></pre>
+<h2 id="javascript-example">JavaScript example:</h2>
+<pre><code class="language-javascript">function main() {
+  console.log(&#34;Hello, DSBG!&#34;);
+}
+
+main();
+</code></pre>
+<h2 id="images">Images</h2>
+<p>Images are automatically copied to the output directory:</p>
+<p><img src="01_butterfly.webp" alt="A Butterfly"/></p>
+<h2 id="text-formatting">Text Formatting</h2>
+<p>Here’s some <strong>bold</strong> and <em>italic</em> text, and some <code>inline code</code>.</p>
+<h2 id="links-and-quotes">Links and Quotes</h2>
+<p>Check out this <a href="https://example.com">example link</a>.</p>
+<blockquote>
+<p>This is a block quote. Useful for citing resources.</p>
+</blockquote>
+<h1 id="more-markdown-features--edge-cases">More Markdown Features &amp; Edge Cases</h1>
+<p>Let’s push the boundaries with more features and edge cases.</p>
+<h2 id="horizontal-rules">Horizontal Rules</h2>
+<p>Here are different ways to create horizontal rules:</p>
+<p>---</p>
+<hr/>
+<p>***</p>
+<hr/>
+<p>___</p>
+<hr/>
+<h2 id="strikethrough">Strikethrough</h2>
+<p><del>This text is strikethrough.</del></p>
+<h2 id="task-lists">Task Lists</h2>
+<ul>
+<li><input checked="" disabled="" type="checkbox"/> Completed task</li>
+<li><input disabled="" type="checkbox"/> Incomplete task
+<ul>
+<li><input checked="" disabled="" type="checkbox"/> Nested completed task</li>
+<li><input disabled="" type="checkbox"/> Nested incomplete task</li>
+</ul>
+</li>
+</ul>
+<h2 id="emojis">Emojis</h2>
+<p>Let’s see if emojis render correctly: 🎉 👍 🚀 🤔</p>
+<h2 id="html">HTML</h2>
+<p>Basic HTML should be ignored or rendered as raw HTML depending on the Markdown processor. Let’s try a simple <code>&lt;br&gt;</code> and <code>&lt;span&gt;</code>.</p>
+<ul>
+<li><code>This is line 1.&lt;br&gt;This is line 2.</code></li>
+</ul>
+<p>This is line 1.<br/>This is line 2.</p>
+<ul>
+<li><code>This is &lt;span style=&#34;color:red;&#34;&gt;red text&lt;/span&gt;.</code></li>
+</ul>
+<p>This is <span style="color:red;">red text</span>.</p>
+<h2 id="escaping-characters">Escaping Characters</h2>
+<p>Characters that have special meaning in Markdown can be escaped with a backslash <code>\</code>.</p>
+<p>*asterisks*<br/>
+_underscores_<br/>
+#hash#<br/>
+\backslash\<br/>
+`backtick`<br/>
+&gt;greater than&gt;<br/>
+&lt;less than&lt;<br/>
+[brackets[<br/>
+]brackets]<br/>
+(parentheses(<br/>
+)parentheses)</p>
+<!-- ## Nested Blockquotes
+
+> This is an outer blockquote.
+>
+> > This is a nested blockquote.
+> >
+> > > And this is even more nested. -->
+<h2 id="tables">Tables</h2>
+<h3 id="short-table">Short Table</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Header 1</th>
+<th>Header 2</th>
+<th>Header 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell 1</td>
+<td>Cell 2</td>
+<td>Cell 3</td>
+</tr>
+<tr>
+<td>Cell 4</td>
+<td>Cell 5</td>
+<td>Cell 6</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="long-table">Long Table</h3>
+<p>This table is designed to be wide and tall to test scrolling and wrapping behaviors.</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Very Long Header Column 1</th>
+<th>Very Long Header Column 2</th>
+<th>Very Long Header Column 3</th>
+<th>Very Long Header Column 4</th>
+<th>Very Long Header Column 5</th>
+<th>Very Long Header Column 6</th>
+<th>Very Long Header Column 7</th>
+<th>Very Long Header Column 8</th>
+<th>Very Long Header Column 9</th>
+<th>Very Long Header Column 10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Very Long Content Cell 1</td>
+<td>Very Long Content Cell 2</td>
+<td>Very Long Content Cell 3</td>
+<td>Very Long Content Cell 4</td>
+<td>Very Long Content Cell 5</td>
+<td>Very Long Content Cell 6</td>
+<td>Very Long Content Cell 7</td>
+<td>Very Long Content Cell 8</td>
+<td>Very Long Content Cell 9</td>
+<td>Very Long Content Cell 10</td>
+</tr>
+<tr>
+<td>Another Long Cell 1</td>
+<td>Another Long Cell 2</td>
+<td>Another Long Cell 3</td>
+<td>Another Long Cell 4</td>
+<td>Another Long Cell 5</td>
+<td>Another Long Cell 6</td>
+<td>Another Long Cell 7</td>
+<td>Another Long Cell 8</td>
+<td>Another Long Cell 9</td>
+<td>Another Long Cell 10</td>
+</tr>
+<tr>
+<td>More Content Cell 1</td>
+<td>More Content Cell 2</td>
+<td>More Content Cell 3</td>
+<td>More Content Cell 4</td>
+<td>More Content Cell 5</td>
+<td>More Content Cell 6</td>
+<td>More Content Cell 7</td>
+<td>More Content Cell 8</td>
+<td>More Content Cell 9</td>
+<td>More Content Cell 10</td>
+</tr>
+<tr>
+<td>And Even More Content 1</td>
+<td>And Even More Content 2</td>
+<td>And Even More Content 3</td>
+<td>And Even More Content 4</td>
+<td>And Even More Content 5</td>
+<td>And Even More Content 6</td>
+<td>And Even More Content 7</td>
+<td>And Even More Content 8</td>
+<td>And Even More Content 9</td>
+<td>And Even More Content 10</td>
+</tr>
+<tr>
+<td>Last Row Long Cell 1</td>
+<td>Last Row Long Cell 2</td>
+<td>Last Row Long Cell 3</td>
+<td>Last Row Long Cell 4</td>
+<td>Last Row Long Cell 5</td>
+<td>Last Row Long Cell 6</td>
+<td>Last Row Long Cell 7</td>
+<td>Last Row Long Cell 8</td>
+<td>Last Row Long Cell 9</td>
+<td>Last Row Long Cell 10</td>
+</tr>
+<tr>
+<td>One More Row Cell 1</td>
+<td>One More Row Cell 2</td>
+<td>One More Row Cell 3</td>
+<td>One More Row Cell 4</td>
+<td>One More Row Cell 5</td>
+<td>One More Row Cell 6</td>
+<td>One More Row Cell 7</td>
+<td>One More Row Cell 8</td>
+<td>One More Row Cell 9</td>
+<td>One More Row Cell 10</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="table-with-mixed-content">Table with Mixed Content</h3>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bold</strong></td>
+<td>Text with strong emphasis</td>
+<td><code>**bold text**</code></td>
+</tr>
+<tr>
+<td><em>Italic</em></td>
+<td>Text with emphasis</td>
+<td><code>*italic text*</code></td>
+</tr>
+<tr>
+<td><code>Code</code></td>
+<td>Inline code</td>
+<td><code>`inline code`</code></td>
+</tr>
+<tr>
+<td><a href="url">Link</a></td>
+<td>Hyperlink</td>
+<td><code>[example link](https://example.com)</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="citations-and-footnotes">Citations and Footnotes</h2>
+<p>While Markdown doesn’t have explicit citation syntax, footnotes can be used to create citations or references.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<p>Here is some text that needs a citation.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>  And another sentence that also needs a citation.<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></p>
+<h2 id="very-long-words-and-strings">Very Long Words and Strings</h2>
+<p>Let’s test how very long words and strings are handled, especially for layout and wrapping.</p>
+<p>VeryLongWordWithoutSpacesToTestWordBreakingAndOverflow.</p>
+<p>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+<h2 id="combinations">Combinations</h2>
+<p>Let’s combine some features for fun:</p>
+<ol>
+<li>A list item with <strong>bold text</strong>, <em>italic text</em>, and <a href="https://example.com">a link</a>.</li>
+<li>
+<blockquote>
+<p>A blockquote containing <code>inline code</code> and a <a href="https://example.com">link</a> and <em>italic text</em>.</p>
+</blockquote>
+</li>
+<li>A table cell with <strong>bold text</strong>, <em>italic text</em>, <code>inline code</code>, and <a href="https://example.com">a link</a>.</li>
+</ol>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Combination Type</th>
+<th>Example Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>List Item</td>
+<td>1. A list item with <strong>bold text</strong>, <em>italic text</em>, and <a href="https://example.com">a link</a>.</td>
+</tr>
+<tr>
+<td>Table Cell</td>
+<td>A table cell with <strong>bold text</strong>, <em>italic text</em>, <code>inline code</code>, and <a href="https://example.com">a link</a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>This extended test post should cover a wider range of Markdown features and edge cases, providing a more thorough test of rendering and formatting.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>This is an example citation footnote. You can put your citation details here. For example, Author, <em>Title</em>, Publisher, Year. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">↩︎</a></p>
+</li>
+<li id="fn:2">
+<p>Another citation footnote, perhaps to a different source. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">↩︎</a></p>
+</li>
+<li id="fn:3">
+<p>And yet another footnote to demonstrate multiple citations. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">↩︎</a></p>
+</li>
+</ol>
+</div>
+</body></html>
+
+    <div class="giscus"></div>
+
+    <footer>
+        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+    </footer>
+</body>
+
+</html>
