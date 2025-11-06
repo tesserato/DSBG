@@ -49,11 +49,11 @@ start chrome http://localhost:666/index.html
     -title "Dead Simple Blog Generator" `
     -description "$description" `
     -watch `
-    -input-path "sample_content" `
+    -input-path "sample_content/content" `
     -output-path "docs" `
     -base-url "https://tesserato.github.io/dsbg/" `
-    -elements-top "analytics.html" `
-    -elements-bottom "giscus.html" `
+    -elements-top "sample_content/analytics.html" `
+    -elements-bottom "sample_content/giscus.html" `
     -theme "dark" `
     -x-handle "tesserato" `
     -bluesky-handle "tesserato" `
