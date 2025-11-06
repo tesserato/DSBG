@@ -749,13 +749,53 @@ func gen_share_url(article Article, settings Settings, service string) string {
 		return fmt.Sprintf("https://twitter.com/intent/tweet?url=%s&text=%s&hashtags=%s",
 			url.QueryEscape(articleURL), url.QueryEscape(article.Description), strings.Join(hashtags, ","))
 	case "bluesky":
-		text := fmt.Sprintf("%s\n%s\n%s", article.Description, strings.Join(blueskyHashTags, " "), articleURL)
+		// Start with the clean description and link.
+		text := fmt.Sprintf("%s\n\n%s", article.Description, articleURL)
+
+		// Bluesky fully supports multiple hashtags for discovery.
+		// We will create a clean list and append it at the end.
+		if len(article.Tags) > 0 {
+			var blueskyTags []string
+			for _, tag := range article.Tags {
+				// Bluesky hashtags should not contain spaces.
+				cleanTag := strings.ReplaceAll(tag, " ", "")
+				if cleanTag != "" {
+					blueskyTags = append(blueskyTags, "#"+cleanTag)
+				}
+			}
+			// Append the hashtags at the end, a common convention for readability.
+			if len(blueskyTags) > 0 {
+				text += "\n\n" + strings.Join(blueskyTags, " ")
+			}
+		}
+
 		return fmt.Sprintf("https://bsky.app/intent/compose?text=%s", url.QueryEscape(text))
 	case "threads":
-		text := fmt.Sprintf("%s\n%s\n%s", article.Description, strings.Join(blueskyHashTags, " "), articleURL)
+		// Threads does not use inline #tags. Create a clean post with the description and a link.
+		// Use two newlines for a clean paragraph break.
+		text := fmt.Sprintf("%s\n\n%s", article.Description, articleURL)
 		return fmt.Sprintf("https://www.threads.net/intent/post?text=%s", url.QueryEscape(text))
 	case "mastodon":
-		text := fmt.Sprintf("%s\n%s\n%s", article.Description, strings.Join(blueskyHashTags, " "), articleURL)
+		// Start with the clean description and link.
+		text := fmt.Sprintf("%s\n\n%s", article.Description, articleURL)
+
+		// Mastodon uses and encourages multiple hashtags for discovery.
+		// We will create a clean list and append it.
+		if len(article.Tags) > 0 {
+			var mastodonTags []string
+			for _, tag := range article.Tags {
+				// Mastodon hashtags should not contain spaces.
+				cleanTag := strings.ReplaceAll(tag, " ", "")
+				if cleanTag != "" {
+					mastodonTags = append(mastodonTags, "#"+cleanTag)
+				}
+			}
+			// Append the hashtags at the end, a common convention for readability.
+			if len(mastodonTags) > 0 {
+				text += "\n\n" + strings.Join(mastodonTags, " ")
+			}
+		}
+
 		return fmt.Sprintf("https://mastodon.social/?text=%s", url.QueryEscape(text))
 	case "telegram":
 		return fmt.Sprintf("https://t.me/share/url?url=%s&text=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Description))
