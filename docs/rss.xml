@@ -5,8 +5,8 @@
     xmlns:media="http://search.yahoo.com/mrss/">
 	<channel>
 		<title>Dead Simple Blog Generator</title>
-		<link>https://tesserato.github.io/dsbg</link>
-        <atom:link href="https://tesserato.github.io/dsbg/rss.xml" rel="self" type="application/rss+xml" />
+		<link>https://tesserato.github.io/DSBG</link>
+        <atom:link href="https://tesserato.github.io/DSBG/rss.xml" rel="self" type="application/rss+xml" />
 		<description>A Simple, Open-Source Tool to Create Your Static Blog and Broadcast Your Content.
 
 # TLDR:
@@ -24,34 +24,34 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Thu, 06 Nov 2025 19:22:23 +0000</lastBuildDate>
+		<lastBuildDate>Thu, 06 Nov 2025 20:02:55 +0000</lastBuildDate>
 		<item>
 			<title>giscus</title>
-			<link>https://tesserato.github.io/dsbg/giscus/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/giscus/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/giscus/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/giscus/index.html</guid>
 			<pubDate>Thu, 06 Nov 2025 19:19:38 +0000</pubDate>
 			<description></description>
 		</item>
 		<item>
 			<title>ideal_bar</title>
-			<link>https://tesserato.github.io/dsbg/strings/idealbar/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/strings/idealbar/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
 			<pubDate>Wed, 02 Apr 2025 11:15:18 +0100</pubDate>
 			<description></description>
             <category>strings</category>
 		</item>
 		<item>
 			<title>ideal_string</title>
-			<link>https://tesserato.github.io/dsbg/strings/idealstring/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/strings/idealstring/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/strings/idealstring/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/strings/idealstring/index.html</guid>
 			<pubDate>Tue, 01 Apr 2025 23:57:31 +0100</pubDate>
 			<description></description>
             <category>strings</category>
 		</item>
 		<item>
 			<title>HTML page with custom CSS example</title>
-			<link>https://tesserato.github.io/dsbg/htmlpageexample/customcss/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/htmlpageexample/customcss/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</guid>
 			<pubDate>Thu, 27 Feb 2025 17:20:51 +0000</pubDate>
 			<description>An example html page with custom CSS</description>
             <category>PAGE</category>
@@ -59,12 +59,12 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 		</item>
 		<item>
 			<title>HTML post with custom CSS example</title>
-			<link>https://tesserato.github.io/dsbg/02htmlpostexample/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/02htmlpostexample/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</guid>
 			<pubDate>Thu, 27 Feb 2025 17:20:51 +0000</pubDate>
 			<description>An example html page with custom CSS</description>
 			<media:content
-				url="https://tesserato.github.io/dsbg/02_cover_image.jpg"
+				url="https://tesserato.github.io/DSBG/02_cover_image.jpg"
 				medium="image"
 				type="image/jpeg"
 			/>
@@ -72,12 +72,12 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 		</item>
 		<item>
 			<title>Extended Test Post: Edge Cases and Markdown Features</title>
-			<link>https://tesserato.github.io/dsbg/07-test-post/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/07-test-post/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/07-test-post/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/07-test-post/index.html</guid>
 			<pubDate>Sun, 16 Feb 2025 00:00:00 +0000</pubDate>
 			<description>An extended test post to explore more edge cases and Markdown features, including citations, tables (long and short), and more. This post aims to thoroughly test formatting and rendering capabilities. Lets extend this description, for example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</description>
 			<media:content
-				url="https://tesserato.github.io/dsbg/potato.webp"
+				url="https://tesserato.github.io/DSBG/potato.webp"
 				medium="image"
 				type="image/jpeg"
 			/>
@@ -98,8 +98,8 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 		</item>
 		<item>
 			<title>Version 0.0.6 - Sorting</title>
-			<link>https://tesserato.github.io/dsbg/06v006/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/06v006/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/06v006/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/06v006/index.html</guid>
 			<pubDate>Mon, 10 Feb 2025 00:00:00 +0000</pubDate>
 			<description>Version 0.0.6 of DSBG is out with support for sorting</description>
             <category>release</category>
@@ -107,12 +107,12 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 		</item>
 		<item>
 			<title>Version 0.0.5 - Share Buttons</title>
-			<link>https://tesserato.github.io/dsbg/05v005/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/05v005/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/05v005/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/05v005/index.html</guid>
 			<pubDate>Sat, 08 Feb 2025 00:00:00 +0000</pubDate>
 			<description>Version 0.0.5 of DSBG is out with support for share buttons</description>
 			<media:content
-				url="https://tesserato.github.io/dsbg/05_share_buttons.png"
+				url="https://tesserato.github.io/DSBG/05_share_buttons.png"
 				medium="image"
 				type="image/jpeg"
 			/>
@@ -121,8 +121,8 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 		</item>
 		<item>
 			<title>Using Dates from Paths</title>
-			<link>https://tesserato.github.io/dsbg/0320250110pathdates/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/0320250110pathdates/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/0320250110pathdates/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/0320250110pathdates/index.html</guid>
 			<pubDate>Fri, 10 Jan 2025 00:00:00 +0000</pubDate>
 			<description>Demonstrating how DSBG gets dates from the path.</description>
             <category>dates from paths</category>
@@ -130,12 +130,12 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 		</item>
 		<item>
 			<title>Themes</title>
-			<link>https://tesserato.github.io/dsbg/04themes/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/04themes/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/04themes/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/04themes/index.html</guid>
 			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
 			<description>Screenshots of the available themes</description>
 			<media:content
-				url="https://tesserato.github.io/dsbg/04_themes.png"
+				url="https://tesserato.github.io/DSBG/04_themes.png"
 				medium="image"
 				type="image/jpeg"
 			/>
@@ -143,20 +143,20 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 		</item>
 		<item>
 			<title>Markdown page example</title>
-			<link>https://tesserato.github.io/dsbg/markdown-page-example/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/markdown-page-example/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/markdown-page-example/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/markdown-page-example/index.html</guid>
 			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
 			<description>This is a markdown page example</description>
             <category>PAGE</category>
 		</item>
 		<item>
 			<title>README - Getting Started with DSBG</title>
-			<link>https://tesserato.github.io/dsbg/01readme/index.html</link>
-			<guid>https://tesserato.github.io/dsbg/01readme/index.html</guid>
+			<link>https://tesserato.github.io/DSBG/01readme/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/01readme/index.html</guid>
 			<pubDate>Fri, 03 Jan 2025 00:00:00 +0000</pubDate>
 			<description>How to install and use Dead Simple Blog Generator.</description>
 			<media:content
-				url="https://tesserato.github.io/dsbg/01_dsbg_logo.webp"
+				url="https://tesserato.github.io/DSBG/01_dsbg_logo.webp"
 				medium="image"
 				type="image/jpeg"
 			/>

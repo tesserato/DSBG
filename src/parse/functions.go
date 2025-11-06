@@ -208,63 +208,6 @@ func CopyHtmlResources(settings Settings, article *Article) error {
 
 	originalDirectory := filepath.Dir(article.OriginalPath)
 
-	// Special handling for articles tagged as "PAGE". Copies the entire original directory.
-	if slices.Contains(article.Tags, "PAGE") && originalDirectory != settings.InputDirectory {
-		visit := func(originalPath string, di fs.DirEntry, err error) error {
-			if err != nil {
-				return err
-			}
-
-			if !di.Type().IsRegular() { // Skip non-regular files (e.g., directories, symlinks, devices)
-				switch di.Type() {
-				case fs.ModeSymlink:
-					fmt.Printf("Skipping symlink: %s\n", originalPath)
-				case fs.ModeDevice:
-					fmt.Printf("Skipping device: %s\n", originalPath)
-				case fs.ModeNamedPipe:
-					fmt.Printf("Skipping named pipe: %s\n", originalPath)
-				case fs.ModeSocket:
-					fmt.Printf("Skipping socket: %s\n", originalPath)
-				case fs.ModeDir:
-					return nil
-				default:
-					fmt.Printf("Skipping non-regular file: %s\n", originalPath)
-				}
-				return nil // Skip, but don't consider it an error
-			}
-
-			relativeOriginalPath, err := filepath.Rel(originalDirectory, originalPath)
-			if err != nil {
-				return fmt.Errorf("error getting relative path for '%s': %w", originalPath, err) // Wrap error for better context
-			}
-
-			destPath := filepath.Join(outputDirectory, relativeOriginalPath)
-			destFolder := filepath.Dir(destPath)
-			err = os.MkdirAll(filepath.FromSlash(destFolder), 0755)
-			if err != nil {
-				return fmt.Errorf("error creating directories for '%s': %w", destPath, err) // Wrap error
-			}
-
-			file, err := os.ReadFile(originalPath)
-			if err != nil {
-				return fmt.Errorf("error reading file '%s': %w", originalPath, err) // Wrap error
-			}
-
-			err = os.WriteFile(destPath, file, 0644)
-			if err != nil {
-				return fmt.Errorf("error writing file '%s': %w", destPath, err) // Wrap error
-			}
-
-			fmt.Printf("%s -> %s\n", originalPath, destPath)
-			return nil
-		}
-
-		err = filepath.WalkDir(originalDirectory, visit)
-		if err != nil {
-			return fmt.Errorf("error walking directory '%s': %w", originalDirectory, err)
-		}
-	}
-
 	// Copy the cover image if it exists.
 	if article.CoverImagePath != "" {
 		coverImageOrigPath := filepath.Join(originalDirectory, article.CoverImagePath)
