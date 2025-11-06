@@ -768,7 +768,7 @@ func gen_share_url(article Article, settings Settings, service string) string {
 		if article.Url != "" {
 			postURL = article.Url
 		}
-		return fmt.Sprintf("https://news.ycombinator.com/submitlink?u=%s&t=%s", url.QueryEscape(postURL), url.QueryEscape(article.Title))
+		return fmt.Sprintf("https://news.ycombinator.com/submitlink?u=%s&t=%s", url.QueryEscape(postURL), url.PathEscape(article.Title))
 	// case "facebook":
 	// 	return fmt.Sprintf("https://www.facebook.com/sharer/sharer.php?u=%s", url.QueryEscape(article.LinkToSelf))
 	default:
