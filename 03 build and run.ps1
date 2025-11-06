@@ -6,6 +6,8 @@ go mod tidy
 Remove-Item ./dsbg.exe -Force -ErrorAction SilentlyContinue
 go build .
 
+./dsbg.exe -h
+
 Remove-Item "../docs/*" -Recurse -Force
 
 Copy-Item "../README.md" "../sample_content/01_readme.md" -Force

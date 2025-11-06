@@ -760,7 +760,28 @@ func gen_share_url(article Article, settings Settings, service string) string {
 	case "telegram":
 		return fmt.Sprintf("https://t.me/share/url?url=%s&text=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Description))
 	case "reddit":
-		return fmt.Sprintf("https://www.reddit.com/submit?url=%s&title=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Title))
+		// This creates a LINK POST, which is the standard for sharing external articles.
+
+		// 1. Determine the final URL to be shared.
+		postURL := articleURL
+		if article.Url != "" {
+			postURL = article.Url
+		}
+
+		// 2. Start with the generic link submission URL as a fallback.
+		shareURL := fmt.Sprintf("https://www.reddit.com/submit?url=%s&title=%s",
+			url.QueryEscape(postURL),
+			url.PathEscape(article.Title))
+
+		// 3. If a Reddit handle is provided, use the precise, modern format for posting to a user's profile.
+		if settings.RedditHandle != "" {
+			shareURL = fmt.Sprintf("https://www.reddit.com/user/%s/submit?url=%s&title=%s&type=LINK",
+				settings.RedditHandle,
+				url.QueryEscape(postURL),
+				url.PathEscape(article.Title))
+		}
+
+		return shareURL
 	case "linkedin":
 		return fmt.Sprintf("https://www.linkedin.com/sharing/share-offsite/?url=%s", url.QueryEscape(articleURL))
 	case "hackernews":
