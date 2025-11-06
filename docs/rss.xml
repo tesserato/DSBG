@@ -11,25 +11,25 @@
 
 # TLDR:
 
-`go install github.com/tesserato/dsbg@latest` or download a [pre-built binary](https://github.com/tesserato/dsbg/releases)
+`go install github.com/tesserato/DSBG@latest` or download a [pre-built binary](https://github.com/tesserato/DSBG/releases)
 
 `dsbg -h` for usage instructions
 
-Check the Readme [here](https://tesserato.github.io/dsbg/01readme/index.html) or at the Github [repo](https://github.com/tesserato/dsbg) for more details
+Check the Readme [here](https://tesserato.github.io/dsbg/01readme/index.html) or at the Github [repo](https://github.com/tesserato/DSBG) for more details
 
-This is a sample blog created with DSBG from the source at [github.com/tesserato/dsbg](https://github.com/tesserato/dsbg/tree/main/sample_content)
+This is a sample blog created with DSBG from the source at [github.com/tesserato/DSBG](https://github.com/tesserato/DSBG/tree/main/sample_content)
 
-[![Release Status](https://img.shields.io/github/release/tesserato/dsbg)](https://github.com/tesserato/dsbg/releases)
+[![Release Status](https://img.shields.io/github/release/tesserato/DSBG)](https://github.com/tesserato/DSBG/releases)
 
-[![License](https://img.shields.io/github/license/tesserato/dsbg)](https://github.com/tesserato/dsbg/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Thu, 06 Nov 2025 19:17:05 +0000</lastBuildDate>
+		<lastBuildDate>Thu, 06 Nov 2025 19:22:23 +0000</lastBuildDate>
 		<item>
 			<title>giscus</title>
 			<link>https://tesserato.github.io/dsbg/giscus/index.html</link>
 			<guid>https://tesserato.github.io/dsbg/giscus/index.html</guid>
-			<pubDate>Thu, 06 Nov 2025 14:55:31 +0000</pubDate>
+			<pubDate>Thu, 06 Nov 2025 19:19:38 +0000</pubDate>
 			<description></description>
 		</item>
 		<item>

@@ -1,4 +1,4 @@
-module github.com/tesserato/dsbg
+module github.com/tesserato/DSBG
 
 go 1.24.0
 

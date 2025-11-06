@@ -6,7 +6,7 @@ coverImagePath: potato.webp
 tags: [test tag 01, test tag 02, test tag 03, test tag 04, test tag 05, test tag 06, test tag 07, test tag 08, test tag 09, test tag 10, edge case, markdown feature, citation, table]
 ---
 
-If you are seeing this post through the blog, you can find the source code for this post [here](https://github.com/tesserato/dsbg/blob/main/sample_content/07%20test%20post.md).
+If you are seeing this post through the blog, you can find the source code for this post [here](https://github.com/tesserato/DSBG/blob/main/sample_content/07%20test%20post.md).
 
 # Very long H1 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 

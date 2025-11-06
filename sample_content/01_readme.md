@@ -9,7 +9,7 @@ DSBG (Dead Simple Blog Generator) is a free and open-source command-line tool th
 
 The ethos behind it is to automate your virtual presence as much as possible, while retaining control over the created content. To that end, the following features are available:
 
-- Easy installation: Download a [pre-built binary](https://github.com/tesserato/dsbg/releases) or use `go install github.com/tesserato/dsbg@latest`,
+- Easy installation: Download a [pre-built binary](https://github.com/tesserato/DSBG/releases) or use `go install github.com/tesserato/DSBG@latest`,
 - Support for Markdown & HTML source files as inputs,
 - Automatic tag generation from paths and built-in tag filtering,
 - Client-side fuzzy search over all content,
@@ -40,12 +40,12 @@ The ethos behind it is to automate your virtual presence as much as possible, wh
 To get started with DSBG, you'll first need to install it on your system. If you have Go installed, you can use the following command in your terminal:
 
 ```bash
-go install github.com/tesserato/dsbg@latest
+go install github.com/tesserato/DSBG@latest
 ```
 
 This command will download and install the latest version of DSBG.
 
-Alternatively, you can download a pre-built binary for your operating system from the [releases page](https://github.com/tesserato/dsbg/releases) and add it to your system's `PATH` environment variable or place it in the same directory where your source files are located.
+Alternatively, you can download a pre-built binary for your operating system from the [releases page](https://github.com/tesserato/DSBG/releases) and add it to your system's `PATH` environment variable or place it in the same directory where your source files are located.
 
 After installation, verify that DSBG is working correctly by running the help command:
 
@@ -180,9 +180,9 @@ The following flags are available when using the `dsbg` command-line tool:
 
 # Contributing
 
-Contributions are welcome! If you find a bug, have a feature request, or would like to improve the documentation, feel free to submit a pull request or create an issue on [GitHub](https://github.com/tesserato/dsbg).
+Contributions are welcome! If you find a bug, have a feature request, or would like to improve the documentation, feel free to submit a pull request or create an issue on [GitHub](https://github.com/tesserato/DSBG).
 
-If you use DSBG in your own project, please consider giving it a star on [GitHub](https://github.com/tesserato/dsbg) and sharing it with your friends. Also, send me the link to your project so I can add it to the list of projects that use DSBG.
+If you use DSBG in your own project, please consider giving it a star on [GitHub](https://github.com/tesserato/DSBG) and sharing it with your friends. Also, send me the link to your project so I can add it to the list of projects that use DSBG.
 
 If you come up with a nice theme for DSBG, please contact me so I can add it to the list of themes.
 
@@ -194,6 +194,6 @@ My personal blog, and the motivation for DSBG. If you want to know more about wh
 
 # Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=tesserato/dsbg&type=Date)](https://star-history.com/#tesserato/dsbg&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=tesserato/DSBG&type=Date)](https://star-history.com/#tesserato/DSBG&Date)
 
 <a href="https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-dead&#0045;simple&#0045;blog&#0045;generator" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=912370&theme=light&t=1740653394729" alt="Dead&#0032;Simple&#0032;Blog&#0032;Generator - Static&#0032;Site&#0032;Generator&#0032;That&#0032;Fast&#0045;Tracks&#0032;Your&#0032;Digital&#0032;Presence | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>

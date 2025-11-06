@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/tesserato/dsbg/parse"
+	"github.com/tesserato/DSBG/parse"
 )
 
 //go:embed assets
@@ -113,7 +113,7 @@ func main() {
 	// Custom Usage function to display help for both default and template modes.
 	defaultFlagSet.Usage = func() {
 		fmt.Fprintf(os.Stderr, "DSBG (Dead Simple Blog Generator) - Generate static blogs from Markdown and HTML.\n")
-		fmt.Fprintf(os.Stderr, "For complete documentation, visit: https://github.com/tesserato/dsbg\n\n")
+		fmt.Fprintf(os.Stderr, "For complete documentation, visit: https://github.com/tesserato/DSBG\n\n")
 		fmt.Fprintf(os.Stderr, "Usage: dsbg [flags] or dsbg -template [flags]\n\n") // Added usage instructions
 
 		fmt.Fprintf(os.Stderr, "Default mode flags (dsbg [flags]):\n")
