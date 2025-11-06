@@ -36,7 +36,7 @@
             <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}> ◁ {{.Settings.Title}}
             </a>
             <div class="sharebuttons">
-                {{if or .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle .Settings.TelegramHandle .Settings.RedditHandle .Settings.LinkedinHandle .Settings.HackernewsHandle}}
+                {{if or .Settings.FacebookHandle .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle .Settings.TelegramHandle .Settings.RedditHandle .Settings.LinkedinHandle .Settings.HackernewsHandle}}
                     <img src='{{genRelativeLink .Art.LinkToSelf "follow.svg"}}' class="actionicons" alt="Follow">
                 {{end}}            
                 {{if .Settings.TelegramHandle}}
@@ -81,6 +81,11 @@
                 {{if .Settings.HackernewsHandle}}
                 <a href="https://news.ycombinator.com/user?id={{.Settings.HackernewsHandle}}" target="_blank" rel="noopener noreferrer" title="Hacker News profile">
                     <img src='{{genRelativeLink .Art.LinkToSelf "hackernews.svg"}}' alt="Hacker News Logo">
+                </a>
+                {{end}}
+                {{if .Settings.FacebookHandle}}
+                <a href="https://www.facebook.com/{{.Settings.FacebookHandle}}" target="_blank" rel="noopener noreferrer" title="Facebook profile">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "facebook.svg"}}' alt="Facebook Logo">
                 </a>
                 {{end}}
             </div>
@@ -135,6 +140,11 @@
                 <a href={{gen_share_url .Art .Settings "hackernews" }} target="_blank" rel="noopener noreferrer"
                     title="Share this post on Hacker News">
                     <img src='{{genRelativeLink .Art.LinkToSelf "hackernews.svg"}}' alt="Hacker News Logo">
+                </a>
+                {{end}}
+                {{if .Settings.FacebookHandle}}
+                <a href={{gen_share_url .Art .Settings "facebook" }} target="_blank" rel="noopener noreferrer" title="Share this post on Facebook">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "facebook.svg"}}' alt="Facebook Logo">
                 </a>
                 {{end}}
             </div>

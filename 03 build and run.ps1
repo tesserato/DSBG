@@ -58,6 +58,7 @@ Start-Process chrome http://localhost:666/index.html
     -linkedin-handle "tesserato" `
     -reddit-handle "tarjano" `
     -hackernews-handle "tesserato" `
+    -facebook-handle "tesserato" `
     -sort "reverse-date-created"
     
     

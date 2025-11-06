@@ -92,6 +92,7 @@ func main() {
 	defaultFlagSet.StringVar(&settings.RedditHandle, "reddit-handle", "", "Reddit username for share buttons and profile link.")
 	defaultFlagSet.StringVar(&settings.LinkedinHandle, "linkedin-handle", "", "LinkedIn username for share buttons and profile link.")
 	defaultFlagSet.StringVar(&settings.HackernewsHandle, "hackernews-handle", "", "Hacker News username for share buttons and profile link.")
+	defaultFlagSet.StringVar(&settings.FacebookHandle, "facebook-handle", "", "Facebook username or page ID to enable the share button.")
 	defaultFlagSet.StringVar(&settings.Sort, "sort", "date-created", "Sort order for articles on the index page. Possible values: date-created, reverse-date-created, date-updated, reverse-date-updated, title, reverse-title, path, reverse-path.")
 	themeString := defaultFlagSet.String("theme", "default", "Predefined website style theme. Possible values: default, dark, clean, colorful.")
 	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "Path to HTML file to include at the top of each page's <head> (e.g., analytics).")
@@ -548,6 +549,7 @@ func buildWebsite(settings parse.Settings) {
 	saveAsset("reddit.svg", "reddit.svg", settings.OutputDirectory)
 	saveAsset("linkedin.svg", "linkedin.svg", settings.OutputDirectory)
 	saveAsset("hackernews.svg", "hackernews.svg", settings.OutputDirectory)
+	saveAsset("facebook.svg", "facebook.svg", settings.OutputDirectory)
 
 	log.Println("Website generated successfully in:", settings.OutputDirectory) // Success log message
 }

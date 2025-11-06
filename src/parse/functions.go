@@ -746,8 +746,29 @@ func gen_share_url(article Article, settings Settings, service string) string {
 	articleURL := fmt.Sprintf("%s/%s", settings.BaseUrl, article.LinkToSelf)
 	switch service {
 	case "x":
+		// Base text is the article description.
+		tweetText := article.Description
+
+		// 1. Add attribution if an X handle is provided.
+		if settings.XHandle != "" {
+			tweetText += " via @" + settings.XHandle
+		}
+
+		// 2. Handle Twitter's character limit.
+		// A URL is ~23 chars. Hashtags take space. We'll leave a generous buffer.
+		// Let's cap the main text at a safe 220 characters.
+		const maxLength = 220
+		if len(tweetText) > maxLength {
+			// Truncate the text and add an ellipsis.
+			tweetText = tweetText[:maxLength-1] + "…"
+		}
+
+		// The 'hashtags' parameter is the best way to add tags.
+		// The text in the 'text' parameter will appear before the URL and hashtags.
 		return fmt.Sprintf("https://twitter.com/intent/tweet?url=%s&text=%s&hashtags=%s",
-			url.QueryEscape(articleURL), url.QueryEscape(article.Description), strings.Join(hashtags, ","))
+			url.QueryEscape(articleURL),
+			url.QueryEscape(tweetText),
+			url.QueryEscape(strings.Join(hashtags, ","))) // Note: QueryEscape on hashtags is safer
 	case "bluesky":
 		// Start with the clean description and link.
 		text := fmt.Sprintf("%s\n\n%s", article.Description, articleURL)
@@ -830,8 +851,8 @@ func gen_share_url(article Article, settings Settings, service string) string {
 			postURL = article.Url
 		}
 		return fmt.Sprintf("https://news.ycombinator.com/submitlink?u=%s&t=%s", url.QueryEscape(postURL), url.PathEscape(article.Title))
-	// case "facebook":
-	// 	return fmt.Sprintf("https://www.facebook.com/sharer/sharer.php?u=%s", url.QueryEscape(article.LinkToSelf))
+	case "facebook": 
+		return fmt.Sprintf("https://www.facebook.com/sharer/sharer.php?u=%s", url.QueryEscape(articleURL))
 	default:
 		return ""
 	}

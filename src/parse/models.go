@@ -41,6 +41,7 @@ type Settings struct {
 	RedditHandle              string
 	LinkedinHandle            string
 	HackernewsHandle          string
+	FacebookHandle            string
 	Sort                      string
 	HighlightTheme            string
 }
