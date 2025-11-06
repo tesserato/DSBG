@@ -24,19 +24,12 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Thu, 06 Nov 2025 20:10:40 +0000</lastBuildDate>
-		<item>
-			<title>giscus</title>
-			<link>https://tesserato.github.io/DSBG/giscus/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/giscus/index.html</guid>
-			<pubDate>Thu, 06 Nov 2025 19:19:38 +0000</pubDate>
-			<description></description>
-		</item>
+		<lastBuildDate>Thu, 06 Nov 2025 20:47:46 +0000</lastBuildDate>
 		<item>
 			<title>ideal_bar</title>
 			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
 			<guid>https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
-			<pubDate>Wed, 02 Apr 2025 11:15:18 +0100</pubDate>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
 			<description></description>
             <category>strings</category>
 		</item>
@@ -44,15 +37,22 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 			<title>ideal_string</title>
 			<link>https://tesserato.github.io/DSBG/strings/idealstring/index.html</link>
 			<guid>https://tesserato.github.io/DSBG/strings/idealstring/index.html</guid>
-			<pubDate>Tue, 01 Apr 2025 23:57:31 +0100</pubDate>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
 			<description></description>
             <category>strings</category>
+		</item>
+		<item>
+			<title>giscus</title>
+			<link>https://tesserato.github.io/DSBG/giscus/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/giscus/index.html</guid>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
+			<description></description>
 		</item>
 		<item>
 			<title>HTML page with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</link>
 			<guid>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</guid>
-			<pubDate>Thu, 27 Feb 2025 17:20:51 +0000</pubDate>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
 			<description>An example html page with custom CSS</description>
             <category>PAGE</category>
             <category>html_page_example</category>
@@ -61,7 +61,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 			<title>HTML post with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</link>
 			<guid>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</guid>
-			<pubDate>Thu, 27 Feb 2025 17:20:51 +0000</pubDate>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
 			<description>An example html page with custom CSS</description>
 			<media:content
 				url="https://tesserato.github.io/DSBG/02_cover_image.jpg"

@@ -8,6 +8,17 @@
     <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
     <meta name="keywords" content="{{ stringsJoin .Art.Tags " , "}}">
     <meta name="description" content="{{ .Art.Description }}">
+
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="{{ .Art.Title }}" />
+    <meta property="og:description" content="{{ .Art.Description }}" />
+    <meta property="og:url" content="{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}" />
+    <meta property="og:site_name" content="{{ .Settings.Title }}" />
+    <meta property="og:type" content="article" />
+    {{if .Art.CoverImagePath}}
+    <meta property="og:image" content="{{ .Settings.BaseUrl }}/{{ .Art.CoverImagePath }}" />
+    {{end}}
+
     <link rel="canonical" href="{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}">
     <link rel="stylesheet" href="{{ genRelativeLink .Art.LinkToSelf "style.css"}}">
     <link rel="icon" type="image/x-icon" href="{{genRelativeLink .Art.LinkToSelf "favicon.ico"}}">
