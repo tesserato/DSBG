@@ -796,26 +796,30 @@ func gen_share_url(article Article, settings Settings, service string) string {
 	for _, tag := range hashtags {
 		blueskyHashTags = append(blueskyHashTags, fmt.Sprintf("#%s", tag))
 	}
+	articleURL := fmt.Sprintf("%s/%s", settings.BaseUrl, article.LinkToSelf)
 	switch service {
 	case "x":
-		return fmt.Sprintf("https://twitter.com/intent/tweet?url=%s/%s&text=%s&hashtags=%s",
-			settings.BaseUrl, article.LinkToSelf, url.QueryEscape(article.Description), strings.Join(hashtags, ","))
+		return fmt.Sprintf("https://twitter.com/intent/tweet?url=%s&text=%s&hashtags=%s",
+			url.QueryEscape(articleURL), url.QueryEscape(article.Description), strings.Join(hashtags, ","))
 	case "bluesky":
-		text := fmt.Sprintf("%s\n%s\n%s/%s", article.Description, strings.Join(blueskyHashTags, " "), settings.BaseUrl, article.LinkToSelf)
+		text := fmt.Sprintf("%s\n%s\n%s", article.Description, strings.Join(blueskyHashTags, " "), articleURL)
 		return fmt.Sprintf("https://bsky.app/intent/compose?text=%s", url.QueryEscape(text))
 	case "threads":
-		text := fmt.Sprintf("%s\n%s\n%s/%s", article.Description, strings.Join(blueskyHashTags, " "), settings.BaseUrl, article.LinkToSelf)
+		text := fmt.Sprintf("%s\n%s\n%s", article.Description, strings.Join(blueskyHashTags, " "), articleURL)
 		return fmt.Sprintf("https://www.threads.net/intent/post?text=%s", url.QueryEscape(text))
 	case "mastodon":
-		text := fmt.Sprintf("%s\n%s\n%s/%s", article.Description, strings.Join(blueskyHashTags, " "), settings.BaseUrl, article.LinkToSelf)
+		text := fmt.Sprintf("%s\n%s\n%s", article.Description, strings.Join(blueskyHashTags, " "), articleURL)
 		return fmt.Sprintf("https://mastodon.social/?text=%s", url.QueryEscape(text))
 	case "telegram":
-		return fmt.Sprintf("https://t.me/share/url?url=%s/%s&text=%s", settings.BaseUrl, article.LinkToSelf, url.QueryEscape(article.Description))
-
+		return fmt.Sprintf("https://t.me/share/url?url=%s&text=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Description))
+	case "reddit":
+		return fmt.Sprintf("https://www.reddit.com/submit?url=%s&title=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Title))
+	case "linkedin":
+		return fmt.Sprintf("https://www.linkedin.com/sharing/share-offsite/?url=%s", url.QueryEscape(articleURL))
+	case "hackernews":
+		return fmt.Sprintf("https://news.ycombinator.com/submitlink?u=%s&t=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Title))
 	// case "facebook":
 	// 	return fmt.Sprintf("https://www.facebook.com/sharer/sharer.php?u=%s", url.QueryEscape(article.LinkToSelf))
-	// case "linkedin":
-	// 	return fmt.Sprintf("https://www.linkedin.com/shareArticle?url=%s", url.QueryEscape(article.LinkToSelf))
 	default:
 		return ""
 	}

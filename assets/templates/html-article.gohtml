@@ -1,3 +1,6 @@
+### `assets/templates/html-article.gohtml`
+
+```gohtml
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +28,7 @@
             <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}> ◁ {{.Settings.Title}}
             </a>
             <div class="sharebuttons">
-                {{if or .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle .Settings.TelegramHandle}}
+                {{if or .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle .Settings.TelegramHandle .Settings.RedditHandle .Settings.LinkedinHandle .Settings.HackernewsHandle}}
                     <img src='{{genRelativeLink .Art.LinkToSelf "follow.svg"}}' class="actionicons" alt="Follow">
                 {{end}}            
                 {{if .Settings.TelegramHandle}}
@@ -57,9 +60,24 @@
                     <img src='{{genRelativeLink .Art.LinkToSelf "x.svg"}}' alt="X Logo">
                 </a>
                 {{end}}
+                {{if .Settings.RedditHandle}}
+                <a href="https://www.reddit.com/user/{{.Settings.RedditHandle}}" target="_blank" rel="noopener noreferrer" title="Reddit profile">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "reddit.svg"}}' alt="Reddit Logo">
+                </a>
+                {{end}}
+                {{if .Settings.LinkedinHandle}}
+                <a href="https://www.linkedin.com/in/{{.Settings.LinkedinHandle}}" target="_blank" rel="noopener noreferrer" title="LinkedIn profile">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "linkedin.svg"}}' alt="LinkedIn Logo">
+                </a>
+                {{end}}
+                {{if .Settings.HackernewsHandle}}
+                <a href="https://news.ycombinator.com/user?id={{.Settings.HackernewsHandle}}" target="_blank" rel="noopener noreferrer" title="Hacker News profile">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "hackernews.svg"}}' alt="Hacker News Logo">
+                </a>
+                {{end}}
             </div>
             <div class="sharebuttons">       
-                {{if or .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle  .Settings.TelegramHandle}}
+                {{if or .Settings.BlueSkyHandle .Settings.MastodonHandle .Settings.ThreadsHandle .Settings.XHandle  .Settings.TelegramHandle .Settings.RedditHandle .Settings.LinkedinHandle .Settings.HackernewsHandle}}
                     <img src='{{genRelativeLink .Art.LinkToSelf "share.svg"}}' class="actionicons" alt="Share">
                 {{end}}
                 {{if .Settings.TelegramHandle}}
@@ -91,6 +109,24 @@
                 <a href={{gen_share_url .Art .Settings "x" }} target="_blank" rel="noopener noreferrer"
                     title="Share this post on X">
                     <img src='{{genRelativeLink .Art.LinkToSelf "x.svg"}}' alt="X Logo">
+                </a>
+                {{end}}
+                {{if .Settings.RedditHandle}}
+                <a href={{gen_share_url .Art .Settings "reddit" }} target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Reddit">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "reddit.svg"}}' alt="Reddit Logo">
+                </a>
+                {{end}}
+                {{if .Settings.LinkedinHandle}}
+                <a href={{gen_share_url .Art .Settings "linkedin" }} target="_blank" rel="noopener noreferrer"
+                    title="Share this post on LinkedIn">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "linkedin.svg"}}' alt="LinkedIn Logo">
+                </a>
+                {{end}}
+                {{if .Settings.HackernewsHandle}}
+                <a href={{gen_share_url .Art .Settings "hackernews" }} target="_blank" rel="noopener noreferrer"
+                    title="Share this post on Hacker News">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "hackernews.svg"}}' alt="Hacker News Logo">
                 </a>
                 {{end}}
             </div>

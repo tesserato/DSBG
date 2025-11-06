@@ -55,6 +55,21 @@
                     <img src="x.svg" alt="X Logo">
                 </a>
                 {{end}}
+                {{if .Settings.RedditHandle}}
+                <a href="https://www.reddit.com/user/{{.Settings.RedditHandle}}" target="_blank" rel="noopener noreferrer" title="Reddit profile">
+                    <img src="reddit.svg" alt="Reddit Logo">
+                </a>
+                {{end}}
+                {{if .Settings.LinkedinHandle}}
+                <a href="https://www.linkedin.com/in/{{.Settings.LinkedinHandle}}" target="_blank" rel="noopener noreferrer" title="LinkedIn profile">
+                    <img src="linkedin.svg" alt="LinkedIn Logo">
+                </a>
+                {{end}}
+                {{if .Settings.HackernewsHandle}}
+                <a href="https://news.ycombinator.com/user?id={{.Settings.HackernewsHandle}}" target="_blank" rel="noopener noreferrer" title="Hacker News profile">
+                    <img src="hackernews.svg" alt="Hacker News Logo">
+                </a>
+                {{end}}
             </div>
         </div>
         <input type="text" id="search-input" placeholder="Search... (supports Unix-like search commands)">
@@ -119,6 +134,24 @@
             <a href={{gen_share_url . $Settings "x" }} target="_blank" rel="noopener noreferrer" class="share"
                 title="Share this post on X">
                 <img src="x.svg" alt="X Logo">
+            </a>
+            {{end}}
+            {{if $Settings.RedditHandle}}
+            <a href={{gen_share_url . $Settings "reddit" }} target="_blank" rel="noopener noreferrer" class="share"
+                title="Share this post on Reddit">
+                <img src="reddit.svg" alt="Reddit Logo">
+            </a>
+            {{end}}
+            {{if $Settings.LinkedinHandle}}
+            <a href={{gen_share_url . $Settings "linkedin" }} target="_blank" rel="noopener noreferrer" class="share"
+                title="Share this post on LinkedIn">
+                <img src="linkedin.svg" alt="LinkedIn Logo">
+            </a>
+            {{end}}
+            {{if $Settings.HackernewsHandle}}
+            <a href={{gen_share_url . $Settings "hackernews" }} target="_blank" rel="noopener noreferrer" class="share"
+                title="Share this post on Hacker News">
+                <img src="hackernews.svg" alt="Hacker News Logo">
             </a>
             {{end}}
         </div>

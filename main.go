@@ -89,6 +89,9 @@ func main() {
 	defaultFlagSet.StringVar(&settings.BlueSkyHandle, "bluesky-handle", "", "Bluesky handle for share buttons and profile link.")
 	defaultFlagSet.StringVar(&settings.ThreadsHandle, "threads-handle", "", "Threads handle for share buttons and profile link.")
 	defaultFlagSet.StringVar(&settings.MastodonHandle, "mastodon-handle", "", "Mastodon handle for share buttons and profile link.")
+	defaultFlagSet.StringVar(&settings.RedditHandle, "reddit-handle", "", "Reddit username for share buttons and profile link.")
+	defaultFlagSet.StringVar(&settings.LinkedinHandle, "linkedin-handle", "", "LinkedIn username for share buttons and profile link.")
+	defaultFlagSet.StringVar(&settings.HackernewsHandle, "hackernews-handle", "", "Hacker News username for share buttons and profile link.")
 	defaultFlagSet.StringVar(&settings.Sort, "sort", "date-created", "Sort order for articles on the index page. Possible values: date-created, reverse-date-created, date-updated, reverse-date-updated, title, reverse-title, path, reverse-path.")
 	themeString := defaultFlagSet.String("theme", "default", "Predefined website style theme. Possible values: default, dark, clean, colorful.")
 	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "Path to HTML file to include at the top of each page's <head> (e.g., analytics).")
@@ -406,7 +409,6 @@ func applyCSSTemplate(themeData parse.Theme, outputDirectory string) error {
 	return nil
 }
 
-
 // buildWebsite is the main function for generating the static website.
 // It orchestrates the entire build process: clearing output directory, parsing content files,
 // generating index and RSS feeds, handling CSS and JavaScript, copying assets, and logging completion.
@@ -543,6 +545,9 @@ func buildWebsite(settings parse.Settings) {
 	saveAsset("x.svg", "x.svg", settings.OutputDirectory)
 	saveAsset("share.svg", "share.svg", settings.OutputDirectory)
 	saveAsset("follow.svg", "follow.svg", settings.OutputDirectory)
+	saveAsset("reddit.svg", "reddit.svg", settings.OutputDirectory)
+	saveAsset("linkedin.svg", "linkedin.svg", settings.OutputDirectory)
+	saveAsset("hackernews.svg", "hackernews.svg", settings.OutputDirectory)
 
 	log.Println("Website generated successfully in:", settings.OutputDirectory) // Success log message
 }

@@ -38,6 +38,9 @@ type Settings struct {
 	ThreadsHandle             string
 	MastodonHandle            string
 	TelegramHandle            string
+	RedditHandle              string
+	LinkedinHandle            string
+	HackernewsHandle          string
 	Sort                      string
 	HighlightTheme            string
 }

@@ -60,6 +60,9 @@ start chrome http://localhost:666/index.html
     -threads-handle "tesserato" `
     -mastodon-handle "tesserato" `
     -telegram-handle "tesserato" `
+    -linkedin-handle "tesserato" `
+    -reddit-handle "tarjano" `
+    --hackernews-handle "tesserato" `
     -sort "reverse-date-created"
     
     
