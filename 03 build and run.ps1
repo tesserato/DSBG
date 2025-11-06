@@ -22,7 +22,7 @@ A Simple, Open-Source Tool to Create Your Static Blog and Broadcast Your Content
 
 `dsbg -h` for usage instructions
 
-Check the Readme [here](https://tesserato.github.io/dsbg/01readme/index.html) or at the Github [repo](https://github.com/tesserato/DSBG) for more details
+Check the Readme [here](https://tesserato.github.io/DSBG/01readme/index.html) or at the Github [repo](https://github.com/tesserato/DSBG) for more details
 
 This is a sample blog created with DSBG from the source at [github.com/tesserato/DSBG](https://github.com/tesserato/DSBG/tree/main/sample_content)
 
