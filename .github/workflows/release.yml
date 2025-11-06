@@ -31,7 +31,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           # Tell GoReleaser to run inside the /src folder
-          working-directory: src
+          workdir: src
           # either 'goreleaser' (default) or 'goreleaser-pro'
           distribution: goreleaser
           # 'latest', 'nightly', or a semver
