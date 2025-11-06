@@ -2,6 +2,8 @@ Set-Location src
 go get -u
 go get -u ./...
 go mod tidy
+
+Remove-Item ./dsbg.exe -Force -ErrorAction SilentlyContinue
 go build .
 
 Remove-Item "../docs/*" -Recurse -Force
@@ -37,7 +39,7 @@ Start-Process chrome http://localhost:666/index.html
 
 
 
-dsbg.exe -title "Dead Simple Blog Generator" `
+./dsbg.exe -title "Dead Simple Blog Generator" `
     -description "$description" `
     -watch `
     -input-path "../sample_content" `
