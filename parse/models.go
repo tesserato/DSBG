@@ -68,6 +68,7 @@ type Article struct {
 	OriginalPath   string
 	LinkToSelf     string
 	LinkToSave     string
+	Url            string
 }
 
 type Theme struct {

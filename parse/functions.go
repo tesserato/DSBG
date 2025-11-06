@@ -532,6 +532,8 @@ func MarkdownFile(path string) (Article, error) {
 				}
 			case "coverimagepath":
 				article.CoverImagePath = value.(string)
+			case "url":
+				article.Url = value.(string)
 			case "tags":
 				switch reflect.TypeOf(value).Kind() {
 
@@ -709,6 +711,8 @@ func HTMLFile(path string) (Article, error) {
 				}
 			case "coverimagepath":
 				article.CoverImagePath = val
+			case "url":
+				article.Url = val
 			}
 		}
 	}
@@ -817,7 +821,11 @@ func gen_share_url(article Article, settings Settings, service string) string {
 	case "linkedin":
 		return fmt.Sprintf("https://www.linkedin.com/sharing/share-offsite/?url=%s", url.QueryEscape(articleURL))
 	case "hackernews":
-		return fmt.Sprintf("https://news.ycombinator.com/submitlink?u=%s&t=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Title))
+		postURL := articleURL
+		if article.Url != "" {
+			postURL = article.Url
+		}
+		return fmt.Sprintf("https://news.ycombinator.com/submitlink?u=%s&t=%s", url.QueryEscape(postURL), url.QueryEscape(article.Title))
 	// case "facebook":
 	// 	return fmt.Sprintf("https://www.facebook.com/sharer/sharer.php?u=%s", url.QueryEscape(article.LinkToSelf))
 	default:
