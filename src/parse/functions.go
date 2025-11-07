@@ -294,7 +294,7 @@ func GenerateHtmlIndex(articles []Article, settings Settings, assets fs.FS) erro
 		"gen_share_url":  gen_share_url,
 	}
 	// Load the HTML template from assets
-	htmlIndexTemplate, err := texttemplate.New("html-index.gohtml").Funcs(funcMap).ParseFS(assets, "assets/templates/html-index.gohtml")
+	htmlIndexTemplate, err := texttemplate.New("html-index.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-index.gohtml")
 	if err != nil {
 		return fmt.Errorf("error parsing article index template: %w", err)
 	}
@@ -349,7 +349,7 @@ func GenerateRSS(articles []Article, settings Settings, assets fs.FS) error {
 
 	// Parse the RSS template with the custom function map.
 
-	tmpl, err := texttemplate.New("rss.goxml").Funcs(funcMap).ParseFS(assets, "assets/templates/rss.goxml")
+	tmpl, err := texttemplate.New("rss.goxml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/rss.goxml")
 	if err != nil {
 		return fmt.Errorf("error parsing RSS template: %w", err)
 	}
@@ -560,7 +560,7 @@ func FormatMarkdown(article *Article, settings Settings, assets fs.FS) error {
 		"slicesContains":  slices.Contains[[]string],
 	}
 
-	htmlArticleTemplate, err := texttemplate.New("html-article.gohtml").Funcs(funcMap).ParseFS(assets, "assets/templates/html-article.gohtml")
+	htmlArticleTemplate, err := texttemplate.New("html-article.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-article.gohtml")
 	if err != nil {
 		return fmt.Errorf("error parsing index template: %w", err)
 	}

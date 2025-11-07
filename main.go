@@ -17,10 +17,10 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/tesserato/DSBG/parse"
+	"github.com/tesserato/DSBG/src/parse"
 )
 
-//go:embed assets
+//go:embed src/assets
 var assets embed.FS
 
 // isFlagPassed checks if a command-line flag with the given name was provided.
@@ -225,7 +225,7 @@ func main() {
 // It uses the provided TemplateSettings to pre-fill fields in the frontmatter and saves the template to a file.
 func createMarkdownTemplate(templateSettings parse.TemplateSettings) error {
 
-	tmpl, err := template.New("md-article.gomd").ParseFS(assets, "assets/templates/md-article.gomd")
+	tmpl, err := template.New("md-article.gomd").ParseFS(assets, "src/assets/templates/md-article.gomd")
 	if err != nil {
 		return fmt.Errorf("error parsing template: %w", err)
 	}
@@ -390,7 +390,7 @@ func cleanContent(s string) []string {
 // If no custom CSS path is provided, this function generates the 'style.css' file
 // in the output directory based on the chosen predefined theme.
 func applyCSSTemplate(themeData parse.Theme, outputDirectory string) error {
-	tmpl, err := texttemplate.ParseFS(assets, "assets/templates/style.gocss")
+	tmpl, err := texttemplate.ParseFS(assets, "src/assets/templates/style.gocss")
 	if err != nil {
 		return fmt.Errorf("error parsing style template: %w", err)
 	}
@@ -598,7 +598,7 @@ func processFile(filePath string, settings parse.Settings) (parse.Article, error
 // saveAsset copies a static asset file from the embedded 'assets' directory to the output directory.
 // Used for deploying default CSS, JavaScript, images, and other static files included with DSBG.
 func saveAsset(assetName string, saveName string, outputDirectory string) {
-	file, err := assets.ReadFile("assets/" + assetName)
+	file, err := assets.ReadFile("src/assets/" + assetName)
 	if err != nil {
 		log.Fatalf("Error reading asset '%s' from embedded assets: %v", assetName, err)
 	}
