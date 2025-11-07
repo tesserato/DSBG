@@ -24,14 +24,13 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Thu, 06 Nov 2025 22:51:35 +0000</lastBuildDate>
+		<lastBuildDate>Fri, 07 Nov 2025 10:19:46 +0000</lastBuildDate>
 		<item>
-			<title>ideal_bar</title>
-			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
-			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
+			<title>analytics</title>
+			<link>https://tesserato.github.io/DSBG/analytics/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/analytics/index.html</guid>
+			<pubDate>Fri, 07 Nov 2025 09:50:12 +0000</pubDate>
 			<description></description>
-            <category>strings</category>
 		</item>
 		<item>
 			<title>ideal_string</title>
@@ -42,11 +41,12 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
             <category>strings</category>
 		</item>
 		<item>
-			<title>giscus</title>
-			<link>https://tesserato.github.io/DSBG/giscus/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/giscus/index.html</guid>
+			<title>ideal_bar</title>
+			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
 			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
 			<description></description>
+            <category>strings</category>
 		</item>
 		<item>
 			<title>HTML page with custom CSS example</title>
@@ -56,6 +56,13 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 			<description>An example html page with custom CSS</description>
             <category>PAGE</category>
             <category>html_page_example</category>
+		</item>
+		<item>
+			<title>giscus</title>
+			<link>https://tesserato.github.io/DSBG/giscus/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/giscus/index.html</guid>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
+			<description></description>
 		</item>
 		<item>
 			<title>HTML post with custom CSS example</title>
