@@ -36,6 +36,7 @@ type Settings struct {
 	ShareButtons              []ShareButton
 	Sort                      string
 	HighlightTheme            string
+	Port                      string
 }
 
 type ShareButton struct {
