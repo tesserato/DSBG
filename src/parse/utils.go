@@ -112,7 +112,8 @@ func cleanString(url string) string {
 }
 
 // CopyHtmlResources copies associated resources for an article and determines output path.
-func CopyHtmlResources(settings Settings, article *Article) error {
+// resources: A list of relative file paths found in the article (images, scripts, etc).
+func CopyHtmlResources(settings Settings, article *Article, resources []string) error {
 	relativeInputPath, err := filepath.Rel(settings.InputDirectory, article.OriginalPath)
 	if err != nil {
 		return fmt.Errorf("failed to get relative path for '%s': %w", article.OriginalPath, err)
@@ -177,11 +178,7 @@ func CopyHtmlResources(settings Settings, article *Article) error {
 		}
 	}
 
-	resourcePaths, err := extractResources(article.HtmlContent)
-	if err != nil {
-		return fmt.Errorf("failed to extract resources from '%s': %w", article.OriginalPath, err)
-	}
-	for _, resourceOrigRelPath := range resourcePaths {
+	for _, resourceOrigRelPath := range resources {
 		resourceOrigRelPathLower := strings.ToLower(resourceOrigRelPath)
 		if strings.Contains(resourceOrigRelPathLower, "http") {
 			continue
@@ -226,6 +223,30 @@ func genRelativeLink(linkToSelf string, name string) string {
 	parts := strings.Split(linkToSelf, "/")
 	upDir := strings.Repeat("../", len(parts)-1)
 	return upDir + name
+}
+
+// ExtractResources traverses an HTML node tree and extracts values of src/href
+// from img, script, and link tags.
+func ExtractResources(n *html.Node) []string {
+	var resources []string
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode {
+			if n.Data == "img" || n.Data == "script" || n.Data == "link" {
+				for _, attr := range n.Attr {
+					if attr.Key == "src" || attr.Key == "href" {
+						resources = append(resources, attr.Val)
+						break
+					}
+				}
+			}
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(n)
+	return resources
 }
 
 // extractFirstLink parses HTML content and returns the value of the first "href" attribute

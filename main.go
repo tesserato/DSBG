@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"embed"
 	"encoding/json"
 	"flag"
@@ -96,6 +97,7 @@ func main() {
 	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "Do not remove date patterns from titles.")
 	defaultFlagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open external links in new browser tabs.")
 	defaultFlagSet.StringVar(&settings.Port, "port", "666", "Port for the local server (default: 666).")
+	defaultFlagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Overwrite output directory without confirmation.")
 
 	// Custom share flag
 	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|Display|UrlTemplate\".")
@@ -216,10 +218,14 @@ func main() {
 		log.Fatalf("Error loading templates: %v", err)
 	}
 
-	buildWebsite(settings, templates)
+	// Perform build (passed as pointer to update ForceOverwrite if confirmed)
+	// clean=true for the initial build
+	if err := buildWebsite(&settings, templates, true); err != nil {
+		log.Fatal(err)
+	}
 
 	if *watch {
-		startWatcher(settings, templates)
+		startWatcher(&settings, templates)
 	}
 }
 
@@ -268,7 +274,7 @@ func createMarkdownTemplate(templateSettings parse.TemplateSettings) error {
 	return nil
 }
 
-func startWatcher(settings parse.Settings, templates parse.SiteTemplates) {
+func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
@@ -304,7 +310,7 @@ func startWatcher(settings parse.Settings, templates parse.SiteTemplates) {
 		watcher.Add(settings.PathToCustomFavicon)
 	}
 
-	go serve(settings)
+	go serve(*settings)
 	log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputDirectory)
 	for {
 		select {
@@ -314,7 +320,8 @@ func startWatcher(settings parse.Settings, templates parse.SiteTemplates) {
 			}
 			if event.Has(fsnotify.Write) {
 				log.Println("File change detected:", event.Name, "- Rebuilding website...")
-				buildWebsite(settings, templates)
+				// clean=false for rebuilds to avoid file locks with running server
+				buildWebsite(settings, templates, false)
 				log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputDirectory)
 			}
 		case err, ok := <-watcher.Errors:
@@ -335,14 +342,62 @@ func serve(settings parse.Settings) {
 	}
 }
 
-func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
-	err := os.RemoveAll(settings.OutputDirectory)
-	if err != nil && !os.IsNotExist(err) {
-		log.Printf("Error clearing output directory: %v", err)
+// deleteChildren removes all children of a directory but keeps the directory itself.
+// This avoids file lock errors when the directory itself is open in a terminal.
+func deleteChildren(dir string) error {
+	d, err := os.Open(dir)
+	if err != nil {
+		return err
+	}
+	defer d.Close()
+	names, err := d.Readdirnames(-1)
+	if err != nil {
+		return err
+	}
+	for _, name := range names {
+		err = os.RemoveAll(filepath.Join(dir, name))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// buildWebsite accepts pointer to settings to update ForceOverwrite on first success
+// clean: if true, attempts to delete the output directory content before building.
+func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean bool) error {
+	if clean {
+		// Check output directory safety
+		if !settings.ForceOverwrite {
+			f, err := os.Open(settings.OutputDirectory)
+			if err == nil {
+				defer f.Close()
+				_, err = f.Readdirnames(1) // Read at least one entry
+				if err == nil {            // Directory is not empty
+					fmt.Printf("Output directory '%s' is not empty. Overwrite? (y/n): ", settings.OutputDirectory)
+					reader := bufio.NewReader(os.Stdin)
+					response, _ := reader.ReadString('\n')
+					response = strings.TrimSpace(strings.ToLower(response))
+					if response != "y" && response != "yes" {
+						return fmt.Errorf("operation cancelled by user")
+					}
+					// Remember the choice for this session
+					settings.ForceOverwrite = true
+				}
+			}
+		}
+
+		// Try to clean children first to avoid root lock issues
+		if err := deleteChildren(settings.OutputDirectory); err != nil {
+			// If deleteChildren fails (e.g. dir doesn't exist), fall back or log
+			if !os.IsNotExist(err) {
+				log.Printf("Warning: Failed to clean output directory: %v. Trying to proceed...", err)
+			}
+		}
 	}
 
 	if err := os.MkdirAll(settings.OutputDirectory, 0755); err != nil {
-		log.Fatalf("Error creating output directory: %v", err)
+		return fmt.Errorf("error creating output directory: %v", err)
 	}
 
 	// Handle Share Assets
@@ -350,7 +405,7 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 		if strings.HasPrefix(btn.Display, "http://") || strings.HasPrefix(btn.Display, "https://") {
 			continue
 		}
-		if parse.IsImage(btn.Display) { // Fixed: use exported function IsImage
+		if parse.IsImage(btn.Display) {
 			src := btn.Display
 			destName := filepath.Base(src)
 			destPath := filepath.Join(settings.OutputDirectory, destName)
@@ -363,7 +418,7 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 
 	files, err := parse.GetPaths(settings.InputDirectory, []string{".md", ".html"})
 	if err != nil {
-		log.Fatalf("Error getting content files: %v", err)
+		return fmt.Errorf("error getting content files: %v", err)
 	}
 
 	var articles []parse.Article
@@ -376,7 +431,7 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 		wg.Add(1)
 		go func(filePath string) {
 			defer wg.Done()
-			article, err := processFile(filePath, settings, templates)
+			article, err := processFile(filePath, *settings, templates)
 			if err != nil {
 				log.Printf("Error processing file %s: %v\n", filePath, err)
 				return
@@ -418,19 +473,19 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 
 	searchIndexJSON, err := json.Marshal(searchIndex)
 	if err != nil {
-		log.Fatalf("Error marshaling search index to JSON: %v", err)
+		return fmt.Errorf("error marshaling search index to JSON: %v", err)
 	}
 	searchIndexPath := filepath.Join(settings.OutputDirectory, "search_index.json")
 	if err := os.WriteFile(searchIndexPath, searchIndexJSON, 0644); err != nil {
-		log.Fatalf("Error saving search index JSON file: %v", err)
+		return fmt.Errorf("error saving search index JSON file: %v", err)
 	}
 
-	if err := parse.GenerateHtmlIndex(articles, settings, templates.Index, assets); err != nil {
-		log.Fatalf("Error generating HTML index page: %v", err)
+	if err := parse.GenerateHtmlIndex(articles, *settings, templates.Index, assets); err != nil {
+		return fmt.Errorf("error generating HTML index page: %v", err)
 	}
 
-	if err := parse.GenerateRSS(articles, settings, templates.RSS, assets); err != nil {
-		log.Fatalf("Error generating RSS feed: %v", err)
+	if err := parse.GenerateRSS(articles, *settings, templates.RSS, assets); err != nil {
+		return fmt.Errorf("error generating RSS feed: %v", err)
 	}
 
 	if settings.PathToCustomCss == "" {
@@ -438,7 +493,7 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 		parse.ApplyCSSTemplate(theme, settings.OutputDirectory, templates.Style)
 	} else {
 		if err := copyFile(settings.PathToCustomCss, filepath.Join(settings.OutputDirectory, "style.css")); err != nil {
-			log.Fatalf("Error handling custom CSS file: %v", err)
+			return fmt.Errorf("error handling custom CSS file: %v", err)
 		}
 	}
 
@@ -446,7 +501,7 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 		saveAsset("script.js", "script.js", settings.OutputDirectory)
 	} else {
 		if err := copyFile(settings.PathToCustomJs, filepath.Join(settings.OutputDirectory, "script.js")); err != nil {
-			log.Fatalf("Error handling custom JavaScript file: %v", err)
+			return fmt.Errorf("error handling custom JavaScript file: %v", err)
 		}
 	}
 
@@ -454,7 +509,7 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 		saveAsset("favicon.ico", "favicon.ico", settings.OutputDirectory)
 	} else {
 		if err := copyFile(settings.PathToCustomFavicon, filepath.Join(settings.OutputDirectory, "favicon.ico")); err != nil {
-			log.Fatalf("Error handling custom favicon file: %v", err)
+			return fmt.Errorf("error handling custom favicon file: %v", err)
 		}
 	}
 
@@ -463,30 +518,32 @@ func buildWebsite(settings parse.Settings, templates parse.SiteTemplates) {
 	saveAsset("copy.svg", "copy.svg", settings.OutputDirectory)
 
 	log.Println("Website generated successfully in:", settings.OutputDirectory)
+	return nil
 }
 
 func processFile(filePath string, settings parse.Settings, templates parse.SiteTemplates) (parse.Article, error) {
 	var article parse.Article
+	var resources []string
 	var err error
 	filePathLower := strings.ToLower(filePath)
 
 	if strings.HasSuffix(filePathLower, ".md") {
-		article, err = parse.MarkdownFile(filePath)
+		article, resources, err = parse.MarkdownFile(filePath)
 		if err != nil {
 			return parse.Article{}, fmt.Errorf("error parsing markdown file: %w", err)
 		}
-		if err := parse.CopyHtmlResources(settings, &article); err != nil {
+		if err := parse.CopyHtmlResources(settings, &article, resources); err != nil {
 			return parse.Article{}, fmt.Errorf("error copying resources: %w", err)
 		}
 		if err := parse.FormatMarkdown(&article, settings, templates.Article, assets); err != nil {
 			return parse.Article{}, fmt.Errorf("error formatting markdown: %w", err)
 		}
 	} else if strings.HasSuffix(filePath, ".html") {
-		article, err = parse.HTMLFile(filePath)
+		article, resources, err = parse.HTMLFile(filePath)
 		if err != nil {
 			return parse.Article{}, fmt.Errorf("error parsing HTML file: %w", err)
 		}
-		if err := parse.CopyHtmlResources(settings, &article); err != nil {
+		if err := parse.CopyHtmlResources(settings, &article, resources); err != nil {
 			return parse.Article{}, fmt.Errorf("error copying resources: %w", err)
 		}
 	} else {

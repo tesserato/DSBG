@@ -37,6 +37,7 @@ type Settings struct {
 	Sort                      string
 	HighlightTheme            string
 	Port                      string
+	ForceOverwrite            bool
 }
 
 type ShareButton struct {

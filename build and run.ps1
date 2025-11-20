@@ -2,12 +2,19 @@ go get -u
 go get -u ./...
 go mod tidy
 
+gofmt -s -w .
+
+go vet ./...
+
+# Kill any existing instances of dsbg to free up file locks and ports
+Stop-Process -Name "dsbg" -ErrorAction SilentlyContinue
+
 Remove-Item ./dsbg.exe -Force -ErrorAction SilentlyContinue
 go build .
 
 ./dsbg.exe -h
 
-Remove-Item "docs/*" -Recurse -Force
+# Remove-Item "docs/*" -Recurse -Force
 
 Copy-Item "README.md" "sample_content/01_readme.md" -Force
 magick "art/logo.webp" "sample_content/01_dsbg_logo.webp"

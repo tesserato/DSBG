@@ -15,12 +15,12 @@ import (
 )
 
 // HTMLFile parses an HTML file, extracts metadata from tags, and populates an Article struct.
-// Returns the parsed Article and an error if reading or parsing fails.
-func HTMLFile(path string) (Article, error) {
+// Returns the parsed Article and a list of extracted resources.
+func HTMLFile(path string) (Article, []string, error) {
 	// Read the HTML file content.
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return Article{}, fmt.Errorf("failed to read HTML file '%s': %w", path, err)
+		return Article{}, nil, fmt.Errorf("failed to read HTML file '%s': %w", path, err)
 	}
 	htmlContent := string(data)
 	textContent := html2text.HTML2Text(htmlContent)
@@ -34,8 +34,11 @@ func HTMLFile(path string) (Article, error) {
 	// Parse the HTML content.
 	htmlTree, err := html.Parse(strings.NewReader(htmlContent))
 	if err != nil {
-		return Article{}, fmt.Errorf("failed to parse HTML content of '%s': %w", path, err)
+		return Article{}, nil, fmt.Errorf("failed to parse HTML content of '%s': %w", path, err)
 	}
+
+	// Extract resources using the existing HTML tree
+	resources := ExtractResources(htmlTree)
 
 	// Get info from <title> tag.
 	titleNode := findFirstElement(htmlTree, "title")
@@ -98,7 +101,7 @@ func HTMLFile(path string) (Article, error) {
 	// Set Created and Updated to file dates if not provided in meta tags.
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-		return Article{}, fmt.Errorf("failed to get file info for '%s': %w", path, err)
+		return Article{}, nil, fmt.Errorf("failed to get file info for '%s': %w", path, err)
 	}
 	if article.Created.IsZero() {
 		createdFromFile, err := DateTimeFromString(path) // Try to extract date from filename
@@ -112,7 +115,7 @@ func HTMLFile(path string) (Article, error) {
 		article.Updated = fileInfo.ModTime() // Use file modification time
 	}
 
-	return article, nil
+	return article, resources, nil
 }
 
 // GenerateHtmlIndex creates an HTML index page listing all processed articles.
@@ -175,35 +178,6 @@ func findAllElements(n *html.Node, tag string) []*html.Node {
 		elements = append(elements, findAllElements(c, tag)...)
 	}
 	return elements
-}
-
-// extractResources parses HTML content and extracts the values of "src" and "href" attributes
-// from "img", "script", and "link" tags, returning a list of resource paths and an error if parsing fails.
-func extractResources(htmlContent string) ([]string, error) {
-	var resources []string
-	doc, err := html.Parse(strings.NewReader(htmlContent))
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse HTML content for resource extraction: %w", err)
-	}
-
-	var f func(*html.Node)
-	f = func(n *html.Node) {
-		if n.Type == html.ElementNode {
-			if n.Data == "img" || n.Data == "script" || n.Data == "link" {
-				for _, attr := range n.Attr {
-					if attr.Key == "src" || attr.Key == "href" {
-						resources = append(resources, attr.Val)
-						break // Assuming only one relevant attribute per tag
-					}
-				}
-			}
-		}
-		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			f(c)
-		}
-	}
-	f(doc)
-	return resources, nil
 }
 
 func wrapNodeIfTable(n *html.Node) {
