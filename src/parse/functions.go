@@ -743,29 +743,75 @@ func extractResources(htmlContent string) ([]string, error) {
 	return resources, nil
 }
 
+// extractFirstLink parses HTML content and returns the value of the first "href" attribute
+// found in an anchor "a" tag. Returns an empty string if no link is found.
+func extractFirstLink(htmlContent string) string {
+	doc, err := html.Parse(strings.NewReader(htmlContent))
+	if err != nil {
+		return ""
+	}
+
+	var link string
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if link != "" {
+			return
+		}
+		if n.Type == html.ElementNode && n.Data == "a" {
+			for _, attr := range n.Attr {
+				if attr.Key == "href" {
+					link = attr.Val
+					return
+				}
+			}
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(doc)
+	return link
+}
+
+// encodeComponent encodes a string for use in a URL query, then replaces `+` with `%20`.
+// This ensures spaces are percent-encoded, which is safer for some share targets (like Hacker News)
+// that might interpret `+` literally or inconsistently.
+func encodeComponent(s string) string {
+	return strings.ReplaceAll(url.QueryEscape(s), "+", "%20")
+}
+
 // BuildShareUrl replaces placeholders in the urlTemplate with encoded article data.
-// Supported placeholders: {URL}, {TITLE}, {DESCRIPTION}, {TEXT}.
-func BuildShareUrl(urlTemplate string, article Article, settings Settings) string {
+// Supported placeholders: {URL}, {TITLE}, {DESCRIPTION}, {TEXT}, {LINK-URL}.
+// Returns a template.URL to ensure the result is not auto-escaped by Go templates.
+func BuildShareUrl(urlTemplate string, article Article, settings Settings) template.URL {
 	// Determine the actual URL to share. Use article.Url if set (canonical), otherwise constructed URL.
 	finalUrl := article.Url
 	if finalUrl == "" {
 		finalUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.LinkToSelf, "/"))
 	}
 
-	// URL encode the values.
-	encodedUrl := url.QueryEscape(finalUrl)
-	encodedTitle := url.QueryEscape(article.Title)
-	encodedDesc := url.QueryEscape(article.Description)
+	// Determine the LINK-URL (for link posts). Priority: metadata URL > first link in body.
+	linkUrl := article.Url
+	if linkUrl == "" {
+		linkUrl = extractFirstLink(article.HtmlContent)
+	}
+
+	// URL encode the values using our custom helper.
+	encodedUrl := encodeComponent(finalUrl)
+	encodedTitle := encodeComponent(article.Title)
+	encodedDesc := encodeComponent(article.Description)
+	encodedText := encodeComponent(article.TextContent) // Raw Markdown content
+	encodedLinkUrl := encodeComponent(linkUrl)
 
 	// Replace placeholders in the template.
 	result := strings.ReplaceAll(urlTemplate, "{URL}", encodedUrl)
 	result = strings.ReplaceAll(result, "{TITLE}", encodedTitle)
 	result = strings.ReplaceAll(result, "{DESCRIPTION}", encodedDesc)
-	// {TEXT} is often a synonym for description or title+url depending on platform,
-	// here we map it to description for flexibility.
-	result = strings.ReplaceAll(result, "{TEXT}", encodedDesc)
+	result = strings.ReplaceAll(result, "{TEXT}", encodedText)
+	result = strings.ReplaceAll(result, "{LINK-URL}", encodedLinkUrl)
 
-	return result
+	// Return as template.URL so it is NOT escaped (e.g. & -> &amp;) by html/template
+	return template.URL(result)
 }
 
 // isImage checks if a string (filename) has a common image extension.
