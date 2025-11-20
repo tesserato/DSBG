@@ -493,12 +493,14 @@ func buildWebsite(settings parse.Settings) {
 		articles = append(articles, article) // Add processed article to the list.
 
 		// Prepare article data for the search index.
+		// We now include html_content for snippets and url as the unique key.
 		searchIndex = append(searchIndex, map[string]interface{}{
-			"title":       article.Title,
-			"content":     cleanContent(article.TextContent), // Clean text content for better search.
-			"description": article.Description,
-			"tags":        article.Tags,
-			"url":         article.LinkToSelf,
+			"title":        article.Title,
+			"content":      cleanContent(article.TextContent), // Clean text content for better search.
+			"description":  article.Description,
+			"tags":         article.Tags,
+			"url":          article.LinkToSelf,  // Unique reference
+			"html_content": article.HtmlContent, // For snippet generation
 		})
 	}
 
@@ -538,7 +540,7 @@ func buildWebsite(settings parse.Settings) {
 		})
 	}
 
-	// Generate and save the Fuse.js search index as JSON.
+	// Generate and save the search index as JSON.
 	searchIndexJSON, err := json.Marshal(searchIndex)
 	if err != nil {
 		log.Fatalf("Error marshaling search index to JSON: %v", err)

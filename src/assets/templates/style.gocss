@@ -197,12 +197,16 @@ header a img:hover,
     border-radius: 0.4em;
     background-color: var(--card);
     padding: 1rem;
-    margin: 0;
+    margin: 0 0 1.6rem 0;
     border: none;
     box-shadow:
         .5rem .5rem 1.2rem 0 var(--shadow),
         -.0rem -.0rem 1rem 0 var(--card);
     color: var(--text);
+}
+
+.detail:last-child {
+    margin-bottom: 0;
 }
 
 details summary {
@@ -774,6 +778,7 @@ footer {
     box-shadow:
         0.1rem 0.1rem .5rem 0 var(--shadow),
         0rem 0rem .2rem 0 var(--background);
+    display: none; /* Hidden by default */
 }
 
 #search-results li {
@@ -783,9 +788,26 @@ footer {
 #search-results li a {
     color: var(--link);
     text-decoration: none;
-    font-size: calc(var(--body-font-size) * 1.0);
+    font-size: calc(var(--body-font-size) * 1.2);
+    display: block;
+    margin-bottom: 0.3rem;
 }
 
 #search-results li a:hover {
     color: var(--text);
+}
+
+.search-result-snippet {
+    font-size: calc(var(--body-font-size) * 0.9);
+    color: var(--text);
+    opacity: 0.8;
+    margin-left: 1em;
+}
+
+.search-result-snippet strong {
+    color: var(--text);
+    font-weight: bold;
+    background-color: rgba(255, 255, 0, 0.2); /* Subtle highlight */
+    padding: 0 0.2rem;
+    border-radius: 0.2rem;
 }

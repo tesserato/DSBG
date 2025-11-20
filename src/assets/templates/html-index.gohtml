@@ -12,7 +12,7 @@
     <link rel="canonical" href="{{ .Settings.BaseUrl }}/index.html">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/{{ .Settings.HighlightTheme }}.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+    <script src="https://unpkg.com/lunr/lunr.min.js"></script>
     <script src="search.js"></script>
 </head>
 
@@ -28,7 +28,7 @@
                 </a>
             </div>
         </div>
-        <input type="text" id="search-input" placeholder="Search... (supports Unix-like search commands)">
+        <input type="text" id="search-input" placeholder="Search...">
         <ul id="search-results"></ul>
         <nav>
             {{range .PageList}}
@@ -42,6 +42,7 @@
         <aside></aside>
     </header>
     {{ $Settings := .Settings}}
+    <main id="articles-container">
     {{range .ArticleList}}
     {{ $Article := . }}
     <div class="detail">
@@ -84,6 +85,7 @@
         </div>
     </div>
     {{end}}
+    </main>
     <script src="script.js" async defer></script>
     {{.Settings.AdditionalElemensBottom}}
 
