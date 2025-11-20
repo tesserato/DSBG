@@ -49,15 +49,13 @@ Start-Process chrome http://localhost:666/index.html
     -elements-top "sample_content/analytics.html" `
     -elements-bottom "sample_content/giscus.html" `
     -theme "dark" `
-    -x-handle "tesserato" `
-    -bluesky-handle "tesserato" `
-    -threads-handle "tesserato" `
-    -mastodon-handle "tesserato" `
-    -telegram-handle "tesserato" `
-    -linkedin-handle "tesserato" `
-    -reddit-handle "tarjano" `
-    -hackernews-handle "tesserato" `
-    -facebook-handle "tesserato" `
+    --share "X:https://twitter.com/intent/tweet?url={URL}&text={TITLE}%0A%0A{TEXT}" `
+    --share "Telegram:https://t.me/share/url?url={URL}&text={TITLE}" `
+    --share "LinkedIn:https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
+    --share "Reddit:https://www.reddit.com/submit?url={URL}&title={TITLE}" `
+    --share "Bluesky:https://bsky.app/intent/compose?text={TEXT}%0A%0A{URL}" `
+    --share "Mastodon:https://mastodon.social/?text={TEXT}%0A%0A{URL}" `
+    --share "Threads:https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
     -sort "reverse-date-created"
     
     

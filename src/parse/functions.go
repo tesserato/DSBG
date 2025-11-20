@@ -291,7 +291,8 @@ func GenerateHtmlIndex(articles []Article, settings Settings, assets fs.FS) erro
 		},
 		"stringsJoin":    strings.Join,
 		"slicesContains": slices.Contains[[]string],
-		"gen_share_url":  gen_share_url,
+		"buildShareUrl":  BuildShareUrl,
+		"lower":          strings.ToLower,
 	}
 	// Load the HTML template from assets
 	htmlIndexTemplate, err := texttemplate.New("html-index.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-index.gohtml")
@@ -556,8 +557,9 @@ func FormatMarkdown(article *Article, settings Settings, assets fs.FS) error {
 	funcMap := template.FuncMap{
 		"genRelativeLink": genRelativeLink,
 		"stringsJoin":     strings.Join,
-		"gen_share_url":   gen_share_url,
+		"buildShareUrl":   BuildShareUrl,
 		"slicesContains":  slices.Contains[[]string],
+		"lower":           strings.ToLower,
 	}
 
 	htmlArticleTemplate, err := texttemplate.New("html-article.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-article.gohtml")
@@ -734,128 +736,29 @@ func extractResources(htmlContent string) ([]string, error) {
 	return resources, nil
 }
 
-func gen_share_url(article Article, settings Settings, service string) string {
-	var hashtags []string
-	for _, tag := range article.Tags {
-		hashtags = append(hashtags, strings.ReplaceAll(tag, " ", ""))
+// BuildShareUrl replaces placeholders in the urlTemplate with encoded article data.
+// Supported placeholders: {URL}, {TITLE}, {DESCRIPTION}, {TEXT}.
+func BuildShareUrl(urlTemplate string, article Article, settings Settings) string {
+	// Determine the actual URL to share. Use article.Url if set (canonical), otherwise constructed URL.
+	finalUrl := article.Url
+	if finalUrl == "" {
+		finalUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.LinkToSelf, "/"))
 	}
-	var blueskyHashTags []string
-	for _, tag := range hashtags {
-		blueskyHashTags = append(blueskyHashTags, fmt.Sprintf("#%s", tag))
-	}
-	articleURL := fmt.Sprintf("%s/%s", settings.BaseUrl, article.LinkToSelf)
-	switch service {
-	case "x":
-		// Base text is the article description.
-		tweetText := article.Description
 
-		// 1. Add attribution if an X handle is provided.
-		if settings.XHandle != "" {
-			tweetText += " via @" + settings.XHandle
-		}
+	// URL encode the values.
+	encodedUrl := url.QueryEscape(finalUrl)
+	encodedTitle := url.QueryEscape(article.Title)
+	encodedDesc := url.QueryEscape(article.Description)
 
-		// 2. Handle Twitter's character limit.
-		// A URL is ~23 chars. Hashtags take space. We'll leave a generous buffer.
-		// Let's cap the main text at a safe 220 characters.
-		const maxLength = 220
-		if len(tweetText) > maxLength {
-			// Truncate the text and add an ellipsis.
-			tweetText = tweetText[:maxLength-1] + "…"
-		}
+	// Replace placeholders in the template.
+	result := strings.ReplaceAll(urlTemplate, "{URL}", encodedUrl)
+	result = strings.ReplaceAll(result, "{TITLE}", encodedTitle)
+	result = strings.ReplaceAll(result, "{DESCRIPTION}", encodedDesc)
+	// {TEXT} is often a synonym for description or title+url depending on platform,
+	// here we map it to description for flexibility.
+	result = strings.ReplaceAll(result, "{TEXT}", encodedDesc)
 
-		// The 'hashtags' parameter is the best way to add tags.
-		// The text in the 'text' parameter will appear before the URL and hashtags.
-		return fmt.Sprintf("https://twitter.com/intent/tweet?url=%s&text=%s&hashtags=%s",
-			url.QueryEscape(articleURL),
-			url.QueryEscape(tweetText),
-			url.QueryEscape(strings.Join(hashtags, ","))) // Note: QueryEscape on hashtags is safer
-	case "bluesky":
-		// Start with the clean description and link.
-		text := fmt.Sprintf("%s\n\n%s", article.Description, articleURL)
-
-		// Bluesky fully supports multiple hashtags for discovery.
-		// We will create a clean list and append it at the end.
-		if len(article.Tags) > 0 {
-			var blueskyTags []string
-			for _, tag := range article.Tags {
-				// Bluesky hashtags should not contain spaces.
-				cleanTag := strings.ReplaceAll(tag, " ", "")
-				if cleanTag != "" {
-					blueskyTags = append(blueskyTags, "#"+cleanTag)
-				}
-			}
-			// Append the hashtags at the end, a common convention for readability.
-			if len(blueskyTags) > 0 {
-				text += "\n\n" + strings.Join(blueskyTags, " ")
-			}
-		}
-
-		return fmt.Sprintf("https://bsky.app/intent/compose?text=%s", url.QueryEscape(text))
-	case "threads":
-		// Threads does not use inline #tags. Create a clean post with the description and a link.
-		// Use two newlines for a clean paragraph break.
-		text := fmt.Sprintf("%s\n\n%s", article.Description, articleURL)
-		return fmt.Sprintf("https://www.threads.net/intent/post?text=%s", url.QueryEscape(text))
-	case "mastodon":
-		// Start with the clean description and link.
-		text := fmt.Sprintf("%s\n\n%s", article.Description, articleURL)
-
-		// Mastodon uses and encourages multiple hashtags for discovery.
-		// We will create a clean list and append it.
-		if len(article.Tags) > 0 {
-			var mastodonTags []string
-			for _, tag := range article.Tags {
-				// Mastodon hashtags should not contain spaces.
-				cleanTag := strings.ReplaceAll(tag, " ", "")
-				if cleanTag != "" {
-					mastodonTags = append(mastodonTags, "#"+cleanTag)
-				}
-			}
-			// Append the hashtags at the end, a common convention for readability.
-			if len(mastodonTags) > 0 {
-				text += "\n\n" + strings.Join(mastodonTags, " ")
-			}
-		}
-
-		return fmt.Sprintf("https://mastodon.social/?text=%s", url.QueryEscape(text))
-	case "telegram":
-		return fmt.Sprintf("https://t.me/share/url?url=%s&text=%s", url.QueryEscape(articleURL), url.QueryEscape(article.Description))
-	case "reddit":
-		// This creates a LINK POST, which is the standard for sharing external articles.
-
-		// 1. Determine the final URL to be shared.
-		postURL := articleURL
-		if article.Url != "" {
-			postURL = article.Url
-		}
-
-		// 2. Start with the generic link submission URL as a fallback.
-		shareURL := fmt.Sprintf("https://www.reddit.com/submit?url=%s&title=%s",
-			url.QueryEscape(postURL),
-			url.PathEscape(article.Title))
-
-		// 3. If a Reddit handle is provided, use the precise, modern format for posting to a user's profile.
-		if settings.RedditHandle != "" {
-			shareURL = fmt.Sprintf("https://www.reddit.com/user/%s/submit?url=%s&title=%s&type=LINK",
-				settings.RedditHandle,
-				url.QueryEscape(postURL),
-				url.PathEscape(article.Title))
-		}
-
-		return shareURL
-	case "linkedin":
-		return fmt.Sprintf("https://www.linkedin.com/sharing/share-offsite/?url=%s", url.QueryEscape(articleURL))
-	case "hackernews":
-		postURL := articleURL
-		if article.Url != "" {
-			postURL = article.Url
-		}
-		return fmt.Sprintf("https://news.ycombinator.com/submitlink?u=%s&t=%s", url.QueryEscape(postURL), url.PathEscape(article.Title))
-	case "facebook": 
-		return fmt.Sprintf("https://www.facebook.com/sharer/sharer.php?u=%s", url.QueryEscape(articleURL))
-	default:
-		return ""
-	}
+	return result
 }
 
 // getThemeData returns a parse.Theme struct populated with style settings for the given theme.

@@ -33,17 +33,14 @@ type Settings struct {
 	DoNotRemoveDateFromTitles bool
 	OpenInNewTab              bool
 	BaseUrl                   string
-	XHandle                   string
-	BlueSkyHandle             string
-	ThreadsHandle             string
-	MastodonHandle            string
-	TelegramHandle            string
-	RedditHandle              string
-	LinkedinHandle            string
-	HackernewsHandle          string
-	FacebookHandle            string
+	ShareButtons              []ShareButton
 	Sort                      string
 	HighlightTheme            string
+}
+
+type ShareButton struct {
+	Name        string
+	UrlTemplate string
 }
 
 type TemplateSettings struct {

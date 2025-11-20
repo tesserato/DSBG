@@ -23,23 +23,24 @@ import (
 //go:embed src/assets
 var assets embed.FS
 
-// isFlagPassed checks if a command-line flag with the given name was provided.
-// It performs a case-insensitive comparison and ignores hyphens and underscores in the flag name.
-// func isFlagPassed(name string) bool {
-// 	nameToTest := strings.ToLower(name)
-// 	nameToTest = strings.ReplaceAll(nameToTest, "-", "")
-// 	nameToTest = strings.ReplaceAll(nameToTest, "_", "")
-// 	found := false
-// 	flag.Visit(func(f *flag.Flag) {
-// 		nameFlag := strings.ToLower(f.Name)
-// 		nameFlag = strings.ReplaceAll(nameFlag, "-", "")
-// 		nameFlag = strings.ReplaceAll(nameFlag, "_", "")
-// 		if nameFlag == nameToTest {
-// 			found = true
-// 		}
-// 	})
-// 	return found
-// }
+// shareButtonsFlag is a custom flag type to handle repeated --share flags
+type shareButtonsFlag []parse.ShareButton
+
+func (s *shareButtonsFlag) String() string {
+	return "Share buttons defined by Name:UrlTemplate"
+}
+
+func (s *shareButtonsFlag) Set(value string) error {
+	parts := strings.SplitN(value, ":", 2)
+	if len(parts) != 2 {
+		return fmt.Errorf("invalid share format, expected 'Name:URL', got '%s'", value)
+	}
+	*s = append(*s, parse.ShareButton{
+		Name:        parts[0],
+		UrlTemplate: parts[1],
+	})
+	return nil
+}
 
 // noFlagsPassed checks if any command-line flags were provided for a given FlagSet.
 // It iterates through the flags visited by the FlagSet and returns false if any are found, true otherwise.
@@ -67,6 +68,7 @@ func main() {
 	templateFlagSet := flag.NewFlagSet("template", flag.ExitOnError)
 
 	var settings parse.Settings
+	var shareButtons shareButtonsFlag
 
 	// --- Default FlagSet Flags ---
 	// Flags for controlling the blog generation process in default mode.
@@ -84,15 +86,10 @@ func main() {
 	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromPaths, "keep-date-in-paths", false, "Do not remove date patterns (YYYY-MM-DD) from generated file paths.")
 	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "Do not remove date patterns (YYYY-MM-DD) from article titles.")
 	defaultFlagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open external links in new browser tabs.")
-	defaultFlagSet.StringVar(&settings.TelegramHandle, "telegram-handle", "", "Telegram handle for share buttons and message link.")
-	defaultFlagSet.StringVar(&settings.XHandle, "x-handle", "", "X (formerly Twitter) handle for share buttons and profile link.")
-	defaultFlagSet.StringVar(&settings.BlueSkyHandle, "bluesky-handle", "", "Bluesky handle for share buttons and profile link.")
-	defaultFlagSet.StringVar(&settings.ThreadsHandle, "threads-handle", "", "Threads handle for share buttons and profile link.")
-	defaultFlagSet.StringVar(&settings.MastodonHandle, "mastodon-handle", "", "Mastodon handle for share buttons and profile link.")
-	defaultFlagSet.StringVar(&settings.RedditHandle, "reddit-handle", "", "Reddit username for share buttons and profile link.")
-	defaultFlagSet.StringVar(&settings.LinkedinHandle, "linkedin-handle", "", "LinkedIn username for share buttons and profile link.")
-	defaultFlagSet.StringVar(&settings.HackernewsHandle, "hackernews-handle", "", "Hacker News username for share buttons and profile link.")
-	defaultFlagSet.StringVar(&settings.FacebookHandle, "facebook-handle", "", "Facebook username or page ID to enable the share button.")
+
+	// Custom share flag
+	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name:UrlTemplate\".\n\tTemplate placeholders: {URL}, {TITLE}, {DESCRIPTION}, {TEXT}.")
+
 	defaultFlagSet.StringVar(&settings.Sort, "sort", "date-created", "Sort order for articles on the index page. Possible values: date-created, reverse-date-created, date-updated, reverse-date-updated, title, reverse-title, path, reverse-path.")
 	themeString := defaultFlagSet.String("theme", "default", "Predefined website style theme. Possible values: default, dark, clean, colorful.")
 	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "Path to HTML file to include at the top of each page's <head> (e.g., analytics).")
@@ -151,6 +148,8 @@ func main() {
 		}
 		log.Println("Running in blog generation mode...")
 	}
+
+	settings.ShareButtons = shareButtons
 
 	// Convert Markdown description to HTML (Do this *after* parsing flags so description is populated)
 	var buf strings.Builder
