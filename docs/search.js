@@ -1,67 +1,122 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Get references to the search input and results elements.
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
-    // Declare a variable to store the Fuse.js instance.
-    let fuse;
+    const articlesContainer = document.getElementById('articles-container');
+    let lunrIndex;
+    let articleMap = {};
+    const minSearchChars = 3; // Minimum characters to trigger a search
 
-    // Fetch the search index from the JSON file.
-    fetch('search_index.json')
-        .then(response => response.json())
-        .then(searchIndex => {
-            // Configure Fuse.js options for searching.
-            const options = {
-                includeScore: true,  // Include the score of each match.
-                findAllMatches: true, // Find all matches for a given search term.
-                includeMatches: true, // Include information about matches (locations, etc)
-                ignoreLocation: true, // Ignore the position of the match in the text.
-                minMatchCharLength: 2, // Minimum number of characters needed to match.
-                useExtendedSearch: true, // Enable the extended search capabilities.
-                threshold: 0.35, // Set the threshold for the search. Lower = more relaxed matches.
-                distance: 10,   // How close a match has to be, in characters.
-                keys: ['title', 'content', 'description', 'tags'] // Keys in index to search for.
-            };
-            // Create a new Fuse.js instance with the search index and options.
-            fuse = new Fuse(searchIndex, options);
-        });
+    // Initialize search by fetching the index
+    async function initializeSearch() {
+        try {
+            const response = await fetch('search_index.json');
+            if (!response.ok) throw new Error('Network response was not ok.');
+            const articleData = await response.json();
 
-    // Add an event listener to the search input for 'keyup' events.
-    // This triggers the search each time a key is released.
-    searchInput.addEventListener('keyup', function (event) {
-        // If Fuse.js is initialized (data is loaded)
-        if (fuse) {
-            const searchTerm = event.target.value; // Get the user's search term.
-            // Perform the search using Fuse.js.
-            const results = fuse.search(searchTerm);
+            // Map articles by URL (which serves as the ID/Ref)
+            articleData.forEach(article => {
+                articleMap[article.url] = article;
+            });
 
-            // Prepare the HTML to display the search results.
-            let resultsHTML = '';
-            // If there are no results, show the "No results found" message.
-            if (results.length === 0) {
-                resultsHTML = '<li>No results found.</li>';
-            } else {
-               // If results are found, iterate through them to generate an HTML list.
-               // The score is used to sort results, and a link is created for each result.
-                results.forEach(result => {
-                    const article = result.item;
-                    resultsHTML += `<li>${(1.0 - result.score).toFixed(2)} <a href="${article.url}">${article.title}</a></li>`;
-                });
+            // Build the Lunr index
+            lunrIndex = lunr(function () {
+                this.ref('url');
+                this.field('title', { boost: 10 });
+                this.field('description');
+                this.field('tags', { boost: 5 });
+                this.field('html_content'); // Index HTML content for full-text search
+
+                articleData.forEach(doc => this.add(doc));
+            });
+        } catch (error) {
+            console.error("Failed to initialize search:", error);
+            searchInput.placeholder = "Search index failed to load.";
+            searchInput.disabled = true;
+        }
+    }
+
+    // Helper: Build a fuzzy query for Lunr
+    function buildFuzzyQuery(term) {
+        const terms = term.trim().split(/\s+/).filter(word => word.length > 0);
+        if (terms.length === 0) return '';
+
+        return terms.map((word, i) => {
+            let fuzzyWord = word + '~1'; // Fuzzy match with distance 1
+            // Add a wildcard to the last term for "type-ahead" feel
+            if (i === terms.length - 1) {
+                fuzzyWord = word + '*' + ' ' + fuzzyWord;
             }
-            // Update the search results element with the generated HTML.
-            searchResults.innerHTML = resultsHTML;
+            return fuzzyWord;
+        }).join(' ');
+    }
+
+    // Helper: Create a highlighted snippet from HTML content
+    function createSnippet(content, term) {
+        // Strip HTML tags to get plain text
+        const textContent = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+        const termIndex = textContent.toLowerCase().indexOf(term.toLowerCase());
+
+        // If term not found (e.g. fuzzy match), just return start of text
+        if (termIndex === -1) return (textContent.substring(0, 150) + '...').replace(/<|>/g, '');
+
+        const start = Math.max(0, termIndex - 50);
+        const end = Math.min(textContent.length, termIndex + term.length + 100);
+        let snippet = textContent.substring(start, end);
+
+        if (start > 0) snippet = '...' + snippet;
+        if (end < textContent.length) snippet = snippet + '...';
+
+        // Escape HTML in snippet to prevent injection, then highlight term
+        snippet = snippet.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        // Simple highlighting logic
+        const highlightTerm = term.split(/\s+/).pop().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        return snippet.replace(new RegExp(`(${highlightTerm})`, 'gi'), '<strong>$1</strong>');
+    }
+
+    // Event Listener: Keyup on search input
+    searchInput.addEventListener('keyup', () => {
+        if (!lunrIndex) return;
+        const term = searchInput.value.trim();
+
+        // If query is too short, hide results and show original articles
+        if (!term || term.length < minSearchChars) {
+            articlesContainer.style.display = 'block';
+            searchResults.style.display = 'none';
+            searchResults.innerHTML = '';
+            return;
         }
 
+        try {
+            const fuzzyQuery = buildFuzzyQuery(term);
+            const results = lunrIndex.search(fuzzyQuery);
+
+            // Hide article list, show search results
+            articlesContainer.style.display = 'none';
+            searchResults.style.display = 'block';
+
+            if (results.length === 0) {
+                searchResults.innerHTML = '<li>No results found.</li>';
+            } else {
+                searchResults.innerHTML = results.map(result => {
+                    const article = articleMap[result.ref];
+                    const snippet = createSnippet(article.html_content, term);
+                    // Use article.url (the ref) for the link
+                    return `<li><a href="${article.url}">${article.title}</a><div class="search-result-snippet">${snippet}</div></li>`;
+                }).join('');
+            }
+        } catch (e) {
+            // Lunr might throw on invalid query syntax
+            searchResults.innerHTML = '<li>Invalid search query.</li>';
+        }
     });
 
-     // Prevent default behavior for mousedown events on search results.
-    // This avoids focus stealing from the search input and unwanted selections.
-    searchResults.addEventListener('mousedown', function (event) {
-        event.preventDefault();
+    // Event Listener: Clear results when clicking a link or if necessary
+    searchResults.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            // Optional: Clear search when navigating away (useful for SPA, less for multi-page but good cleanup)
+        }
     });
-    
-    // Clear search results when input loses focus.
-    searchInput.addEventListener('blur', function (event) {
-        searchInput.value = ''; // Clear the search input.
-        searchResults.innerHTML = ''; // Clear the result list.
-    });
+
+    initializeSearch();
 });
