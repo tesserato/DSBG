@@ -47,8 +47,12 @@
                     <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy Markdown">
                 </a>
                 {{range .Settings.ShareButtons}}
-                <a href="{{ buildShareUrl .UrlTemplate $.Art $.Settings }}" target="_blank" rel="noopener noreferrer" title="Share on {{ .Name }}">
-                    <img src="{{ genRelativeLink $.Art.LinkToSelf (printf "%s.svg" (lower .Name)) }}" alt="{{ .Name }}">
+                <a href="{{ buildShareUrl .UrlTemplate $.Art $.Settings }}" target="_blank" rel="noopener noreferrer" title="Share on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
+                    {{if isImage .Display}}
+                        <img src="{{ genRelativeLink $.Art.LinkToSelf .Display }}" alt="{{ .Name }}">
+                    {{else}}
+                        {{.Display}}
+                    {{end}}
                 </a>
                 {{end}}
             </div>

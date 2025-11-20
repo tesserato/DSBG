@@ -40,6 +40,7 @@ type Settings struct {
 
 type ShareButton struct {
 	Name        string
+	Display     string
 	UrlTemplate string
 }
 

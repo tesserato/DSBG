@@ -289,10 +289,12 @@ func GenerateHtmlIndex(articles []Article, settings Settings, assets fs.FS) erro
 		"makeLink": func(title string) string {
 			return strings.ReplaceAll(strings.ToLower(title), " ", "-") + "/"
 		},
-		"stringsJoin":    strings.Join,
-		"slicesContains": slices.Contains[[]string],
-		"buildShareUrl":  BuildShareUrl,
-		"lower":          strings.ToLower,
+		"stringsJoin":     strings.Join,
+		"slicesContains":  slices.Contains[[]string],
+		"buildShareUrl":   BuildShareUrl,
+		"lower":           strings.ToLower,
+		"isImage":         isImage,
+		"genRelativeLink": genRelativeLink,
 	}
 	// Load the HTML template from assets
 	htmlIndexTemplate, err := texttemplate.New("html-index.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-index.gohtml")
@@ -527,6 +529,10 @@ func MarkdownFile(path string) (Article, error) {
 }
 
 func genRelativeLink(linkToSelf string, name string) string {
+	if strings.HasPrefix(name, "http://") || strings.HasPrefix(name, "https://") {
+		return name
+	}
+
 	linkToSelf = strings.ToLower(linkToSelf)
 	linkToSelf = strings.ReplaceAll(linkToSelf, "http://", "")
 	linkToSelf = strings.ReplaceAll(linkToSelf, "https://", "")
@@ -560,6 +566,7 @@ func FormatMarkdown(article *Article, settings Settings, assets fs.FS) error {
 		"buildShareUrl":   BuildShareUrl,
 		"slicesContains":  slices.Contains[[]string],
 		"lower":           strings.ToLower,
+		"isImage":         isImage,
 	}
 
 	htmlArticleTemplate, err := texttemplate.New("html-article.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-article.gohtml")
@@ -759,6 +766,18 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) strin
 	result = strings.ReplaceAll(result, "{TEXT}", encodedDesc)
 
 	return result
+}
+
+// isImage checks if a string (filename) has a common image extension.
+func isImage(s string) bool {
+	s = strings.ToLower(s)
+	exts := []string{".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff"}
+	for _, e := range exts {
+		if strings.HasSuffix(s, e) {
+			return true
+		}
+	}
+	return false
 }
 
 // getThemeData returns a parse.Theme struct populated with style settings for the given theme.

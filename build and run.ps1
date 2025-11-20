@@ -49,13 +49,13 @@ Start-Process chrome http://localhost:666/index.html
     -elements-top "sample_content/analytics.html" `
     -elements-bottom "sample_content/giscus.html" `
     -theme "dark" `
-    --share "X:https://twitter.com/intent/tweet?url={URL}&text={TITLE}%0A%0A{TEXT}" `
-    --share "Telegram:https://t.me/share/url?url={URL}&text={TITLE}" `
-    --share "LinkedIn:https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
-    --share "Reddit:https://www.reddit.com/submit?url={URL}&title={TITLE}" `
-    --share "Bluesky:https://bsky.app/intent/compose?text={TEXT}%0A%0A{URL}" `
-    --share "Mastodon:https://mastodon.social/?text={TEXT}%0A%0A{URL}" `
-    --share "Threads:https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
+    --share "X|src/assets/x.svg|https://twitter.com/intent/tweet?url={URL}&text={TITLE}%0A%0A{TEXT}" `
+    --share "Telegram|src/assets/telegram.svg|https://t.me/share/url?url={URL}&text={TITLE}" `
+    --share "LinkedIn|src/assets/linkedin.svg|https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
+    --share "Reddit|src/assets/reddit.svg|https://www.reddit.com/submit?url={URL}&title={TITLE}" `
+    --share "Bluesky|src/assets/bluesky.svg|https://bsky.app/intent/compose?text={TEXT}%0A%0A{URL}" `
+    --share "Mastodon|src/assets/mastodon.svg|https://mastodon.social/?text={TEXT}%0A%0A{URL}" `
+    --share "Threads|src/assets/threads.svg|https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
     -sort "reverse-date-created"
     
     

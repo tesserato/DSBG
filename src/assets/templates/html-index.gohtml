@@ -43,6 +43,7 @@
     </header>
     {{ $Settings := .Settings}}
     {{range .ArticleList}}
+    {{ $Article := . }}
     <div class="detail">
         <div class="headline">
             <a href="{{.LinkToSelf}}" {{if $Settings.OpenInNewTab}}target="_blank" {{end}}>
@@ -72,9 +73,12 @@
                 <img src="copy.svg" alt="Copy Markdown">
             </a>
             {{range $Settings.ShareButtons}}
-            <a href="{{ buildShareUrl .UrlTemplate $ $Settings }}" target="_blank" rel="noopener noreferrer" class="share"
-                title="Share this post on {{ .Name }}">
-                <img src="{{ lower .Name }}.svg" alt="{{ .Name }}">
+            <a href="{{ buildShareUrl .UrlTemplate $Article $Settings }}" target="_blank" rel="noopener noreferrer" title="Share this post on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
+                {{if isImage .Display}}
+                    <img src="{{ genRelativeLink $Article.LinkToSelf .Display }}" alt="{{ .Name }}">
+                {{else}}
+                    {{.Display}}
+                {{end}}
             </a>
             {{end}}
         </div>

@@ -27,18 +27,31 @@ var assets embed.FS
 type shareButtonsFlag []parse.ShareButton
 
 func (s *shareButtonsFlag) String() string {
-	return "Share buttons defined by Name:UrlTemplate"
+	return "Share buttons defined by Name|Display|UrlTemplate"
 }
 
 func (s *shareButtonsFlag) Set(value string) error {
-	parts := strings.SplitN(value, ":", 2)
-	if len(parts) != 2 {
-		return fmt.Errorf("invalid share format, expected 'Name:URL', got '%s'", value)
+	// Split by pipe. Limit to 3 parts so the URL can contain pipes if necessary.
+	parts := strings.SplitN(value, "|", 3)
+
+	if len(parts) == 2 {
+		// Format: Name|UrlTemplate
+		// Default Display to Name
+		*s = append(*s, parse.ShareButton{
+			Name:        parts[0],
+			Display:     parts[0],
+			UrlTemplate: parts[1],
+		})
+	} else if len(parts) == 3 {
+		// Format: Name|Display|UrlTemplate
+		*s = append(*s, parse.ShareButton{
+			Name:        parts[0],
+			Display:     parts[1],
+			UrlTemplate: parts[2],
+		})
+	} else {
+		return fmt.Errorf("invalid share format. Expected 'Name|URL' or 'Name|Display|URL', got '%s'", value)
 	}
-	*s = append(*s, parse.ShareButton{
-		Name:        parts[0],
-		UrlTemplate: parts[1],
-	})
 	return nil
 }
 
@@ -88,7 +101,7 @@ func main() {
 	defaultFlagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open external links in new browser tabs.")
 
 	// Custom share flag
-	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name:UrlTemplate\".\n\tTemplate placeholders: {URL}, {TITLE}, {DESCRIPTION}, {TEXT}.")
+	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|Display|UrlTemplate\" or \"Name|UrlTemplate\".\n\t'Display' is optional; if omitted, 'Name' is used.\n\t'Display' can be text or a link to an image (e.g. 'x.svg').\n\tTemplate placeholders: {URL}, {TITLE}, {DESCRIPTION}, {TEXT}.")
 
 	defaultFlagSet.StringVar(&settings.Sort, "sort", "date-created", "Sort order for articles on the index page. Possible values: date-created, reverse-date-created, date-updated, reverse-date-updated, title, reverse-title, path, reverse-path.")
 	themeString := defaultFlagSet.String("theme", "default", "Predefined website style theme. Possible values: default, dark, clean, colorful.")
@@ -409,6 +422,18 @@ func applyCSSTemplate(themeData parse.Theme, outputDirectory string) error {
 	return nil
 }
 
+// isImage checks if a string (filename) has a common image extension.
+func isImage(s string) bool {
+	s = strings.ToLower(s)
+	exts := []string{".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff"}
+	for _, e := range exts {
+		if strings.HasSuffix(s, e) {
+			return true
+		}
+	}
+	return false
+}
+
 // buildWebsite is the main function for generating the static website.
 // It orchestrates the entire build process: clearing output directory, parsing content files,
 // generating index and RSS feeds, handling CSS and JavaScript, copying assets, and logging completion.
@@ -421,6 +446,32 @@ func buildWebsite(settings parse.Settings) {
 
 	if err := os.MkdirAll(settings.OutputDirectory, 0755); err != nil {
 		log.Fatalf("Error creating output directory: %v", err)
+	}
+
+	// Handle Share Button Assets (copy provided files to output)
+	// This needs to be done EARLY so that 'settings' is updated with the correct relative filenames
+	// before being passed to article processing and templates.
+	for i, btn := range settings.ShareButtons {
+		// Skip URLs
+		if strings.HasPrefix(btn.Display, "http://") || strings.HasPrefix(btn.Display, "https://") {
+			continue
+		}
+
+		// Check if it's an image file based on extension
+		if isImage(btn.Display) {
+			src := btn.Display
+			destName := filepath.Base(src)
+			destPath := filepath.Join(settings.OutputDirectory, destName)
+
+			// Attempt to copy the file
+			if err := copyFile(src, destPath); err != nil {
+				log.Printf("Warning: Failed to copy share icon '%s': %v", src, err)
+			}
+
+			// Update the settings to point to the filename (relative path in output)
+			// This ensures genRelativeLink in templates works correctly by pointing to the flattened file
+			settings.ShareButtons[i].Display = destName
+		}
 	}
 
 	// Retrieve a list of all Markdown and HTML content files from the input directory.
@@ -538,17 +589,6 @@ func buildWebsite(settings parse.Settings) {
 	// Copy static assets to the output directory (search script, social media icons, etc.).
 	saveAsset("search.js", "search.js", settings.OutputDirectory)
 	saveAsset("rss.svg", "rss.svg", settings.OutputDirectory)
-	saveAsset("telegram.svg", "telegram.svg", settings.OutputDirectory)
-	saveAsset("bluesky.svg", "bluesky.svg", settings.OutputDirectory)
-	saveAsset("mastodon.svg", "mastodon.svg", settings.OutputDirectory)
-	saveAsset("threads.svg", "threads.svg", settings.OutputDirectory)
-	saveAsset("x.svg", "x.svg", settings.OutputDirectory)
-	saveAsset("share.svg", "share.svg", settings.OutputDirectory)
-	saveAsset("follow.svg", "follow.svg", settings.OutputDirectory)
-	saveAsset("reddit.svg", "reddit.svg", settings.OutputDirectory)
-	saveAsset("linkedin.svg", "linkedin.svg", settings.OutputDirectory)
-	saveAsset("hackernews.svg", "hackernews.svg", settings.OutputDirectory)
-	saveAsset("facebook.svg", "facebook.svg", settings.OutputDirectory)
 	saveAsset("copy.svg", "copy.svg", settings.OutputDirectory)
 
 	log.Println("Website generated successfully in:", settings.OutputDirectory) // Success log message
