@@ -46,18 +46,18 @@ Start-Process chrome http://localhost:666/index.html
     -input-path "sample_content" `
     -output-path "docs" `
     -base-url "https://tesserato.github.io/DSBG/" `
-    -elements-top "sample_content/analytics.html" `
-    -elements-bottom "sample_content/giscus.html" `
+    -elements-top "sample_assets/analytics.html" `
+    -elements-bottom "sample_assets/giscus.html" `
     -theme "dark" `
-    -share "X|src/assets/x.svg|https://twitter.com/intent/tweet?url={URL}&text={TITLE}%0A%0A{TEXT}" `
-    -share "Telegram|src/assets/telegram.svg|https://t.me/share/url?url={URL}&text={TITLE}" `
-    -share "LinkedIn|src/assets/linkedin.svg|https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
-    -share "Reddit|src/assets/reddit.svg|https://www.reddit.com/submit?url={URL}&title={TITLE}" `
-    -share "Bluesky|src/assets/bluesky.svg|https://bsky.app/intent/compose?text={TEXT}%0A%0A{URL}" `
-    -share "Mastodon|src/assets/mastodon.svg|https://mastodon.social/?text={TEXT}%0A%0A{URL}" `
-    -share "Threads|src/assets/threads.svg|https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
-    -share "Hacker News|src/assets/hackernews.svg|https://news.ycombinator.com/submitlink?u={URL}&t={TITLE}" `
-    -share "Facebook|src/assets/facebook.svg|https://www.facebook.com/sharer/sharer.php?u={URL}" `
+    -share "X|sample_assets/x.svg|https://twitter.com/intent/tweet?url={URL}&text={TITLE}%0A%0A{TEXT}" `
+    -share "Telegram|sample_assets/telegram.svg|https://t.me/share/url?url={URL}&text={TITLE}" `
+    -share "LinkedIn|sample_assets/linkedin.svg|https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
+    -share "Reddit|sample_assets/reddit.svg|https://www.reddit.com/submit?url={URL}&title={TITLE}" `
+    -share "Bluesky|sample_assets/bluesky.svg|https://bsky.app/intent/compose?text={TEXT}%0A%0A{URL}" `
+    -share "Mastodon|sample_assets/mastodon.svg|https://mastodon.social/?text={TEXT}%0A%0A{URL}" `
+    -share "Threads|sample_assets/threads.svg|https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
+    -share "Hacker News|sample_assets/hackernews.svg|https://news.ycombinator.com/submitlink?u={URL}&t={TITLE}" `
+    -share "Facebook|sample_assets/facebook.svg|https://www.facebook.com/sharer/sharer.php?u={URL}" `
     -sort "reverse-date-created"
     
     
