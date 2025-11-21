@@ -8,6 +8,7 @@
     <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
     <meta name="keywords" content="{{ stringsJoin .Art.Tags " , "}}">
     <meta name="description" content="{{ .Art.Description }}">
+    <meta name="author" content="{{ .Settings.Title }}">
 
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="{{ .Art.Title }}" />
@@ -19,6 +20,39 @@
     <meta property="og:image" content="{{ .Settings.BaseUrl }}/{{ .Art.CoverImagePath }}" />
     {{end}}
 
+    <!-- Article-specific Open Graph time metadata -->
+    <meta property="article:published_time" content='{{ .Art.Created.Format "2006-01-02T15:04:05Z07:00" }}'>
+    <meta property="article:modified_time" content='{{ .Art.Updated.Format "2006-01-02T15:04:05Z07:00" }}'>
+
+    <!-- JSON-LD Article / BlogPosting Schema -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}"
+  },
+  "headline": "{{ .Art.Title }}",
+  "description": "{{ .Art.Description }}",
+  {{- if .Art.CoverImagePath }}
+  "image": [
+    "{{ .Settings.BaseUrl }}/{{ .Art.CoverImagePath }}"
+  ],
+  {{- end }}
+  "datePublished": "{{ .Art.Created.Format "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ .Art.Updated.Format "2006-01-02T15:04:05Z07:00" }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Settings.Title }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Settings.Title }}"
+  }
+}
+    </script>
+
     <link rel="canonical" href="{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}">
     <link rel="stylesheet" href="{{ genRelativeLink .Art.LinkToSelf "style.css"}}">
     <link rel="icon" type="image/x-icon" href="{{genRelativeLink .Art.LinkToSelf "favicon.ico"}}">
@@ -26,7 +60,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/{{.Settings.HighlightTheme}}.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
-    <script src="{{ genRelativeLink .Art.LinkToSelf "script.js" }}"></script>
 
     <title>{{.Art.Title}}</title>
 </head>
@@ -34,10 +67,10 @@
 <body>
     <header>
         <div class="articlelinks">
-            <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}>
-                ◁ {{.Settings.Title}}
+            <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}> ◁ {{.Settings.Title}}
             </a>
             <div class="sharebuttons">
+                <img src='{{genRelativeLink .Art.LinkToSelf "share.svg"}}' class="actionicons" alt="Share menu icon">
                 <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
                    onclick="copyMarkdownToClipboard(this)"
                    data-title="{{.Art.Title}}"
@@ -45,14 +78,14 @@
                    data-url="{{$.Settings.BaseUrl}}/{{.Art.LinkToSelf}}"
                    data-image-url="{{if .Art.CoverImagePath}}{{$.Settings.BaseUrl}}/{{.Art.CoverImagePath}}{{end}}"
                    data-tags="{{range $i, $tag := .Art.Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
-                    <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy Markdown summary">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy article Markdown summary">
                 </a>
                 {{range .Settings.ShareButtons}}
                 <a href="{{ buildShareUrl .UrlTemplate $.Art $.Settings }}" target="_blank" rel="noopener noreferrer" title="Share on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
                     {{if isImage .Display}}
-                    <img src="{{ genRelativeLink $.Art.LinkToSelf .Display }}" alt="{{ .Name }} share icon">
+                        <img src="{{ genRelativeLink $.Art.LinkToSelf .Display }}" alt="Share on {{ .Name }}">
                     {{else}}
-                    {{.Display}}
+                        {{.Display}}
                     {{end}}
                 </a>
                 {{end}}
@@ -62,13 +95,20 @@
         <h2>{{.Art.Description}}</h2>
     </header>
 
-    {{.Ctt}}
+    <main>
+        <article>
+            {{.Ctt}}
+        </article>
+    </main>
 
     {{.Settings.AdditionalElemensBottom}}
 
     <footer>
         <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
+
+    <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
+    <script src='{{ genRelativeLink .Art.LinkToSelf "script.js"}}' async defer></script>
 </body>
 
 </html>
