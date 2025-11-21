@@ -42,8 +42,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 
 # [![Build Status](https://github.com/tesserato/DSBG/actions/workflows/go.yml/badge.svg)](https://github.com/tesserato/DSBG/actions/workflows/go.yml)
 # [![Go Version](https://img.shields.io/github/go-mod/go-version/tesserato/DSBG)](https://go.dev/)
-
-Start-Process chrome http://localhost:666/index.html
+# Start-Process chrome http://localhost:666/index.html
 
 
 

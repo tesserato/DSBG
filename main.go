@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"sort"
@@ -134,7 +135,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "DSBG (Dead Simple Blog Generator)")
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, "Usage:")
-		fmt.Fprintln(os.Stderr, "  dsbg [flags]          # Generate a static site")
+		fmt.Fprintln(os.Stderr, "  dsbg [flags]           # Generate a static site")
 		fmt.Fprintln(os.Stderr, "  dsbg -template [flags] # Generate a Markdown template file")
 		fmt.Fprintln(os.Stderr)
 
@@ -289,6 +290,21 @@ func main() {
 	}
 
 	if *watch {
+		// In watch mode, start the server and open the browser ONCE here.
+		addr := ":" + settings.Port
+		url := fmt.Sprintf("http://localhost%s", addr)
+
+		go serve(settings)
+
+		// Small delay so the server is listening before opening the browser.
+		go func() {
+			time.Sleep(300 * time.Millisecond)
+			if err := openBrowser(url); err != nil {
+				log.Printf("Could not open browser: %v\n", err)
+			}
+		}()
+
+		// Block here to watch for changes and rebuild.
 		startWatcher(&settings, templates)
 	}
 }
@@ -340,6 +356,7 @@ func createMarkdownTemplate(templateSettings parse.TemplateSettings) error {
 }
 
 // startWatcher monitors input and asset changes and triggers rebuilds.
+// It no longer starts the HTTP server or opens the browser.
 func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -376,7 +393,6 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 		_ = watcher.Add(settings.PathToCustomFavicon)
 	}
 
-	go serve(*settings)
 	log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputDirectory)
 	for {
 		select {
@@ -400,10 +416,29 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 	}
 }
 
+// openBrowser tries to open the given URL in the user's default browser.
+func openBrowser(url string) error {
+	var cmd *exec.Cmd
+
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command("rundll32", "url.dll,FileProtocolHandler", url)
+	case "darwin":
+		cmd = exec.Command("open", url)
+	case "linux":
+		cmd = exec.Command("xdg-open", url)
+	default:
+		return fmt.Errorf("unsupported platform: %s", runtime.GOOS)
+	}
+
+	return cmd.Start()
+}
+
 // serve starts an HTTP file server for the generated output directory.
 func serve(settings parse.Settings) {
 	addr := ":" + settings.Port
-	fmt.Printf("Serving website from '%s' at http://localhost%s. Press Ctrl+C to stop.\n", settings.OutputDirectory, addr)
+	url := fmt.Sprintf("http://localhost%s", addr)
+	fmt.Printf("Serving website from '%s' at %s. Press Ctrl+C to stop.\n", settings.OutputDirectory, url)
 	http.Handle("/", http.FileServer(http.Dir(settings.OutputDirectory)))
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("Server error: %v", err)
