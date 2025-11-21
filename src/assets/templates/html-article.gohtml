@@ -5,10 +5,10 @@
     {{.Settings.AdditionalElementsTop}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Dead Simple Blog Generator (DSBG)">
+    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
     <meta name="keywords" content="{{ stringsJoin .Art.Tags " , "}}">
     <meta name="description" content="{{ .Art.Description }}">
-    
+
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="{{ .Art.Title }}" />
     <meta property="og:description" content="{{ .Art.Description }}" />
@@ -34,9 +34,11 @@
 <body>
     <header>
         <div class="articlelinks">
-            <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}> ◁ {{.Settings.Title}}
+            <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}>
+                ◁ {{.Settings.Title}}
             </a>
-            <div class="sharebuttons">       
+            <div class="sharebuttons">
+                <img src='{{genRelativeLink .Art.LinkToSelf "share.svg"}}' class="actionicons" alt="Share this article">
                 <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
                    onclick="copyMarkdownToClipboard(this)"
                    data-title="{{.Art.Title}}"
@@ -44,14 +46,14 @@
                    data-url="{{$.Settings.BaseUrl}}/{{.Art.LinkToSelf}}"
                    data-image-url="{{if .Art.CoverImagePath}}{{$.Settings.BaseUrl}}/{{.Art.CoverImagePath}}{{end}}"
                    data-tags="{{range $i, $tag := .Art.Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
-                    <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy Markdown">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy Markdown summary">
                 </a>
                 {{range .Settings.ShareButtons}}
                 <a href="{{ buildShareUrl .UrlTemplate $.Art $.Settings }}" target="_blank" rel="noopener noreferrer" title="Share on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
                     {{if isImage .Display}}
-                        <img src="{{ genRelativeLink $.Art.LinkToSelf .Display }}" alt="{{ .Name }}">
+                    <img src="{{ genRelativeLink $.Art.LinkToSelf .Display }}" alt="{{ .Name }} share icon">
                     {{else}}
-                        {{.Display}}
+                    {{.Display}}
                     {{end}}
                 </a>
                 {{end}}
@@ -66,7 +68,7 @@
     {{.Settings.AdditionalElemensBottom}}
 
     <footer>
-        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 </body>
 

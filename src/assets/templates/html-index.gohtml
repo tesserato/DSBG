@@ -24,12 +24,14 @@
             </h1>
             <div class="sharebuttons">
                 <a href="rss.xml" target="_blank" title="RSS Feed">
-                    <img src="rss.svg" alt="RSS Logo">
+                    <img src="rss.svg" alt="RSS feed icon">
                 </a>
             </div>
         </div>
-        <input type="text" id="search-input" placeholder="Search...">
-        <ul id="search-results"></ul>
+        <input type="text" id="search-input" placeholder="Search..." aria-label="Search articles">
+        <section aria-live="polite" aria-label="Search results">
+            <ul id="search-results"></ul>
+        </section>
         <nav>
             {{range .PageList}}
             <a href="{{.LinkToSelf}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}>{{.Title}}</a>
@@ -43,48 +45,48 @@
     </header>
     {{ $Settings := .Settings}}
     <main id="articles-container">
-    {{range .ArticleList}}
-    {{ $Article := . }}
-    <div class="detail">
-        <div class="headline">
-            <a href="{{.LinkToSelf}}" {{if $Settings.OpenInNewTab}}target="_blank" {{end}}>
-                <h2>{{.Title}}</h2>
-            </a>
-            {{range .Tags}}
-            <button class="on">{{.}}</button>
+        {{range .ArticleList}}
+        {{ $Article := . }}
+        <div class="detail">
+            <div class="headline">
+                <a href="{{.LinkToSelf}}" {{if $Settings.OpenInNewTab}}target="_blank" {{end}}>
+                    <h2>{{.Title}}</h2>
+                </a>
+                {{range .Tags}}
+                <button class="on" type="button">{{.}}</button>
+                {{end}}
+                <div class="info">
+                    <h3 class="date">⋆ {{.Created.Format $Settings.DateFormat}}</h3>
+                    <h3 class="date">♰ {{.Updated.Format $Settings.DateFormat}}</h3>
+                </div>
+            </div>
+            {{if .CoverImagePath}}
+            <img src="{{.CoverImagePath}}" alt="{{.Title}}">
             {{end}}
-            <div class="info">
-                <h3 class="date">⋆ {{.Created.Format $Settings.DateFormat}}</h3>
-                <h3 class="date">♰ {{.Updated.Format $Settings.DateFormat}}</h3>
+            <p class="description">{{.Description}}</p>
+
+            <div class="sharebuttons">
+                <a href="javascript:void(0);" class="share" title="Copy Markdown summary to clipboard"
+                   onclick="copyMarkdownToClipboard(this)"
+                   data-title="{{.Title}}"
+                   data-description="{{.Description}}"
+                   data-url="{{$Settings.BaseUrl}}/{{.LinkToSelf}}"
+                   data-image-url="{{if .CoverImagePath}}{{$Settings.BaseUrl}}/{{.CoverImagePath}}{{end}}"
+                   data-tags="{{range $i, $tag := .Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
+                    <img src="copy.svg" alt="Copy Markdown summary">
+                </a>
+                {{range $Settings.ShareButtons}}
+                <a href="{{ buildShareUrl .UrlTemplate $Article $Settings }}" target="_blank" rel="noopener noreferrer" title="Share this post on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
+                    {{if isImage .Display}}
+                    <img src="{{ genRelativeLink $Article.LinkToSelf .Display }}" alt="{{ .Name }} share icon">
+                    {{else}}
+                    {{.Display}}
+                    {{end}}
+                </a>
+                {{end}}
             </div>
         </div>
-        {{if .CoverImagePath}}
-        <img src="{{.CoverImagePath}}" alt="{{.Title}}">
         {{end}}
-        <p class="description">{{.Description}}</p>
-
-        <div class="sharebuttons">
-            <a href="javascript:void(0);" class="share" title="Copy Markdown summary to clipboard"
-               onclick="copyMarkdownToClipboard(this)"
-               data-title="{{.Title}}"
-               data-description="{{.Description}}"
-               data-url="{{$Settings.BaseUrl}}/{{.LinkToSelf}}"
-               data-image-url="{{if .CoverImagePath}}{{$Settings.BaseUrl}}/{{.CoverImagePath}}{{end}}"
-               data-tags="{{range $i, $tag := .Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
-                <img src="copy.svg" alt="Copy Markdown">
-            </a>
-            {{range $Settings.ShareButtons}}
-            <a href="{{ buildShareUrl .UrlTemplate $Article $Settings }}" target="_blank" rel="noopener noreferrer" title="Share this post on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
-                {{if isImage .Display}}
-                    <img src="{{ genRelativeLink $Article.LinkToSelf .Display }}" alt="{{ .Name }}">
-                {{else}}
-                    {{.Display}}
-                {{end}}
-            </a>
-            {{end}}
-        </div>
-    </div>
-    {{end}}
     </main>
     <script src="script.js" async defer></script>
     {{.Settings.AdditionalElemensBottom}}

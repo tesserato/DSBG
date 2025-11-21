@@ -92,7 +92,7 @@ func GetPaths(root string, extensions []string) ([]string, error) {
 	return files, err
 }
 
-// cleanString cleans url/path strings.
+// cleanString cleans URL/path strings.
 func cleanString(url string) string {
 	var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9\/\\\. ]+`)
 	url = nonAlphanumericRegex.ReplaceAllString(url, "")
@@ -112,6 +112,7 @@ func cleanString(url string) string {
 }
 
 // CopyHtmlResources copies associated resources for an article and determines output path.
+//
 // resources: A list of relative file paths found in the article (images, scripts, etc).
 func CopyHtmlResources(settings Settings, article *Article, resources []string) error {
 	relativeInputPath, err := filepath.Rel(settings.InputDirectory, article.OriginalPath)
@@ -162,18 +163,27 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 
 	originalDirectory := filepath.Dir(article.OriginalPath)
 
+	// Copy cover image both to the site root (as before) and to the article output directory.
 	if article.CoverImagePath != "" {
 		coverImageOrigPath := filepath.Join(originalDirectory, article.CoverImagePath)
-		coverImageDestPath := filepath.Join(settings.OutputDirectory, article.CoverImagePath)
+		coverImageRootDestPath := filepath.Join(settings.OutputDirectory, article.CoverImagePath)
+		coverImageArticleDestPath := filepath.Join(outputDirectory, article.CoverImagePath)
 
-		if !(slices.Contains(article.Tags, "PAGE")) {
+		if !slices.Contains(article.Tags, "PAGE") {
 			file, err := os.ReadFile(coverImageOrigPath)
 			if err != nil {
 				return fmt.Errorf("error reading file '%s': %w", coverImageOrigPath, err)
 			}
-			err = os.WriteFile(coverImageDestPath, file, 0644)
-			if err != nil {
-				return fmt.Errorf("error writing file '%s': %w", coverImageDestPath, err)
+
+			if err := os.MkdirAll(filepath.Dir(coverImageArticleDestPath), 0755); err != nil {
+				return fmt.Errorf("error creating directory for cover image '%s': %w", coverImageArticleDestPath, err)
+			}
+
+			if err := os.WriteFile(coverImageRootDestPath, file, 0644); err != nil {
+				return fmt.Errorf("error writing cover image file '%s': %w", coverImageRootDestPath, err)
+			}
+			if err := os.WriteFile(coverImageArticleDestPath, file, 0644); err != nil {
+				return fmt.Errorf("error writing article cover image file '%s': %w", coverImageArticleDestPath, err)
 			}
 		}
 	}
@@ -311,7 +321,7 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	return template.URL(result)
 }
 
-// CleanContent prepares text content for Fuse.js search indexing.
+// CleanContent prepares text content for search indexing.
 func CleanContent(s string) []string {
 	replacements := map[string]string{
 		"’": "'",
@@ -343,6 +353,7 @@ func IsImage(s string) bool {
 	return false
 }
 
+// GetThemeData returns theme configuration for a given Style.
 func GetThemeData(style Style) Theme {
 	switch style {
 	case Dark:
@@ -420,4 +431,39 @@ func ApplyCSSTemplate(themeData Theme, outputDirectory string, tmpl *texttemplat
 		return fmt.Errorf("error saving processed css file: %w", err)
 	}
 	return nil
+}
+
+// ParseSortOrder converts a string into a SortOrder, validating supported options.
+func ParseSortOrder(s string) (SortOrder, error) {
+	s = strings.ToLower(strings.TrimSpace(s))
+	switch SortOrder(s) {
+	case SortDateCreated,
+		SortReverseDateCreated,
+		SortDateUpdated,
+		SortReverseDateUpdated,
+		SortTitle,
+		SortReverseTitle,
+		SortPath,
+		SortReversePath:
+		return SortOrder(s), nil
+	default:
+		return "", fmt.Errorf("unsupported sort order: %s", s)
+	}
+}
+
+// ParseStyle converts a string representation into a Style constant.
+func ParseStyle(s string) (Style, error) {
+	s = strings.ToLower(strings.TrimSpace(s))
+	switch s {
+	case "", "default":
+		return Default, nil
+	case "dark":
+		return Dark, nil
+	case "clean":
+		return Clean, nil
+	case "colorful":
+		return Colorful, nil
+	default:
+		return Default, fmt.Errorf("unknown style %q", s)
+	}
 }

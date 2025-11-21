@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
+	"log"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -22,7 +23,7 @@ import (
 	"go.abhg.dev/goldmark/frontmatter"
 )
 
-// Configure Goldmark Markdown parser with frontmatter support.
+// Markdown is the configured Goldmark Markdown parser with frontmatter support.
 var Markdown = goldmark.New(
 	goldmark.WithRendererOptions(
 		rendererhtml.WithUnsafe(),
@@ -57,12 +58,12 @@ func MarkdownFile(path string) (Article, []string, error) {
 	// Create a context to store frontmatter.
 	context := parser.NewContext()
 
-	// Parse the Markdown content into AST
+	// Parse the Markdown content into AST.
 	p := Markdown.Parser()
 	reader := text.NewReader(data)
 	doc := p.Parse(reader, parser.WithContext(context))
 
-	// Extract resources from AST (images)
+	// Extract resources from AST (images).
 	var resources []string
 	ast.Walk(doc, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
@@ -77,7 +78,7 @@ func MarkdownFile(path string) (Article, []string, error) {
 		return ast.WalkContinue, nil
 	})
 
-	// Render to HTML
+	// Render to HTML.
 	var buf bytes.Buffer
 	r := Markdown.Renderer()
 	if err := r.Render(&buf, data, doc); err != nil {
@@ -115,7 +116,7 @@ func MarkdownFile(path string) (Article, []string, error) {
 				if reflect.TypeOf(value).Kind() == reflect.String {
 					createdTime, err := DateTimeFromString(value.(string))
 					if err != nil {
-						fmt.Printf("Warning: Failed to parse 'created' date in '%s': %v\n", path, err)
+						log.Printf("Warning: Failed to parse 'created' date in '%s': %v\n", path, err)
 					} else {
 						article.Created = createdTime
 					}
@@ -126,7 +127,7 @@ func MarkdownFile(path string) (Article, []string, error) {
 				if reflect.TypeOf(value).Kind() == reflect.String {
 					updatedTime, err := DateTimeFromString(value.(string))
 					if err != nil {
-						fmt.Printf("Warning: Failed to parse 'updated' date in '%s': %v\n", path, err)
+						log.Printf("Warning: Failed to parse 'updated' date in '%s': %v\n", path, err)
 					} else {
 						article.Updated = updatedTime
 					}
@@ -186,7 +187,7 @@ func MarkdownFile(path string) (Article, []string, error) {
 }
 
 // FormatMarkdown applies an HTML template to the Markdown content of an article.
-// Returns an error if template parsing or execution fails.
+// Returns an error if template execution fails.
 func FormatMarkdown(article *Article, settings Settings, tmpl *texttemplate.Template, assets fs.FS) error {
 	// Execute the template with article data and settings.
 	var tp bytes.Buffer

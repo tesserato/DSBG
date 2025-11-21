@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 	"sync"
@@ -24,7 +25,7 @@ import (
 //go:embed src/assets
 var assets embed.FS
 
-// shareButtonsFlag is a custom flag type to handle repeated --share flags
+// shareButtonsFlag is a custom flag type to handle repeated --share flags.
 type shareButtonsFlag []parse.ShareButton
 
 func (s *shareButtonsFlag) String() string {
@@ -65,7 +66,7 @@ func noFlagsPassed(fs *flag.FlagSet) bool {
 	return !found
 }
 
-// logFlag is a helper function to log the details of a flag.
+// logFlag writes a description of a flag to stderr.
 func logFlag(f *flag.Flag) {
 	defaultValue := f.DefValue
 	if defaultValue != "" {
@@ -102,7 +103,8 @@ func main() {
 	// Custom share flag
 	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|Display|UrlTemplate\".")
 
-	defaultFlagSet.StringVar(&settings.Sort, "sort", "date-created", "Sort order for articles.")
+	// Sort is strongly-typed via a separate flag string, then parsed into settings.Sort.
+	sortFlag := defaultFlagSet.String("sort", "date-created", "Sort order for articles.")
 	themeString := defaultFlagSet.String("theme", "default", "Predefined website style theme.")
 	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "HTML file to include at the top of <head>.")
 	pathToAdditionalElemensBottom := defaultFlagSet.String("elements-bottom", "", "HTML file to include at the bottom of <body>.")
@@ -193,33 +195,37 @@ func main() {
 		settings.BaseUrl = strings.TrimSuffix(settings.BaseUrl, "/")
 	}
 
-	switch *themeString {
-	case "default":
-		settings.Theme = parse.Default
+	// Parse theme into strongly-typed Style and derive highlight theme.
+	style, err := parse.ParseStyle(*themeString)
+	if err != nil {
+		log.Printf("Unknown style '%s', using default.\n", *themeString)
+		style = parse.Default
+	}
+	settings.Theme = style
+	switch style {
+	case parse.Default:
 		settings.HighlightTheme = "stackoverflow-light"
-	case "dark":
-		settings.Theme = parse.Dark
-		settings.HighlightTheme = "github-dark-dimmed"
-	case "clean":
-		settings.Theme = parse.Clean
-		settings.HighlightTheme = "github-dark-dimmed"
-	case "colorful":
-		settings.Theme = parse.Colorful
+	case parse.Dark, parse.Clean, parse.Colorful:
 		settings.HighlightTheme = "github-dark-dimmed"
 	default:
-		settings.Theme = parse.Default
 		settings.HighlightTheme = "stackoverflow-light"
-		log.Printf("Unknown style '%s', using default.\n", *themeString)
 	}
 
-	// Parse templates once
+	// Parse sort order into strongly-typed SortOrder.
+	sortOrder, err := parse.ParseSortOrder(*sortFlag)
+	if err != nil {
+		log.Fatalf("invalid sort order '%s': %v", *sortFlag, err)
+	}
+	settings.Sort = sortOrder
+
+	// Parse templates once.
 	templates, err := parse.LoadTemplates(assets)
 	if err != nil {
 		log.Fatalf("Error loading templates: %v", err)
 	}
 
-	// Perform build (passed as pointer to update ForceOverwrite if confirmed)
-	// clean=true for the initial build
+	// Perform build (passed as pointer to update ForceOverwrite if confirmed).
+	// clean=true for the initial build.
 	if err := buildWebsite(&settings, templates, true); err != nil {
 		log.Fatal(err)
 	}
@@ -321,7 +327,9 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 			if event.Has(fsnotify.Write) {
 				log.Println("File change detected:", event.Name, "- Rebuilding website...")
 				// clean=false for rebuilds to avoid file locks with running server
-				buildWebsite(settings, templates, false)
+				if err := buildWebsite(settings, templates, false); err != nil {
+					log.Printf("Rebuild failed: %v\n", err)
+				}
 				log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputDirectory)
 			}
 		case err, ok := <-watcher.Errors:
@@ -363,8 +371,8 @@ func deleteChildren(dir string) error {
 	return nil
 }
 
-// buildWebsite accepts pointer to settings to update ForceOverwrite on first success
-// clean: if true, attempts to delete the output directory content before building.
+// buildWebsite generates the website using the provided settings and templates.
+// If clean is true, the output directory contents are removed prior to building.
 func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean bool) error {
 	if clean {
 		// Check output directory safety
@@ -424,50 +432,64 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 	var articles []parse.Article
 	var searchIndex []map[string]interface{}
 	var mu sync.Mutex
+
+	// Worker pool for concurrent processing of files.
+	numWorkers := runtime.NumCPU()
+	if numWorkers < 1 {
+		numWorkers = 1
+	}
+
+	pathsCh := make(chan string)
 	var wg sync.WaitGroup
 
-	// Concurrent Processing
-	for _, path := range files {
+	for i := 0; i < numWorkers; i++ {
 		wg.Add(1)
-		go func(filePath string) {
+		go func() {
 			defer wg.Done()
-			article, err := processFile(filePath, *settings, templates)
-			if err != nil {
-				log.Printf("Error processing file %s: %v\n", filePath, err)
-				return
-			}
+			for filePath := range pathsCh {
+				article, err := processFile(filePath, *settings, templates)
+				if err != nil {
+					log.Printf("Error processing file %s: %v\n", filePath, err)
+					continue
+				}
 
-			mu.Lock()
-			articles = append(articles, article)
-			searchIndex = append(searchIndex, map[string]interface{}{
-				"title":        article.Title,
-				"content":      parse.CleanContent(article.TextContent),
-				"description":  article.Description,
-				"tags":         article.Tags,
-				"url":          article.LinkToSelf,
-				"html_content": article.HtmlContent,
-			})
-			mu.Unlock()
-		}(path)
+				mu.Lock()
+				articles = append(articles, article)
+				searchIndex = append(searchIndex, map[string]interface{}{
+					"title":        article.Title,
+					"content":      parse.CleanContent(article.TextContent),
+					"description":  article.Description,
+					"tags":         article.Tags,
+					"url":          article.LinkToSelf,
+					"html_content": article.HtmlContent,
+				})
+				mu.Unlock()
+			}
+		}()
 	}
+
+	for _, path := range files {
+		pathsCh <- path
+	}
+	close(pathsCh)
 	wg.Wait()
 
 	switch settings.Sort {
-	case "date-created":
+	case parse.SortDateCreated:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].Created.After(articles[j].Created) })
-	case "reverse-date-created":
+	case parse.SortReverseDateCreated:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].Created.Before(articles[j].Created) })
-	case "date-updated":
+	case parse.SortDateUpdated:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].Updated.After(articles[j].Updated) })
-	case "reverse-date-updated":
+	case parse.SortReverseDateUpdated:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].Updated.Before(articles[j].Updated) })
-	case "title":
+	case parse.SortTitle:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].Title < articles[j].Title })
-	case "reverse-title":
+	case parse.SortReverseTitle:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].Title > articles[j].Title })
-	case "path":
+	case parse.SortPath:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].OriginalPath < articles[j].OriginalPath })
-	case "reverse-path":
+	case parse.SortReversePath:
 		sort.Slice(articles, func(i, j int) bool { return articles[i].OriginalPath > articles[j].OriginalPath })
 	}
 

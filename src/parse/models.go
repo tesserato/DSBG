@@ -14,6 +14,21 @@ const (
 	Colorful
 )
 
+// SortOrder is a strongly-typed representation of article sort order.
+type SortOrder string
+
+const (
+	SortDateCreated        SortOrder = "date-created"
+	SortReverseDateCreated SortOrder = "reverse-date-created"
+	SortDateUpdated        SortOrder = "date-updated"
+	SortReverseDateUpdated SortOrder = "reverse-date-updated"
+	SortTitle              SortOrder = "title"
+	SortReverseTitle       SortOrder = "reverse-title"
+	SortPath               SortOrder = "path"
+	SortReversePath        SortOrder = "reverse-path"
+)
+
+// Settings holds global configuration for site generation.
 type Settings struct {
 	Title                     string
 	DescriptionMarkdown       string
@@ -34,7 +49,7 @@ type Settings struct {
 	OpenInNewTab              bool
 	BaseUrl                   string
 	ShareButtons              []ShareButton
-	Sort                      string
+	Sort                      SortOrder
 	HighlightTheme            string
 	Port                      string
 	ForceOverwrite            bool

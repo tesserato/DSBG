@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/fs"
+	"log"
 	"os"
 	"path/filepath"
 	"slices"
@@ -15,7 +16,7 @@ import (
 )
 
 // HTMLFile parses an HTML file, extracts metadata from tags, and populates an Article struct.
-// Returns the parsed Article and a list of extracted resources.
+// It returns the parsed Article and a list of extracted resources.
 func HTMLFile(path string) (Article, []string, error) {
 	// Read the HTML file content.
 	data, err := os.ReadFile(path)
@@ -37,7 +38,7 @@ func HTMLFile(path string) (Article, []string, error) {
 		return Article{}, nil, fmt.Errorf("failed to parse HTML content of '%s': %w", path, err)
 	}
 
-	// Extract resources using the existing HTML tree
+	// Extract resources using the existing HTML tree.
 	resources := ExtractResources(htmlTree)
 
 	// Get info from <title> tag.
@@ -79,14 +80,14 @@ func HTMLFile(path string) (Article, []string, error) {
 			case "created":
 				createdTime, err := DateTimeFromString(val)
 				if err != nil {
-					fmt.Printf("Warning: Failed to parse 'created' date from meta tag in '%s': %v\n", path, err)
+					log.Printf("Warning: Failed to parse 'created' date from meta tag in '%s': %v\n", path, err)
 				} else {
 					article.Created = createdTime
 				}
 			case "updated":
 				updatedTime, err := DateTimeFromString(val)
 				if err != nil {
-					fmt.Printf("Warning: Failed to parse 'updated' date from meta tag in '%s': %v\n", path, err)
+					log.Printf("Warning: Failed to parse 'updated' date from meta tag in '%s': %v\n", path, err)
 				} else {
 					article.Updated = updatedTime
 				}
@@ -119,7 +120,6 @@ func HTMLFile(path string) (Article, []string, error) {
 }
 
 // GenerateHtmlIndex creates an HTML index page listing all processed articles.
-// Returns an error if template parsing or execution fails, or if writing the output file fails.
 func GenerateHtmlIndex(articles []Article, settings Settings, tmpl *texttemplate.Template, assets fs.FS) error {
 	// Separate articles into pages and regular articles based on tags.
 	var allTags []string

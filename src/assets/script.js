@@ -29,6 +29,7 @@ function initializeTagFilters() {
     for (const tag of sortedTags) {
         const btn = document.createElement("button");
         btn.className = "on"; // Initially set the button to the 'on' state (selected).
+        btn.type = "button";
         btn.innerHTML = tag;
         btnContainer.appendChild(btn); // Add the new button to the container.
     }
@@ -39,6 +40,7 @@ function initializeTagFilters() {
     showAllBtn.innerHTML = "⬤"; // Use a circle character for visual representation.
     showAllBtn.id = "show_all_btn"; // Set the ID to be able to reference it easily.
     showAllBtn.title = "Select all tags"; // A title for accessibility.
+    showAllBtn.type = "button";
 
     // Create a "Hide All" button.
     const hideAllBtn = document.createElement("button");
@@ -46,6 +48,7 @@ function initializeTagFilters() {
     hideAllBtn.innerHTML = "⬤"; // Use a circle character for visual representation.
     hideAllBtn.id = "hide_all_btn"; // Set the ID to be able to reference it easily.
     hideAllBtn.title = "De-select all tags"; // A title for accessibility.
+    hideAllBtn.type = "button";
 
     // Insert the "Show All" and "Hide All" buttons at the beginning of the container.
     btnContainer.insertBefore(hideAllBtn, btnContainer.firstChild);
@@ -71,17 +74,16 @@ function initializeTagFilters() {
      */
     function refreshPosts() {
         for (const post of posts) {
+            const buttons = post.getElementsByTagName("button");
             let isVisible = false;
-            // Iterate through the tag buttons within each post.
-            for (const btn of post.getElementsByTagName("button")) {
-                // If any tag button within the post is in the 'on' state, show the post.
-                if (btn.className === "on") {
-                    post.style.display = "";
-                    break; // No need to check further tags for this post.
+
+            for (const btn of buttons) {
+                if (btn.classList.contains("on")) {
+                    isVisible = true;
+                    break;
                 }
-                // If all tag buttons within the post are in the 'off' state, hide the post.
-                post.style.display = "none";
             }
+            post.style.display = isVisible ? "" : "none";
         }
     }
 
@@ -123,7 +125,7 @@ function initializeTagFilters() {
     }
 
     // Add event listener to the "Show All" button.
-    showAllBtn.addEventListener("click", function (e) {
+    showAllBtn.addEventListener("click", function () {
         // Set all filter buttons to 'on' to show all posts.
         for (const btn of filterButtons) {
             btn.className = "on";
@@ -132,7 +134,7 @@ function initializeTagFilters() {
     }, false);
 
     // Add event listener to the "Hide All" button.
-    hideAllBtn.addEventListener("click", function (e) {
+    hideAllBtn.addEventListener("click", function () {
         // Set all filter buttons to 'off' to hide all posts.
         for (const btn of filterButtons) {
             btn.className = "off";
@@ -143,7 +145,6 @@ function initializeTagFilters() {
 
 // Call the function to initialize the tag filters when the script runs.
 initializeTagFilters();
-
 
 /**
  * Copies a generated Markdown summary of an article to the clipboard.
