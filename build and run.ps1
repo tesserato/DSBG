@@ -49,6 +49,7 @@ Start-Process chrome http://localhost:666/index.html
 
 ./dsbg.exe -title "Dead Simple Blog Generator" `
     -description "$description" `
+    -overwrite `
     -watch `
     -input-path "sample_content" `
     -output-path "docs" `
