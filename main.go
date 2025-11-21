@@ -74,7 +74,7 @@ func logFlag(f *flag.Flag) {
 	if defaultValue != "" {
 		defaultValue = fmt.Sprintf(" (default: %v)", defaultValue)
 	}
-	fmt.Fprintf(os.Stderr, "  -%v %v\n    %v \n", f.Name, defaultValue, f.Usage)
+	fmt.Fprintf(os.Stderr, "  -%v %v\n    %v\n", f.Name, defaultValue, f.Usage)
 }
 
 // main is the entrypoint for DSBG (Dead Simple Blog Generator).
@@ -85,57 +85,102 @@ func main() {
 	var settings parse.Settings
 	var shareButtons shareButtonsFlag
 
-	// --- Default FlagSet Flags ---
-	defaultFlagSet.StringVar(&settings.Title, "title", "Blog", "The title of the blog, used in the header and page titles.")
-	defaultFlagSet.StringVar(&settings.BaseUrl, "base-url", "", "The base URL of the blog (e.g., https://example.com).")
-	defaultFlagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "A short description of the blog.")
-	defaultFlagSet.StringVar(&settings.InputDirectory, "input-path", "content", "Path to source content files.")
-	defaultFlagSet.StringVar(&settings.OutputDirectory, "output-path", "public", "Path to output directory.")
-	defaultFlagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format (Go style).")
-	defaultFlagSet.StringVar(&settings.IndexName, "index-name", "index.html", "Filename for the main index page.")
-	defaultFlagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Path to a custom CSS file.")
-	defaultFlagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Path to a custom JavaScript file.")
-	defaultFlagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Path to a custom favicon file.")
+	// --- Default FlagSet Flags (site generation) ---
+	defaultFlagSet.StringVar(&settings.Title, "title", "Blog", "Main title of your blog, used in header and page titles.")
+	defaultFlagSet.StringVar(&settings.BaseUrl, "base-url", "", "Base URL of the blog (e.g., https://example.com). Defaults to http://localhost:<port>.")
+	defaultFlagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "Short Markdown description for the homepage.")
+	defaultFlagSet.StringVar(&settings.InputDirectory, "input-path", "content", "Path to source content files (.md or .html).")
+	defaultFlagSet.StringVar(&settings.OutputDirectory, "output-path", "public", "Path to output directory for the generated static site.")
+	defaultFlagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format for rendered dates (Go time layout).")
+	defaultFlagSet.StringVar(&settings.IndexName, "index-name", "index.html", "Filename used as index for each article directory.")
+	defaultFlagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Optional path to a custom CSS file. If empty, DSBG generates style.css from the selected theme.")
+	defaultFlagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Optional path to a custom JavaScript file. If empty, DSBG copies the built-in script.js.")
+	defaultFlagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Optional path to a custom favicon.ico. If empty, DSBG copies the built-in favicon.")
 	defaultFlagSet.BoolVar(&settings.DoNotExtractTagsFromPaths, "ignore-tags-from-paths", false, "Disable extracting tags from directory names.")
-	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromPaths, "keep-date-in-paths", false, "Do not remove date patterns from paths.")
-	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "Do not remove date patterns from titles.")
-	defaultFlagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open external links in new browser tabs.")
-	defaultFlagSet.StringVar(&settings.Port, "port", "666", "Port for the local server (default: 666).")
-	defaultFlagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Overwrite output directory without confirmation.")
+	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromPaths, "keep-date-in-paths", false, "Keep date patterns in output paths instead of stripping them.")
+	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "Keep date patterns in titles instead of stripping them.")
+	defaultFlagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open links in a new browser tab.")
+	defaultFlagSet.StringVar(&settings.Port, "port", "666", "Port for the local HTTP preview server.")
+	defaultFlagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Overwrite non-empty output directory without asking for confirmation.")
 
 	// Author / Publisher metadata flags.
-	defaultFlagSet.StringVar(&settings.AuthorName, "author-name", "", "Author name for structured data and meta tags (defaults to blog title).")
-	defaultFlagSet.StringVar(&settings.PublisherName, "publisher-name", "", "Publisher name for structured data (defaults to blog title).")
-	defaultFlagSet.StringVar(&settings.PublisherLogoPath, "publisher-logo-path", "", "Path to a publisher logo image for structured data (relative to site root).")
+	defaultFlagSet.StringVar(&settings.AuthorName, "author-name", "", "Author name for meta tags and structured data (defaults to blog title if empty).")
+	defaultFlagSet.StringVar(&settings.PublisherName, "publisher-name", "", "Publisher/organization name for structured data (defaults to blog title if empty).")
+	defaultFlagSet.StringVar(&settings.PublisherLogoPath, "publisher-logo-path", "", "Path to a publisher logo image (relative to the current working directory). The file is copied to the output directory root and referenced in structured data.")
 
 	// Custom share flag.
-	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|Display|UrlTemplate\".")
+	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|URL\" or \"Name|Display|URL\". If Display points to an image path, it will be copied into the output directory.")
 
 	// Strongly-typed sort and theme are configured via string flags and parsed later.
-	sortFlag := defaultFlagSet.String("sort", "date-created", "Sort order for articles.")
-	themeString := defaultFlagSet.String("theme", "default", "Predefined website style theme.")
-	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "HTML file to include at the top of <head>.")
-	pathToAdditionalElemensBottom := defaultFlagSet.String("elements-bottom", "", "HTML file to include at the bottom of <body>.")
-	watch := defaultFlagSet.Bool("watch", false, "Enable watch mode.")
+	sortFlag := defaultFlagSet.String("sort", "date-created", "Sort order for articles: date-created, reverse-date-created, date-updated, reverse-date-updated, title, reverse-title, path, reverse-path.")
+	themeString := defaultFlagSet.String("theme", "default", "Predefined theme: default, dark, clean, colorful.")
+	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "HTML file to include at the top of <head> on all pages.")
+	pathToAdditionalElemensBottom := defaultFlagSet.String("elements-bottom", "", "HTML file to include at the bottom of <body> on all pages.")
+	watch := defaultFlagSet.Bool("watch", false, "Enable watch mode: rebuild site and reload assets when source files change.")
 
-	// --- Template FlagSet Flags ---
+	// --- Template FlagSet Flags (template generation) ---
 	var templateSettings parse.TemplateSettings
-	templateFlagSet.StringVar(&templateSettings.Title, "title", "", "Title for template.")
-	templateFlagSet.StringVar(&templateSettings.Description, "description", "", "Description for template.")
-	templateFlagSet.StringVar(&templateSettings.Created, "created", "", "Created date for template.")
-	templateFlagSet.StringVar(&templateSettings.Updated, "updated", "", "Updated date for template.")
-	templateFlagSet.StringVar(&templateSettings.CoverImagePath, "cover-image-path", "", "Cover image path for template.")
-	templateFlagSet.StringVar(&templateSettings.Tags, "tags", "", "Comma-separated tags for template.")
-	templateFlagSet.StringVar(&templateSettings.OutputDirectory, "output-path", ".", "Directory to save the template.")
-	templateFlagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format.")
+	templateFlagSet.StringVar(&templateSettings.Title, "title", "", "Title to prefill in the Markdown template.")
+	templateFlagSet.StringVar(&templateSettings.Description, "description", "", "Description to prefill in the Markdown template.")
+	templateFlagSet.StringVar(&templateSettings.Created, "created", "", "Created date to prefill; if empty, uses current date.")
+	templateFlagSet.StringVar(&templateSettings.Updated, "updated", "", "Updated date to prefill; if empty, uses current date.")
+	templateFlagSet.StringVar(&templateSettings.CoverImagePath, "cover-image-path", "", "Cover image path to prefill in the template frontmatter.")
+	templateFlagSet.StringVar(&templateSettings.Tags, "tags", "", "Comma-separated tags to prefill in the template frontmatter.")
+	templateFlagSet.StringVar(&templateSettings.OutputDirectory, "output-path", ".", "Directory in which to create the new Markdown template file.")
+	templateFlagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format used for created/updated fields in the template.")
 
+	// Custom usage: this is the single source of truth about program usage.
 	defaultFlagSet.Usage = func() {
-		fmt.Fprintf(os.Stderr, "DSBG (Dead Simple Blog Generator)\n")
-		fmt.Fprintf(os.Stderr, "Usage: dsbg [flags] or dsbg -template [flags]\n\n")
-		fmt.Fprintf(os.Stderr, "Default mode flags:\n")
+		fmt.Fprintln(os.Stderr, "DSBG (Dead Simple Blog Generator)")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "Usage:")
+		fmt.Fprintln(os.Stderr, "  dsbg [flags]          # Generate a static site")
+		fmt.Fprintln(os.Stderr, "  dsbg -template [flags] # Generate a Markdown template file")
+		fmt.Fprintln(os.Stderr)
+
+		fmt.Fprintln(os.Stderr, "Default mode flags (site generation):")
 		defaultFlagSet.VisitAll(logFlag)
-		fmt.Fprintf(os.Stderr, "\nTemplate mode flags:\n")
+
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "Template mode flags (Markdown scaffolding):")
 		templateFlagSet.VisitAll(logFlag)
+
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "Notes:")
+		fmt.Fprintln(os.Stderr, "  Themes (-theme):")
+		fmt.Fprintln(os.Stderr, "    default, dark, clean, colorful")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "  Sort orders (-sort):")
+		fmt.Fprintln(os.Stderr, "    date-created, reverse-date-created,")
+		fmt.Fprintln(os.Stderr, "    date-updated, reverse-date-updated,")
+		fmt.Fprintln(os.Stderr, "    title, reverse-title,")
+		fmt.Fprintln(os.Stderr, "    path, reverse-path")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "  Share buttons (-share):")
+		fmt.Fprintln(os.Stderr, "    -share \"Name|URL\"")
+		fmt.Fprintln(os.Stderr, "    -share \"Name|Display|URL\"")
+		fmt.Fprintln(os.Stderr, "    If Display is a local image path, the image is copied into the output")
+		fmt.Fprintln(os.Stderr, "    directory and used as the share icon.")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "  Author / publisher metadata:")
+		fmt.Fprintln(os.Stderr, "    -author-name          # Name used as the article author in meta tags & JSON-LD.")
+		fmt.Fprintln(os.Stderr, "    -publisher-name       # Name used as the publisher organization in JSON-LD.")
+		fmt.Fprintln(os.Stderr, "    -publisher-logo-path  # Local path to a logo image; copied to the output root")
+		fmt.Fprintln(os.Stderr, "                          # and used as publisher.logo in structured data.")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "  Special tags in content frontmatter or HTML meta:")
+		fmt.Fprintln(os.Stderr, "    - 'PAGE'     => article is treated as a static page and appears in the nav.")
+		fmt.Fprintln(os.Stderr, "    - 'news'     => article is marked as NewsArticle in JSON-LD.")
+		fmt.Fprintln(os.Stderr, "    - 'article'  => also treated as NewsArticle in JSON-LD.")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "  Search:")
+		fmt.Fprintln(os.Stderr, "    - A search_index.json file is generated for Lunr-based full-text search.")
+		fmt.Fprintln(os.Stderr)
+		fmt.Fprintln(os.Stderr, "Examples:")
+		fmt.Fprintln(os.Stderr, "  dsbg -input-path content -output-path public -title \"My Blog\"")
+		fmt.Fprintln(os.Stderr, "  dsbg -watch -base-url \"https://example.com\" -theme dark -sort date-updated")
+		fmt.Fprintln(os.Stderr, "  dsbg -template -title \"My New Post\" -tags \"Go,Example\"")
+		fmt.Fprintln(os.Stderr)
 	}
 
 	if len(os.Args) <= 1 {
@@ -432,6 +477,22 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 				log.Printf("Warning: Failed to copy share icon '%s': %v", src, err)
 			}
 			settings.ShareButtons[i].Display = destName
+		}
+	}
+
+	// Handle publisher logo asset (relative to command, copied to output root).
+	if settings.PublisherLogoPath != "" &&
+		!strings.HasPrefix(settings.PublisherLogoPath, "http://") &&
+		!strings.HasPrefix(settings.PublisherLogoPath, "https://") {
+
+		src := settings.PublisherLogoPath
+		destName := filepath.Base(src)
+		destPath := filepath.Join(settings.OutputDirectory, destName)
+		if err := copyFile(src, destPath); err != nil {
+			log.Printf("Warning: Failed to copy publisher logo '%s': %v", src, err)
+		} else {
+			// After copying, make the path relative to the site root for templates/JSON-LD.
+			settings.PublisherLogoPath = destName
 		}
 	}
 
