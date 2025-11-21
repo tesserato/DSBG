@@ -5,17 +5,6 @@ import (
 	"time"
 )
 
-// Style represents a high-level visual style/theme for the generated site.
-type Style int64
-
-// Supported Style values.
-const (
-	Default Style = iota
-	Dark
-	Clean
-	Colorful
-)
-
 // SortOrder is a strongly-typed representation of article sort order.
 type SortOrder string
 
@@ -40,7 +29,7 @@ type Settings struct {
 	OutputDirectory           string
 	DateFormat                string
 	IndexName                 string
-	Theme                     Style
+	Theme                     string
 	PathToCustomCss           string
 	PathToCustomJs            string
 	PathToCustomFavicon       string
@@ -99,20 +88,4 @@ type Article struct {
 	LinkToSelf     string
 	LinkToSave     string
 	Url            string
-}
-
-// Theme describes the visual styling parameters that are applied to the CSS template.
-type Theme struct {
-	Dark           bool
-	HeaderFont     string
-	BodyFont       string
-	Background     string
-	Text           string
-	Card           string
-	Link           string
-	Shadow         string
-	Button         string
-	FontSize       float64
-	HeaderFontSize float64
-	BodyFontSize   float64
 }

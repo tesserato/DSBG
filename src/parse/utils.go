@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
+	"log"
 	"net/url"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"slices"
 	"strconv"
 	"strings"
-	texttemplate "text/template"
 	"time"
 
 	"golang.org/x/net/html"
@@ -360,82 +361,55 @@ func IsImage(s string) bool {
 	return false
 }
 
-// GetThemeData returns theme configuration for a given Style.
-func GetThemeData(style Style) Theme {
-	switch style {
-	case Dark:
-		return Theme{
-			Dark:           true,
-			HeaderFont:     "\"Georgia\"",
-			BodyFont:       "\"Garamond\"",
-			Background:     "rgb(69, 69, 69)",
-			Text:           "rgb(216, 216, 216)",
-			Card:           "rgb(85, 85, 91)",
-			Link:           "rgb(255, 75, 75)",
-			Shadow:         "rgba(0, 0, 0, 0.777)",
-			FontSize:       1.0,
-			HeaderFontSize: 1.0,
-			BodyFontSize:   1.0,
-		}
-	case Clean:
-		return Theme{
-			Dark:           true,
-			HeaderFont:     "Times New Roman, serif",
-			BodyFont:       "Verdana , sans-serif",
-			Background:     "rgb(20, 20, 20)",
-			Text:           "rgb(216, 216, 216)",
-			Card:           "rgb(50, 50, 56)",
-			Link:           "rgb(255, 75, 75)",
-			Shadow:         "rgba(0, 0, 0, 0.777)",
-			FontSize:       1.0,
-			HeaderFontSize: 1.0,
-			BodyFontSize:   0.8,
-		}
-	case Colorful:
-		return Theme{
-			Dark:           false,
-			HeaderFont:     "'Georgia', 'Times New Roman', Times, serif",
-			BodyFont:       "'Raleway', sans-serif",
-			Background:     "rgb(100, 100, 100)",
-			Text:           "rgb(0, 0, 0)",
-			Card:           "rgba(80, 212, 89, 0.65)",
-			Button:         "rgb(230, 91, 91)",
-			Link:           "rgb(21, 89, 138)",
-			Shadow:         "rgba(98, 0, 0, 0.777)",
-			FontSize:       1.0,
-			HeaderFontSize: 1.0,
-			BodyFontSize:   1.0,
-		}
-	default:
-		return Theme{
-			Dark:           false,
-			HeaderFont:     "\"Georgia\"",
-			BodyFont:       "\"Garamond\"",
-			Background:     "rgb(234, 234, 234)",
-			Text:           "rgb(85, 85, 85)",
-			Card:           "rgb(237, 237, 237)",
-			Link:           "rgb(201, 38, 38)",
-			Shadow:         "rgba(0, 0, 0, 0.25)",
-			FontSize:       1.0,
-			HeaderFontSize: 1.0,
-			BodyFontSize:   1.0,
-		}
-	}
-}
-
-// ApplyCSSTemplate applies the selected theme's styles to the default CSS template
-// and writes the generated CSS to style.css in the output directory.
-func ApplyCSSTemplate(themeData Theme, outputDirectory string, tmpl *texttemplate.Template) error {
-	var output strings.Builder
-	if err := tmpl.Execute(&output, themeData); err != nil {
-		return fmt.Errorf("error executing style template: %w", err)
+// SaveThemeCSS copies the selected theme CSS file from embedded assets to style.css in the output directory.
+// If themeName is empty or invalid, it attempts to use "default.css".
+func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error {
+	if themeName == "" {
+		themeName = "default"
 	}
 
-	pathToSave := filepath.Join(outputDirectory, "style.css")
-	if err := os.WriteFile(pathToSave, []byte(output.String()), 0644); err != nil {
-		return fmt.Errorf("error saving processed css file: %w", err)
+	themesPath := "src/assets/templates/themes"
+	themeFile := themeName + ".css"
+	// Use path.Join (forward slashes) for embed.FS lookup to avoid Windows backslash issues.
+	srcPath := path.Join(themesPath, themeFile)
+
+	// Check if theme file exists in assets
+	fileContent, err := fs.ReadFile(assets, srcPath)
+	if err != nil {
+		log.Printf("Warning: Theme '%s' not found. Falling back to default theme.", themeName)
+		// Fallback to default
+		srcPath = path.Join(themesPath, "default.css")
+		fileContent, err = fs.ReadFile(assets, srcPath)
+		if err != nil {
+			return fmt.Errorf("failed to load default theme CSS: %w", err)
+		}
+	}
+
+	// Use filepath.Join (OS specific separator) for writing to local disk.
+	destPath := filepath.Join(outputDirectory, "style.css")
+	if err := os.WriteFile(destPath, fileContent, 0644); err != nil {
+		return fmt.Errorf("error writing style.css: %w", err)
 	}
 	return nil
+}
+
+// GetAvailableThemes scans the embedded assets for available CSS themes.
+// It returns a sorted list of theme names (filenames without extension).
+func GetAvailableThemes(assets fs.FS) ([]string, error) {
+	themesPath := "src/assets/templates/themes"
+	entries, err := fs.ReadDir(assets, themesPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var themes []string
+	for _, entry := range entries {
+		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".css") {
+			name := strings.TrimSuffix(entry.Name(), ".css")
+			themes = append(themes, name)
+		}
+	}
+	return themes, nil
 }
 
 // ParseSortOrder converts a string into a SortOrder, validating supported options.
@@ -453,23 +427,6 @@ func ParseSortOrder(s string) (SortOrder, error) {
 		return SortOrder(s), nil
 	default:
 		return "", fmt.Errorf("unsupported sort order: %s", s)
-	}
-}
-
-// ParseStyle converts a string representation into a Style constant.
-func ParseStyle(s string) (Style, error) {
-	s = strings.ToLower(strings.TrimSpace(s))
-	switch s {
-	case "", "default":
-		return Default, nil
-	case "dark":
-		return Dark, nil
-	case "clean":
-		return Clean, nil
-	case "colorful":
-		return Colorful, nil
-	default:
-		return Default, fmt.Errorf("unknown style %q", s)
 	}
 }
 

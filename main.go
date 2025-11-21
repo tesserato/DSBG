@@ -94,7 +94,8 @@ func main() {
 	defaultFlagSet.StringVar(&settings.OutputDirectory, "output-path", "public", "Path to output directory for the generated static site.")
 	defaultFlagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format for rendered dates (Go time layout).")
 	defaultFlagSet.StringVar(&settings.IndexName, "index-name", "index.html", "Filename used as index for each article directory.")
-	defaultFlagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Optional path to a custom CSS file. If empty, DSBG generates style.css from the selected theme.")
+	defaultFlagSet.StringVar(&settings.Theme, "theme", "default", "Theme to use for styling. Defaults to 'default' if not specified.")
+	defaultFlagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Optional path to a custom CSS file. If provided, overrides the theme selection.")
 	defaultFlagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Optional path to a custom JavaScript file. If empty, DSBG copies the built-in script.js.")
 	defaultFlagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Optional path to a custom favicon.ico. If empty, DSBG copies the built-in favicon.")
 	defaultFlagSet.BoolVar(&settings.DoNotExtractTagsFromPaths, "ignore-tags-from-paths", false, "Disable extracting tags from directory names.")
@@ -112,9 +113,8 @@ func main() {
 	// Custom share flag.
 	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|URL\" or \"Name|Display|URL\". If Display points to an image path, it will be copied into the output directory.")
 
-	// Strongly-typed sort and theme are configured via string flags and parsed later.
+	// Strongly-typed sort is configured via string flags and parsed later.
 	sortFlag := defaultFlagSet.String("sort", "date-created", "Sort order for articles: date-created, reverse-date-created, date-updated, reverse-date-updated, title, reverse-title, path, reverse-path.")
-	themeString := defaultFlagSet.String("theme", "default", "Predefined theme: default, dark, clean, colorful.")
 	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "HTML file to include at the top of <head> on all pages.")
 	pathToAdditionalElemensBottom := defaultFlagSet.String("elements-bottom", "", "HTML file to include at the bottom of <body> on all pages.")
 	watch := defaultFlagSet.Bool("watch", false, "Enable watch mode: rebuild site and reload assets when source files change.")
@@ -149,7 +149,12 @@ func main() {
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, "Notes:")
 		fmt.Fprintln(os.Stderr, "  Themes (-theme):")
-		fmt.Fprintln(os.Stderr, "    default, dark, clean, colorful")
+		// Dynamically list available themes from assets
+		if availableThemes, err := parse.GetAvailableThemes(assets); err == nil {
+			fmt.Fprintf(os.Stderr, "    Available: %s\n", strings.Join(availableThemes, ", "))
+		} else {
+			fmt.Fprintln(os.Stderr, "    default, dark, clean, colorful, paper, terminal")
+		}
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, "  Sort orders (-sort):")
 		fmt.Fprintln(os.Stderr, "    date-created, reverse-date-created,")
@@ -255,20 +260,13 @@ func main() {
 		settings.PublisherName = settings.Title
 	}
 
-	// Parse theme into strongly-typed Style and derive highlight theme.
-	style, err := parse.ParseStyle(*themeString)
-	if err != nil {
-		log.Printf("Unknown style '%s', using default.\n", *themeString)
-		style = parse.Default
-	}
-	settings.Theme = style
-	switch style {
-	case parse.Default:
+	// Determine syntax highlight theme based on CSS theme.
+	// Light themes use stackoverflow-light, others use github-dark-dimmed.
+	switch strings.ToLower(settings.Theme) {
+	case "default", "paper":
 		settings.HighlightTheme = "stackoverflow-light"
-	case parse.Dark, parse.Clean, parse.Colorful:
-		settings.HighlightTheme = "github-dark-dimmed"
 	default:
-		settings.HighlightTheme = "stackoverflow-light"
+		settings.HighlightTheme = "github-dark-dimmed"
 	}
 
 	// Parse sort order into strongly-typed SortOrder.
@@ -618,9 +616,8 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 	}
 
 	if settings.PathToCustomCss == "" {
-		theme := parse.GetThemeData(settings.Theme)
-		if err := parse.ApplyCSSTemplate(theme, settings.OutputDirectory, templates.Style); err != nil {
-			return fmt.Errorf("error applying CSS template: %v", err)
+		if err := parse.SaveThemeCSS(assets, settings.Theme, settings.OutputDirectory); err != nil {
+			return fmt.Errorf("error processing theme CSS: %v", err)
 		}
 	} else {
 		if err := copyFile(settings.PathToCustomCss, filepath.Join(settings.OutputDirectory, "style.css")); err != nil {

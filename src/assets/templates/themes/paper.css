@@ -1,0 +1,246 @@
+/* Warm, paper-like reading theme */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f5f0e8;
+  --bg-elevated: #fdfaf5;
+  --text: #1f2933;
+  --muted: #6b7280;
+  --border: #e5ded1;
+  --accent: #0f766e;
+  --accent-soft: rgba(15, 118, 110, 0.12);
+  --accent-strong: #115e59;
+  --tag-bg: #e0f2f1;
+  --tag-on-bg: #0f766e;
+  --input-bg: #fdfaf5;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Georgia", "Times New Roman", serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+
+header {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(to bottom, #fdfaf5, rgba(245, 240, 232, 0.98));
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(10px);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.02em;
+}
+
+.articlelinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Search */
+
+#search-input {
+  width: 100%;
+  max-width: 480px;
+  padding: 0.6rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+#search-input::placeholder {
+  color: var(--muted);
+}
+
+/* Nav */
+
+nav {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  color: var(--muted);
+}
+
+nav a:hover {
+  border-color: rgba(15, 118, 110, 0.4);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* Main */
+
+main#articles-container {
+  width: min(760px, 100%);
+  margin: 1.5rem auto 2.5rem;
+  padding: 0 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Article */
+
+.detail {
+  background: var(--bg-elevated);
+  border-radius: 1rem;
+  padding: 1.5rem 1.6rem 1.3rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 20px rgba(148, 118, 93, 0.15);
+}
+
+.headline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.headline a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.headline h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+/* Image */
+
+.detail img {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  margin-top: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+/* Description */
+
+.detail .description {
+  margin: 0.75rem 0 0.75rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Tags */
+
+.headline button {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  background: var(--tag-bg);
+  color: var(--tag-on-bg);
+}
+
+/* Info */
+
+.info {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.info .date {
+  margin: 0;
+}
+
+/* Share buttons */
+
+.detail .sharebuttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.detail .sharebuttons a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: var(--muted);
+  background: #fffdf7;
+}
+
+.detail .sharebuttons a:hover {
+  border-color: rgba(15, 118, 110, 0.6);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* Footer */
+
+footer {
+  margin-top: auto;
+  padding: 1.25rem 1rem 1.75rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: #fdfaf5;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  header {
+    padding-inline: 1rem;
+  }
+
+  .articlelinks {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  main#articles-container {
+    padding-inline: 0.75rem;
+  }
+}

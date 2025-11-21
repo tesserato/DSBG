@@ -9,12 +9,11 @@ import (
 	"time"
 )
 
-// SiteTemplates holds the pre-parsed templates for articles, index, RSS, and CSS style.
+// SiteTemplates holds the pre-parsed templates for articles, index, and RSS.
 type SiteTemplates struct {
 	Article *texttemplate.Template
 	Index   *texttemplate.Template
 	RSS     *texttemplate.Template
-	Style   *texttemplate.Template
 }
 
 // LoadTemplates parses all necessary templates from the embedded assets once at startup.
@@ -66,12 +65,6 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 	t.RSS, err = texttemplate.New("rss.goxml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/rss.goxml")
 	if err != nil {
 		return t, fmt.Errorf("error parsing RSS template: %w", err)
-	}
-
-	// Parse CSS style template.
-	t.Style, err = texttemplate.New("style.gocss").ParseFS(assets, "src/assets/templates/style.gocss")
-	if err != nil {
-		return t, fmt.Errorf("error parsing style template: %w", err)
 	}
 
 	return t, nil
