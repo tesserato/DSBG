@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
-	"slices"
 	"strings"
 	texttemplate "text/template"
+	"time"
 )
 
 // SiteTemplates holds the pre-parsed templates to avoid parsing them for every file.
@@ -27,7 +27,6 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 		"genRelativeLink": genRelativeLink,
 		"stringsJoin":     strings.Join,
 		"buildShareUrl":   BuildShareUrl,
-		"slicesContains":  slices.Contains[[]string],
 		"lower":           strings.ToLower,
 		"isImage":         IsImage, // Corrected to use exported IsImage
 		"makeLink": func(title string) string {
@@ -39,8 +38,10 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 			template.HTMLEscape(buf, []byte(s))
 			return buf.String()
 		},
-		"formatPubDate": func(timeObj interface{}) string {
-			// We handle time in the calling code or ensure it's passed correctly.
+		"formatPubDate": func(t interface{}) string {
+			if tt, ok := t.(time.Time); ok {
+				return tt.Format(time.RFC1123Z)
+			}
 			return ""
 		},
 		"buildArticleURL": func(a Article, s Settings) string {

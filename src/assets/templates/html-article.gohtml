@@ -5,7 +5,7 @@
     {{.Settings.AdditionalElementsTop}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
+    <meta name="generator" content="Dead Simple Blog Generator (DSBG)">
     <meta name="keywords" content="{{ stringsJoin .Art.Tags " , "}}">
     <meta name="description" content="{{ .Art.Description }}">
     
@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/{{.Settings.HighlightTheme}}.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
+    <script src="{{ genRelativeLink .Art.LinkToSelf "script.js" }}"></script>
 
     <title>{{.Art.Title}}</title>
 </head>
@@ -36,7 +37,6 @@
             <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}> ◁ {{.Settings.Title}}
             </a>
             <div class="sharebuttons">       
-                <img src='{{genRelativeLink .Art.LinkToSelf "share.svg"}}' class="actionicons" alt="Share">
                 <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
                    onclick="copyMarkdownToClipboard(this)"
                    data-title="{{.Art.Title}}"
@@ -66,7 +66,7 @@
     {{.Settings.AdditionalElemensBottom}}
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 </body>
 
