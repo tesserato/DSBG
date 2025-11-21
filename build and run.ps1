@@ -45,6 +45,8 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 # Start-Process chrome http://localhost:666/index.html
 
 
+# $theme = "default"
+$theme = "dark"
 
 ./dsbg.exe -title "Dead Simple Blog Generator" `
     -description "$description" `
@@ -55,7 +57,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
     -base-url "https://tesserato.github.io/DSBG/" `
     -elements-top "sample_assets/analytics.html" `
     -elements-bottom "sample_assets/giscus.html" `
-    -theme "dark" `
+    -theme $theme `
     -share "X|sample_assets/x.svg|https://twitter.com/intent/tweet?url={URL}&text={TITLE}%0A%0A{TEXT}" `
     -share "Telegram|sample_assets/telegram.svg|https://t.me/share/url?url={URL}&text={TITLE}" `
     -share "LinkedIn|sample_assets/linkedin.svg|https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
