@@ -5,8 +5,10 @@ import (
 	"time"
 )
 
+// Style represents a high-level visual style/theme for the generated site.
 type Style int64
 
+// Supported Style values.
 const (
 	Default Style = iota
 	Dark
@@ -17,6 +19,7 @@ const (
 // SortOrder is a strongly-typed representation of article sort order.
 type SortOrder string
 
+// Supported SortOrder values.
 const (
 	SortDateCreated        SortOrder = "date-created"
 	SortReverseDateCreated SortOrder = "reverse-date-created"
@@ -55,12 +58,14 @@ type Settings struct {
 	ForceOverwrite            bool
 }
 
+// ShareButton describes a single social or custom share target.
 type ShareButton struct {
 	Name        string
 	Display     string
 	UrlTemplate string
 }
 
+// TemplateSettings controls generation of a new Markdown template file.
 type TemplateSettings struct {
 	Title           string
 	Description     string
@@ -72,6 +77,7 @@ type TemplateSettings struct {
 	DateFormat      string
 }
 
+// Article models a single article or page, regardless of its original format.
 type Article struct {
 	Title          string
 	Description    string
@@ -87,6 +93,7 @@ type Article struct {
 	Url            string
 }
 
+// Theme describes the visual styling parameters that are applied to the CSS template.
 type Theme struct {
 	Dark           bool
 	HeaderFont     string

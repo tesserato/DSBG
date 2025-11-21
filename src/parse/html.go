@@ -15,10 +15,9 @@ import (
 	"golang.org/x/net/html"
 )
 
-// HTMLFile parses an HTML file, extracts metadata from tags, and populates an Article struct.
-// It returns the parsed Article and a list of extracted resources.
+// HTMLFile parses an HTML file, extracts metadata, and populates an Article.
+// It returns the Article and a list of extracted resources.
 func HTMLFile(path string) (Article, []string, error) {
-	// Read the HTML file content.
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return Article{}, nil, fmt.Errorf("failed to read HTML file '%s': %w", path, err)
@@ -26,33 +25,32 @@ func HTMLFile(path string) (Article, []string, error) {
 	htmlContent := string(data)
 	textContent := html2text.HTML2Text(htmlContent)
 
-	// Create an Article struct with basic information.
 	article := Article{
 		OriginalPath: path,
 		HtmlContent:  htmlContent,
 		TextContent:  textContent,
 	}
-	// Parse the HTML content.
+
+	// Parse the HTML content into a node tree.
 	htmlTree, err := html.Parse(strings.NewReader(htmlContent))
 	if err != nil {
 		return Article{}, nil, fmt.Errorf("failed to parse HTML content of '%s': %w", path, err)
 	}
 
-	// Extract resources using the existing HTML tree.
+	// Extract resources using the HTML tree.
 	resources := ExtractResources(htmlTree)
 
-	// Get info from <title> tag.
+	// Extract <title>.
 	titleNode := findFirstElement(htmlTree, "title")
 	if titleNode != nil && titleNode.FirstChild != nil {
 		article.Title = titleNode.FirstChild.Data
 	}
 
-	// Default title to filename if not found in <title> tag.
 	if article.Title == "" {
 		article.Title = strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
 	}
 
-	// Get info from meta tags.
+	// Extract relevant <meta> tags.
 	for _, metaTag := range findAllElements(htmlTree, "meta") {
 		key := ""
 		val := ""
@@ -64,38 +62,38 @@ func HTMLFile(path string) (Article, []string, error) {
 				val = strings.Trim(attr.Val, " ")
 			}
 		}
-		// Populate Article fields based on meta tag content.
-		if key != "" && val != "" {
-			switch key {
-			case "description":
-				article.Description = val
-			case "keywords":
-				tags := strings.ReplaceAll(val, ";", ",")
-				tagsArray := strings.Split(tags, ",")
-				for i, tag := range tagsArray {
-					tag = strings.Trim(tag, " ")
-					tagsArray[i] = tag
-				}
-				article.Tags = tagsArray
-			case "created":
-				createdTime, err := DateTimeFromString(val)
-				if err != nil {
-					log.Printf("Warning: Failed to parse 'created' date from meta tag in '%s': %v\n", path, err)
-				} else {
-					article.Created = createdTime
-				}
-			case "updated":
-				updatedTime, err := DateTimeFromString(val)
-				if err != nil {
-					log.Printf("Warning: Failed to parse 'updated' date from meta tag in '%s': %v\n", path, err)
-				} else {
-					article.Updated = updatedTime
-				}
-			case "coverimagepath":
-				article.CoverImagePath = val
-			case "url":
-				article.Url = val
+		if key == "" || val == "" {
+			continue
+		}
+
+		switch key {
+		case "description":
+			article.Description = val
+		case "keywords":
+			tags := strings.ReplaceAll(val, ";", ",")
+			tagsArray := strings.Split(tags, ",")
+			for i, tag := range tagsArray {
+				tagsArray[i] = strings.TrimSpace(tag)
 			}
+			article.Tags = tagsArray
+		case "created":
+			createdTime, err := DateTimeFromString(val)
+			if err != nil {
+				log.Printf("Warning: Failed to parse 'created' date from meta tag in '%s': %v\n", path, err)
+			} else {
+				article.Created = createdTime
+			}
+		case "updated":
+			updatedTime, err := DateTimeFromString(val)
+			if err != nil {
+				log.Printf("Warning: Failed to parse 'updated' date from meta tag in '%s': %v\n", path, err)
+			} else {
+				article.Updated = updatedTime
+			}
+		case "coverimagepath":
+			article.CoverImagePath = val
+		case "url":
+			article.Url = val
 		}
 	}
 
@@ -105,26 +103,26 @@ func HTMLFile(path string) (Article, []string, error) {
 		return Article{}, nil, fmt.Errorf("failed to get file info for '%s': %w", path, err)
 	}
 	if article.Created.IsZero() {
-		createdFromFile, err := DateTimeFromString(path) // Try to extract date from filename
-		if err != nil {
-			article.Created = fileInfo.ModTime() // Use file modification time
-		} else {
+		if createdFromFile, err := DateTimeFromString(path); err == nil {
 			article.Created = createdFromFile
+		} else {
+			article.Created = fileInfo.ModTime()
 		}
 	}
 	if article.Updated.IsZero() {
-		article.Updated = fileInfo.ModTime() // Use file modification time
+		article.Updated = fileInfo.ModTime()
 	}
 
 	return article, resources, nil
 }
 
-// GenerateHtmlIndex creates an HTML index page listing all processed articles.
+// GenerateHtmlIndex creates an HTML index page listing all processed articles
+// using the provided template and settings.
 func GenerateHtmlIndex(articles []Article, settings Settings, tmpl *texttemplate.Template, assets fs.FS) error {
-	// Separate articles into pages and regular articles based on tags.
 	var allTags []string
 	var pageList []Article
 	var articleList []Article
+
 	for _, article := range articles {
 		if slices.Contains(article.Tags, "PAGE") {
 			pageList = append(pageList, article)
@@ -134,22 +132,24 @@ func GenerateHtmlIndex(articles []Article, settings Settings, tmpl *texttemplate
 		}
 	}
 
-	// Execute the template with article data.
 	var tp bytes.Buffer
 	err := tmpl.Execute(&tp, struct {
 		AllTags     []string
 		PageList    []Article
 		ArticleList []Article
 		Settings    Settings
-	}{allTags, pageList, articleList, settings})
+	}{
+		AllTags:     allTags,
+		PageList:    pageList,
+		ArticleList: articleList,
+		Settings:    settings,
+	})
 	if err != nil {
 		return fmt.Errorf("error executing HTML index template: %w", err)
 	}
 
-	// Write the generated HTML to the output file.
 	filePath := filepath.Join(settings.OutputDirectory, settings.IndexName)
-	err = os.WriteFile(filePath, tp.Bytes(), 0644)
-	if err != nil {
+	if err := os.WriteFile(filePath, tp.Bytes(), 0644); err != nil {
 		return fmt.Errorf("error writing HTML index file to '%s': %w", filePath, err)
 	}
 	return nil
@@ -180,22 +180,23 @@ func findAllElements(n *html.Node, tag string) []*html.Node {
 	return elements
 }
 
+// wrapNodeIfTable wraps the provided table node in a div.table-wrapper for styling.
 func wrapNodeIfTable(n *html.Node) {
 	if n.Type == html.ElementNode && n.Data == "table" {
-		// Create a div element
 		div := &html.Node{
 			Type: html.ElementNode,
 			Data: "div",
+			Attr: []html.Attribute{
+				{Key: "class", Val: "table-wrapper"},
+			},
 		}
-		// Add class "table-wrapper" to the div for potential CSS styling
-		div.Attr = []html.Attribute{{Key: "class", Val: "table-wrapper"}}
-
 		n.Parent.InsertBefore(div, n)
 		n.Parent.RemoveChild(n)
 		div.AppendChild(n)
 	}
 }
 
+// wrapTables wraps all <table> elements in div.table-wrapper and returns the updated HTML.
 func wrapTables(htmlContent string) (string, error) {
 	doc, err := html.Parse(strings.NewReader(htmlContent))
 	if err != nil {
@@ -206,6 +207,8 @@ func wrapTables(htmlContent string) (string, error) {
 		wrapNodeIfTable(table)
 	}
 	var buf bytes.Buffer
-	html.Render(&buf, doc)
+	if err := html.Render(&buf, doc); err != nil {
+		return "", fmt.Errorf("failed to render updated HTML content: %w", err)
+	}
 	return buf.String(), nil
 }

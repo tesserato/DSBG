@@ -46,10 +46,9 @@ var Markdown = goldmark.New(
 	),
 )
 
-// MarkdownFile parses a Markdown file, extracts frontmatter, and populates an Article struct.
-// It returns the Article and a list of extracted resource paths (e.g. images).
+// MarkdownFile parses a Markdown file, extracts frontmatter, and populates an Article.
+// It returns the Article and a list of extracted resource paths (e.g., images).
 func MarkdownFile(path string) (Article, []string, error) {
-	// Read the Markdown file content.
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return Article{}, nil, fmt.Errorf("failed to read Markdown file '%s': %w", path, err)
@@ -58,20 +57,19 @@ func MarkdownFile(path string) (Article, []string, error) {
 	// Create a context to store frontmatter.
 	context := parser.NewContext()
 
-	// Parse the Markdown content into AST.
+	// Parse the Markdown content into an AST.
 	p := Markdown.Parser()
 	reader := text.NewReader(data)
 	doc := p.Parse(reader, parser.WithContext(context))
 
-	// Extract resources from AST (images).
+	// Extract resources from the AST (images).
 	var resources []string
-	ast.Walk(doc, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
+	_ = ast.Walk(doc, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
 			return ast.WalkContinue, nil
 		}
 		if n.Kind() == ast.KindImage {
-			img, ok := n.(*ast.Image)
-			if ok {
+			if img, ok := n.(*ast.Image); ok {
 				resources = append(resources, string(img.Destination))
 			}
 		}
@@ -92,18 +90,21 @@ func MarkdownFile(path string) (Article, []string, error) {
 		return Article{}, nil, fmt.Errorf("failed to wrap tables for '%s': %w", path, err)
 	}
 
-	// Create an Article struct with basic information.
-	var article = Article{OriginalPath: path, TextContent: string(data), HtmlContent: wrappedHtmlContent}
-	fm := frontmatter.Get(context)
-	if fm != nil {
+	// Initialize Article with basic information.
+	article := Article{
+		OriginalPath: path,
+		TextContent:  string(data),
+		HtmlContent:  wrappedHtmlContent,
+	}
+
+	// Decode frontmatter into the Article.
+	if fm := frontmatter.Get(context); fm != nil {
 		var d map[string]any
 		if err := fm.Decode(&d); err != nil {
 			return Article{}, nil, fmt.Errorf("failed to decode frontmatter in '%s': %w", path, err)
 		}
-		// Populate Article fields from frontmatter.
 		for name, value := range d {
-			name = strings.ToLower(name)
-			name = strings.Trim(name, " ")
+			name = strings.ToLower(strings.TrimSpace(name))
 			if value == nil {
 				continue
 			}
@@ -113,26 +114,32 @@ func MarkdownFile(path string) (Article, []string, error) {
 			case "description":
 				article.Description = value.(string)
 			case "created":
-				if reflect.TypeOf(value).Kind() == reflect.String {
+				switch reflect.TypeOf(value).Kind() {
+				case reflect.String:
 					createdTime, err := DateTimeFromString(value.(string))
 					if err != nil {
 						log.Printf("Warning: Failed to parse 'created' date in '%s': %v\n", path, err)
 					} else {
 						article.Created = createdTime
 					}
-				} else if t, ok := value.(time.Time); ok {
-					article.Created = t
+				default:
+					if t, ok := value.(time.Time); ok {
+						article.Created = t
+					}
 				}
 			case "updated":
-				if reflect.TypeOf(value).Kind() == reflect.String {
+				switch reflect.TypeOf(value).Kind() {
+				case reflect.String:
 					updatedTime, err := DateTimeFromString(value.(string))
 					if err != nil {
 						log.Printf("Warning: Failed to parse 'updated' date in '%s': %v\n", path, err)
 					} else {
 						article.Updated = updatedTime
 					}
-				} else if t, ok := value.(time.Time); ok {
-					article.Updated = t
+				default:
+					if t, ok := value.(time.Time); ok {
+						article.Updated = t
+					}
 				}
 			case "coverimagepath":
 				article.CoverImagePath = value.(string)
@@ -140,20 +147,17 @@ func MarkdownFile(path string) (Article, []string, error) {
 				article.Url = value.(string)
 			case "tags":
 				switch reflect.TypeOf(value).Kind() {
-
 				case reflect.Slice:
 					tags := value.([]any)
 					for _, tag := range tags {
-						tagString := strings.Trim(tag.(string), " ")
+						tagString := strings.TrimSpace(tag.(string))
 						article.Tags = append(article.Tags, tagString)
 					}
-
 				case reflect.String:
 					tags := strings.ReplaceAll(value.(string), ";", ",")
 					tagsArray := strings.Split(tags, ",")
 					for i, tag := range tagsArray {
-						tag = strings.Trim(tag, " ")
-						tagsArray[i] = tag
+						tagsArray[i] = strings.TrimSpace(tag)
 					}
 					article.Tags = tagsArray
 				}
@@ -167,15 +171,14 @@ func MarkdownFile(path string) (Article, []string, error) {
 		return Article{}, nil, fmt.Errorf("failed to get file info for '%s': %w", path, err)
 	}
 	if article.Created.IsZero() {
-		createdFromFile, err := DateTimeFromString(path) // Try to extract date from filename
-		if err != nil {
-			article.Created = fileInfo.ModTime() // Use file modification time
-		} else {
+		if createdFromFile, err := DateTimeFromString(path); err == nil {
 			article.Created = createdFromFile
+		} else {
+			article.Created = fileInfo.ModTime()
 		}
 	}
 	if article.Updated.IsZero() {
-		article.Updated = fileInfo.ModTime() // Use file modification time
+		article.Updated = fileInfo.ModTime()
 	}
 
 	// Default title to filename if not provided.
@@ -187,15 +190,18 @@ func MarkdownFile(path string) (Article, []string, error) {
 }
 
 // FormatMarkdown applies an HTML template to the Markdown content of an article.
-// Returns an error if template execution fails.
+// It injects article and settings into the provided template and updates HtmlContent.
 func FormatMarkdown(article *Article, settings Settings, tmpl *texttemplate.Template, assets fs.FS) error {
-	// Execute the template with article data and settings.
 	var tp bytes.Buffer
 	err := tmpl.Execute(&tp, struct {
 		Art      Article
 		Ctt      template.HTML
 		Settings Settings
-	}{*article, template.HTML(article.HtmlContent), settings})
+	}{
+		Art:      *article,
+		Ctt:      template.HTML(article.HtmlContent),
+		Settings: settings,
+	})
 	if err != nil {
 		return fmt.Errorf("error executing markdown article template: %w", err)
 	}

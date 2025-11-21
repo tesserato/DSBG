@@ -42,7 +42,7 @@ func DateTimeFromString(date string) (time.Time, error) {
 		if len(matches) > 0 {
 			foundMatch = true
 			for i, name := range pattern.SubexpNames()[1:] {
-				if name == "" { // Skip unnamed capture groups
+				if name == "" {
 					continue
 				}
 				integer, err := strconv.Atoi(matches[i+1])
@@ -68,7 +68,8 @@ func DateTimeFromString(date string) (time.Time, error) {
 	return dateTime, nil
 }
 
-// GetPaths retrieves all file paths within a directory and its subdirectories matching extensions.
+// GetPaths retrieves all file paths within a directory and its subdirectories
+// matching the provided list of file extensions.
 func GetPaths(root string, extensions []string) ([]string, error) {
 	var files []string
 	extMap := make(map[string]bool)
@@ -92,7 +93,8 @@ func GetPaths(root string, extensions []string) ([]string, error) {
 	return files, err
 }
 
-// cleanString cleans URL/path strings.
+// cleanString normalizes path-like strings by removing non-alphanumeric characters
+// and redundant separators, making them safe to use as URL fragments.
 func cleanString(url string) string {
 	var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9\/\\\. ]+`)
 	url = nonAlphanumericRegex.ReplaceAllString(url, "")
@@ -111,9 +113,11 @@ func cleanString(url string) string {
 	return url
 }
 
-// CopyHtmlResources copies associated resources for an article and determines output path.
+// CopyHtmlResources copies associated resources for an article and determines
+// the article's output path. Resources include images and other linked assets.
 //
-// resources: A list of relative file paths found in the article (images, scripts, etc).
+// resources is a list of relative file paths found in the article (images, scripts, etc).
+// Cover images are copied to live next to the article's index file.
 func CopyHtmlResources(settings Settings, article *Article, resources []string) error {
 	relativeInputPath, err := filepath.Rel(settings.InputDirectory, article.OriginalPath)
 	if err != nil {
@@ -156,34 +160,28 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	}
 	outputPath = cleanString(outputPath)
 	outputDirectory := filepath.Dir(outputPath)
-	err = os.MkdirAll(outputDirectory, os.ModePerm)
-	if err != nil {
+	if err := os.MkdirAll(outputDirectory, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create output directory '%s': %w", outputDirectory, err)
 	}
 
 	originalDirectory := filepath.Dir(article.OriginalPath)
+	originalCoverRel := article.CoverImagePath
 
-	// Copy cover image both to the site root (as before) and to the article output directory.
-	if article.CoverImagePath != "" {
-		coverImageOrigPath := filepath.Join(originalDirectory, article.CoverImagePath)
-		coverImageRootDestPath := filepath.Join(settings.OutputDirectory, article.CoverImagePath)
-		coverImageArticleDestPath := filepath.Join(outputDirectory, article.CoverImagePath)
+	// Copy cover image so it lives next to the article's index (within outputDirectory).
+	if originalCoverRel != "" {
+		coverImageOrigPath := filepath.Join(originalDirectory, originalCoverRel)
+		coverImageArticleDestPath := filepath.Join(outputDirectory, originalCoverRel)
 
 		if !slices.Contains(article.Tags, "PAGE") {
 			file, err := os.ReadFile(coverImageOrigPath)
 			if err != nil {
-				return fmt.Errorf("error reading file '%s': %w", coverImageOrigPath, err)
+				return fmt.Errorf("error reading cover image '%s': %w", coverImageOrigPath, err)
 			}
-
 			if err := os.MkdirAll(filepath.Dir(coverImageArticleDestPath), 0755); err != nil {
 				return fmt.Errorf("error creating directory for cover image '%s': %w", coverImageArticleDestPath, err)
 			}
-
-			if err := os.WriteFile(coverImageRootDestPath, file, 0644); err != nil {
-				return fmt.Errorf("error writing cover image file '%s': %w", coverImageRootDestPath, err)
-			}
 			if err := os.WriteFile(coverImageArticleDestPath, file, 0644); err != nil {
-				return fmt.Errorf("error writing article cover image file '%s': %w", coverImageArticleDestPath, err)
+				return fmt.Errorf("error writing cover image file '%s': %w", coverImageArticleDestPath, err)
 			}
 		}
 	}
@@ -201,26 +199,34 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 			return fmt.Errorf("failed to read resource file '%s': %w", resourceOrigPath, err)
 		}
 
-		err = os.MkdirAll(filepath.Dir(filepath.FromSlash(resourceDestPath)), 0755)
-		if err != nil {
+		if err := os.MkdirAll(filepath.Dir(filepath.FromSlash(resourceDestPath)), 0755); err != nil {
 			return fmt.Errorf("failed to create directory for resource '%s': %w", resourceDestPath, err)
 		}
 
-		err = os.WriteFile(resourceDestPath, input, 0644)
-		if err != nil {
+		if err := os.WriteFile(resourceDestPath, input, 0644); err != nil {
 			return fmt.Errorf("failed to write resource file to '%s': %w", resourceDestPath, err)
 		}
 	}
 
-	LinkToSelf, err := filepath.Rel(settings.OutputDirectory, outputPath)
+	// Compute LinkToSelf and LinkToSave.
+	linkToSelf, err := filepath.Rel(settings.OutputDirectory, outputPath)
 	if err != nil {
 		return fmt.Errorf("failed to get relative link from '%s' to '%s': %w", settings.OutputDirectory, outputPath, err)
 	}
-	article.LinkToSelf = filepath.ToSlash(LinkToSelf)
+	article.LinkToSelf = filepath.ToSlash(linkToSelf)
 	article.LinkToSave = filepath.ToSlash(outputPath)
+
+	// If a cover image was specified, normalize its path to be root-relative so templates
+	// and Open Graph tags can reference it consistently.
+	if originalCoverRel != "" && !slices.Contains(article.Tags, "PAGE") {
+		coverRootRel := filepath.Join(filepath.Dir(article.LinkToSelf), originalCoverRel)
+		article.CoverImagePath = filepath.ToSlash(coverRootRel)
+	}
+
 	return nil
 }
 
+// genRelativeLink computes a relative link from linkToSelf to name, unless name is absolute.
 func genRelativeLink(linkToSelf string, name string) string {
 	if strings.HasPrefix(name, "http://") || strings.HasPrefix(name, "https://") {
 		return name
@@ -235,7 +241,7 @@ func genRelativeLink(linkToSelf string, name string) string {
 	return upDir + name
 }
 
-// ExtractResources traverses an HTML node tree and extracts values of src/href
+// ExtractResources traverses an HTML node tree and extracts src/href values
 // from img, script, and link tags.
 func ExtractResources(n *html.Node) []string {
 	var resources []string
@@ -260,7 +266,7 @@ func ExtractResources(n *html.Node) []string {
 }
 
 // extractFirstLink parses HTML content and returns the value of the first "href" attribute
-// found in an anchor "a" tag. Returns an empty string if no link is found.
+// found in an anchor "a" tag. It returns an empty string if no link is found.
 func extractFirstLink(htmlContent string) string {
 	doc, err := html.Parse(strings.NewReader(htmlContent))
 	if err != nil {
@@ -289,12 +295,13 @@ func extractFirstLink(htmlContent string) string {
 	return link
 }
 
-// encodeComponent encodes a string for use in a URL query, then replaces `+` with `%20`.
+// encodeComponent encodes a string for use in a URL query, replacing '+' with '%20'.
 func encodeComponent(s string) string {
 	return strings.ReplaceAll(url.QueryEscape(s), "+", "%20")
 }
 
-// BuildShareUrl replaces placeholders in the urlTemplate with encoded article data.
+// BuildShareUrl replaces placeholders in the urlTemplate with encoded article data,
+// and returns the final URL as a template.URL value.
 func BuildShareUrl(urlTemplate string, article Article, settings Settings) template.URL {
 	finalUrl := article.Url
 	if finalUrl == "" {
@@ -321,7 +328,7 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	return template.URL(result)
 }
 
-// CleanContent prepares text content for search indexing.
+// CleanContent normalizes text content into a slice of tokens for search indexing.
 func CleanContent(s string) []string {
 	replacements := map[string]string{
 		"’": "'",
@@ -340,8 +347,8 @@ func CleanContent(s string) []string {
 	return strings.Fields(s)
 }
 
-// IsImage checks if a string (filename) has a common image extension.
-// Exported so it can be used in main.go and templates.
+// IsImage reports whether a filename has a common image extension.
+// It is exported so it can be used by main and templates.
 func IsImage(s string) bool {
 	s = strings.ToLower(s)
 	exts := []string{".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff"}
@@ -399,7 +406,7 @@ func GetThemeData(style Style) Theme {
 			HeaderFontSize: 1.0,
 			BodyFontSize:   1.0,
 		}
-	default: // Default style.
+	default:
 		return Theme{
 			Dark:           false,
 			HeaderFont:     "\"Georgia\"",
@@ -416,17 +423,15 @@ func GetThemeData(style Style) Theme {
 	}
 }
 
-// ApplyCSSTemplate applies the selected theme's styles to the default CSS template.
+// ApplyCSSTemplate applies the selected theme's styles to the default CSS template
+// and writes the generated CSS to style.css in the output directory.
 func ApplyCSSTemplate(themeData Theme, outputDirectory string, tmpl *texttemplate.Template) error {
 	var output strings.Builder
-	// Execute the CSS template with the theme data to generate the final CSS content.
-	err := tmpl.Execute(&output, themeData)
-	if err != nil {
+	if err := tmpl.Execute(&output, themeData); err != nil {
 		return fmt.Errorf("error executing style template: %w", err)
 	}
 
 	pathToSave := filepath.Join(outputDirectory, "style.css")
-	// Write the processed CSS content to the 'style.css' file in the output directory.
 	if err := os.WriteFile(pathToSave, []byte(output.String()), 0644); err != nil {
 		return fmt.Errorf("error saving processed css file: %w", err)
 	}
