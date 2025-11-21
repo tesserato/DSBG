@@ -103,6 +103,11 @@ func main() {
 	defaultFlagSet.StringVar(&settings.Port, "port", "666", "Port for the local server (default: 666).")
 	defaultFlagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Overwrite output directory without confirmation.")
 
+	// Author / Publisher metadata flags.
+	defaultFlagSet.StringVar(&settings.AuthorName, "author-name", "", "Author name for structured data and meta tags (defaults to blog title).")
+	defaultFlagSet.StringVar(&settings.PublisherName, "publisher-name", "", "Publisher name for structured data (defaults to blog title).")
+	defaultFlagSet.StringVar(&settings.PublisherLogoPath, "publisher-logo-path", "", "Path to a publisher logo image for structured data (relative to site root).")
+
 	// Custom share flag.
 	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|Display|UrlTemplate\".")
 
@@ -194,6 +199,14 @@ func main() {
 		settings.BaseUrl = fmt.Sprintf("http://localhost:%s", settings.Port)
 	} else {
 		settings.BaseUrl = strings.TrimSuffix(settings.BaseUrl, "/")
+	}
+
+	// Default author / publisher names to blog title if not provided.
+	if settings.AuthorName == "" {
+		settings.AuthorName = settings.Title
+	}
+	if settings.PublisherName == "" {
+		settings.PublisherName = settings.Title
 	}
 
 	// Parse theme into strongly-typed Style and derive highlight theme.

@@ -8,13 +8,13 @@
     <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
     <meta name="keywords" content="{{ stringsJoin .Art.Tags " , "}}">
     <meta name="description" content="{{ .Art.Description }}">
-    <meta name="author" content="{{ .Settings.Title }}">
+    <meta name="author" content="{{ .Settings.AuthorName }}">
 
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="{{ .Art.Title }}" />
     <meta property="og:description" content="{{ .Art.Description }}" />
     <meta property="og:url" content="{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}" />
-    <meta property="og:site_name" content="{{ .Settings.Title }}" />
+    <meta property="og:site_name" content="{{ .Settings.PublisherName }}" />
     <meta property="og:type" content="article" />
     {{if .Art.CoverImagePath}}
     <meta property="og:image" content="{{ .Settings.BaseUrl }}/{{ .Art.CoverImagePath }}" />
@@ -24,11 +24,11 @@
     <meta property="article:published_time" content='{{ .Art.Created.Format "2006-01-02T15:04:05Z07:00" }}'>
     <meta property="article:modified_time" content='{{ .Art.Updated.Format "2006-01-02T15:04:05Z07:00" }}'>
 
-    <!-- JSON-LD Article / BlogPosting Schema -->
+    <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
+  "@type": "{{ articleSchemaType .Art }}",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}"
@@ -44,11 +44,15 @@
   "dateModified": "{{ .Art.Updated.Format "2006-01-02T15:04:05Z07:00" }}",
   "author": {
     "@type": "Person",
-    "name": "{{ .Settings.Title }}"
+    "name": "{{ .Settings.AuthorName }}"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "{{ .Settings.Title }}"
+    "name": "{{ .Settings.PublisherName }}"{{if .Settings.PublisherLogoPath}},
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Settings.BaseUrl }}/{{ .Settings.PublisherLogoPath }}"
+    }{{end}}
   }
 }
     </script>

@@ -56,6 +56,14 @@ type Settings struct {
 	HighlightTheme            string
 	Port                      string
 	ForceOverwrite            bool
+
+	// AuthorName is used in meta tags and structured data as the article author.
+	AuthorName string
+	// PublisherName is used in structured data as the publisher name.
+	PublisherName string
+	// PublisherLogoPath is an optional path (relative to site root) to a logo image used
+	// in structured data as publisher.logo.
+	PublisherLogoPath string
 }
 
 // ShareButton describes a single social or custom share target.

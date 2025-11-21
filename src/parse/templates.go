@@ -24,11 +24,12 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 	var err error
 
 	funcMap := template.FuncMap{
-		"genRelativeLink": genRelativeLink,
-		"stringsJoin":     strings.Join,
-		"buildShareUrl":   BuildShareUrl,
-		"lower":           strings.ToLower,
-		"isImage":         IsImage,
+		"genRelativeLink":   genRelativeLink,
+		"stringsJoin":       strings.Join,
+		"buildShareUrl":     BuildShareUrl,
+		"lower":             strings.ToLower,
+		"isImage":           IsImage,
+		"articleSchemaType": ArticleSchemaType,
 		"makeLink": func(title string) string {
 			return strings.ReplaceAll(strings.ToLower(title), " ", "-") + "/"
 		},

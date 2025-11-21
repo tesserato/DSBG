@@ -216,8 +216,8 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	article.LinkToSelf = filepath.ToSlash(linkToSelf)
 	article.LinkToSave = filepath.ToSlash(outputPath)
 
-	// If a cover image was specified, normalize its path to be root-relative so templates
-	// and Open Graph tags can reference it consistently.
+	// If a cover image was specified, normalize its path to be relative to the article's output
+	// location so templates and Open Graph tags can reference it consistently.
 	if originalCoverRel != "" && !slices.Contains(article.Tags, "PAGE") {
 		coverRootRel := filepath.Join(filepath.Dir(article.LinkToSelf), originalCoverRel)
 		article.CoverImagePath = filepath.ToSlash(coverRootRel)
@@ -471,4 +471,17 @@ func ParseStyle(s string) (Style, error) {
 	default:
 		return Default, fmt.Errorf("unknown style %q", s)
 	}
+}
+
+// ArticleSchemaType determines which schema.org type to use for an article.
+// If any tag looks like "news" or "article", it returns "NewsArticle";
+// otherwise it returns "BlogPosting".
+func ArticleSchemaType(a Article) string {
+	for _, tag := range a.Tags {
+		t := strings.ToLower(strings.TrimSpace(tag))
+		if t == "news" || t == "article" {
+			return "NewsArticle"
+		}
+	}
+	return "BlogPosting"
 }
