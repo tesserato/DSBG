@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.field('title', { boost: 10 });
                 this.field('description');
                 this.field('tags', { boost: 5 });
-                this.field('html_content'); // Index HTML content for full-text search
+                this.field('content'); // Index Plain Text content
 
                 articleData.forEach(doc => this.add(doc));
             });
@@ -50,14 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join(' ');
     }
 
-    // Helper: Create a highlighted snippet from HTML content
+    // Helper: Create a highlighted snippet from Plain Text content
     function createSnippet(content, term) {
-        // Strip HTML tags to get plain text
-        const textContent = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+        // Content is now plain text, so no HTML stripping needed.
+        // Just normalize whitespace.
+        const textContent = content.replace(/\s+/g, ' ');
         const termIndex = textContent.toLowerCase().indexOf(term.toLowerCase());
 
         // If term not found (e.g. fuzzy match), just return start of text
-        if (termIndex === -1) return (textContent.substring(0, 150) + '...').replace(/<|>/g, '');
+        if (termIndex === -1) return (textContent.substring(0, 150) + '...');
 
         const start = Math.max(0, termIndex - 50);
         const end = Math.min(textContent.length, termIndex + term.length + 100);
@@ -66,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (start > 0) snippet = '...' + snippet;
         if (end < textContent.length) snippet = snippet + '...';
 
-        // Escape HTML in snippet to prevent injection, then highlight term
-        snippet = snippet.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        // Escape HTML special chars in snippet to prevent injection
+        snippet = snippet.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
         // Simple highlighting logic
         const highlightTerm = term.split(/\s+/).pop().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -100,7 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 searchResults.innerHTML = results.map(result => {
                     const article = articleMap[result.ref];
-                    const snippet = createSnippet(article.html_content, term);
+                    // Use content (plain text) for snippet generation
+                    const snippet = createSnippet(article.content, term);
                     // Use article.url (the ref) for the link
                     return `<li><a href="${article.url}">${article.title}</a><div class="search-result-snippet">${snippet}</div></li>`;
                 }).join('');

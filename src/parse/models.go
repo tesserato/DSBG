@@ -30,6 +30,7 @@ type Settings struct {
 	DateFormat                string
 	IndexName                 string
 	Theme                     string
+	Lang                      string
 	PathToCustomCss           string
 	PathToCustomJs            string
 	PathToCustomFavicon       string
@@ -45,6 +46,7 @@ type Settings struct {
 	HighlightTheme            string
 	Port                      string
 	ForceOverwrite            bool
+	BuildVersion              string
 
 	// AuthorName is used in meta tags and structured data as the article author.
 	AuthorName string

@@ -102,6 +102,11 @@ func GetPaths(root string, extensions []string) ([]string, error) {
 // cleanString normalizes path-like strings by removing non-alphanumeric characters
 // and redundant separators, making them safe to use as URL fragments.
 func cleanString(url string) string {
+	// Pre-process specific programming symbols before stripping to prevent
+	// collisions (e.g. "C#" vs "C++" vs "C")
+	url = strings.ReplaceAll(url, "#", "sharp")
+	url = strings.ReplaceAll(url, "+", "plus")
+
 	var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9\/\\\. ]+`)
 	url = nonAlphanumericRegex.ReplaceAllString(url, "")
 	url = strings.ReplaceAll(url, "\\", "/")
@@ -121,11 +126,7 @@ func cleanString(url string) string {
 
 // CopyHtmlResources copies associated resources for an article and determines
 // the article's output path. Resources include images and other linked assets.
-//
-// resources is a list of relative file paths found in the article (images, scripts, etc).
-// Cover images are copied to live next to the article's index file.
 func CopyHtmlResources(settings Settings, article *Article, resources []string) error {
-	// Note: Using InputPath (from models.go) instead of InputDirectory (from working code)
 	relativeInputPath, err := filepath.Rel(settings.InputPath, article.OriginalPath)
 	if err != nil {
 		return fmt.Errorf("failed to get relative path for '%s': %w", article.OriginalPath, err)
@@ -155,7 +156,6 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 		}
 	}
 
-	// Note: Using OutputPath (from models.go)
 	outputPath := filepath.Join(settings.OutputPath, relativeInputPath)
 	outputPath = strings.TrimSuffix(outputPath, filepath.Ext(outputPath))
 	outputPath = filepath.Join(outputPath, settings.IndexName)
@@ -242,7 +242,6 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 		}
 	}
 
-	// Compute LinkToSelf and LinkToSave.
 	linkToSelf, err := filepath.Rel(settings.OutputPath, outputPath)
 	if err != nil {
 		return fmt.Errorf("failed to get relative link from '%s' to '%s': %w", settings.OutputPath, outputPath, err)
@@ -408,13 +407,10 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error 
 	}
 
 	themeFile := themeName + ".css"
-	// Use path.Join (forward slashes) for embed.FS lookup to avoid Windows backslash issues.
 	srcPath := path.Join(themesPath, themeFile)
 
-	// Check if theme file exists in assets
 	fileContent, err := fs.ReadFile(assets, srcPath)
 	if err != nil {
-		// Log available themes to help debug missing themes.
 		available, _ := GetAvailableThemes(assets)
 		log.Printf("Warning: Theme '%s' not found (Available: %s). Falling back to default theme.", themeName, strings.Join(available, ", "))
 
@@ -425,16 +421,13 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error 
 			return fmt.Errorf("failed to load default theme CSS: %w", err)
 		}
 	} else {
-		// Success case
 		log.Printf("Using theme: %s", themeName)
 	}
 
-	// Ensure output directory exists
 	if err := os.MkdirAll(outputDirectory, 0755); err != nil {
 		return fmt.Errorf("failed to create output directory '%s': %w", outputDirectory, err)
 	}
 
-	// Use filepath.Join (OS specific separator) for writing to local disk.
 	destPath := filepath.Join(outputDirectory, "style.css")
 	if err := os.WriteFile(destPath, fileContent, 0644); err != nil {
 		return fmt.Errorf("error writing style.css: %w", err)
@@ -457,20 +450,18 @@ func GetAvailableThemes(assets fs.FS) ([]string, error) {
 			themes = append(themes, name)
 		}
 	}
-	slices.Sort(themes) // Ensure sorted order
+	slices.Sort(themes)
 	return themes, nil
 }
 
 // GetThemeType determines if a theme is "light" or "dark" by inspecting the CSS file.
-// It looks for the standard CSS property 'color-scheme: light|dark'.
-// Defaults to "dark" if not found (safe fallback for syntax highlighting).
 func GetThemeType(assets fs.FS, themeName string) string {
 	themeFile := themeName + ".css"
 	srcPath := path.Join(themesPath, themeFile)
 
 	content, err := fs.ReadFile(assets, srcPath)
 	if err != nil {
-		return "dark" // Fallback
+		return "dark"
 	}
 
 	match := regexColorScheme.FindStringSubmatch(string(content))
@@ -481,7 +472,7 @@ func GetThemeType(assets fs.FS, themeName string) string {
 		}
 		return "light"
 	}
-	return "dark" // Fallback
+	return "dark"
 }
 
 // ParseSortOrder converts a string into a SortOrder, validating supported options.
@@ -503,8 +494,6 @@ func ParseSortOrder(s string) (SortOrder, error) {
 }
 
 // ArticleSchemaType determines which schema.org type to use for an article.
-// If any tag looks like "news" or "article", it returns "NewsArticle";
-// otherwise it returns "BlogPosting".
 func ArticleSchemaType(a Article) string {
 	for _, tag := range a.Tags {
 		t := strings.ToLower(strings.TrimSpace(tag))

@@ -102,6 +102,9 @@ func main() {
 	var settings parse.Settings
 	var shareButtons shareButtonsFlag
 
+	// Generate a simple cache-busting version based on startup time
+	settings.BuildVersion = fmt.Sprintf("%d", time.Now().Unix())
+
 	// Prepare dynamic theme list for help text
 	themeDesc := "Selects the built-in color scheme/CSS framework to use."
 	if availableThemes, err := parse.GetAvailableThemes(assets); err == nil {
@@ -115,6 +118,7 @@ func main() {
 	flagSet.StringVar(&settings.OutputPath, "output", "public", "Directory where the generated static site will be saved.")
 	flagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Skip the confirmation prompt when the output directory is not empty.")
 	flagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "A short summary of your site. Supports Markdown links. Appears on the homepage (rendered) and in the HTML <meta name='description'> tag (plain text).")
+	flagSet.StringVar(&settings.Lang, "lang", "en", "The language code for the HTML <html> tag (e.g., 'en', 'es', 'fr').")
 
 	// --- Metadata & SEO ---
 	flagSet.StringVar(&settings.AuthorName, "author", "", "The default author name. Injected into JSON-LD structured data and <meta name='author'> tags.")
@@ -165,7 +169,7 @@ func main() {
 			fmt.Fprintln(os.Stderr)
 		}
 
-		printGroup("GENERAL CONFIGURATION", "input", "output", "title", "description", "base-url", "overwrite")
+		printGroup("GENERAL CONFIGURATION", "input", "output", "title", "description", "base-url", "lang", "overwrite")
 		printGroup("METADATA & SEO", "author", "publisher", "logo", "date-format")
 		printGroup("THEMING & UI", "theme", "css-path", "js-path", "favicon-path", "share")
 		printGroup("INJECTIONS", "elements-top", "elements-bottom")
@@ -219,6 +223,13 @@ func main() {
 	// Parse flags
 	if err := flagSet.Parse(os.Args[1:]); err != nil {
 		log.Fatalf("Error parsing flags: %v", err)
+	}
+
+	// Check for missing base-url in production build
+	if !*watch && (settings.BaseUrl == "" || strings.Contains(settings.BaseUrl, "localhost")) {
+		log.Printf("%sWARNING: No valid production -base-url provided.%s\n", cYellow, cReset)
+		log.Println("  RSS feeds, Sitemap, and Social Sharing cards (Open Graph) require a public URL.")
+		log.Println("  Use '-base-url https://yourdomain.com' to fix this.")
 	}
 
 	settings.ShareButtons = shareButtons
@@ -359,6 +370,9 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 			}
 			if event.Has(fsnotify.Write) {
 				log.Println("File change detected:", event.Name, "- Rebuilding website...")
+				// Update build version on rebuild so cache busts instantly
+				settings.BuildVersion = fmt.Sprintf("%d", time.Now().Unix())
+
 				if err := buildWebsite(settings, templates, false); err != nil {
 					log.Printf("Rebuild failed: %v\n", err)
 				}
@@ -518,13 +532,13 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 
 				mu.Lock()
 				articles = append(articles, article)
+
 				searchIndex = append(searchIndex, map[string]interface{}{
-					"title":        article.Title,
-					"content":      parse.CleanContent(article.TextContent),
-					"description":  article.Description,
-					"tags":         article.Tags,
-					"url":          article.LinkToSelf,
-					"html_content": article.HtmlContent,
+					"title":       article.Title,
+					"content":     article.TextContent,
+					"description": article.Description,
+					"tags":        article.Tags,
+					"url":         article.LinkToSelf,
 				})
 				mu.Unlock()
 			}
