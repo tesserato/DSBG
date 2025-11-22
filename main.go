@@ -106,7 +106,7 @@ func main() {
 	settings.BuildVersion = fmt.Sprintf("%d", time.Now().Unix())
 
 	// Prepare dynamic theme list for help text
-	themeDesc := "Selects the built-in color scheme/CSS framework to use."
+	themeDesc := "Selects one of the built-in themes."
 	if availableThemes, err := parse.GetAvailableThemes(assets); err == nil {
 		themeDesc += fmt.Sprintf(" Available: [%s]", strings.Join(availableThemes, ", "))
 	}
@@ -117,13 +117,14 @@ func main() {
 	flagSet.StringVar(&settings.InputPath, "input", "content", "Directory containing your source Markdown (.md) or HTML files.")
 	flagSet.StringVar(&settings.OutputPath, "output", "public", "Directory where the generated static site will be saved.")
 	flagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Skip the confirmation prompt when the output directory is not empty.")
-	flagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "A short summary of your site. Supports Markdown links. Appears on the homepage (rendered) and in the HTML <meta name='description'> tag (plain text).")
+
+	flagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "A short summary of your site. Rendered as Markdown on the homepage (supports links); stripped to plain text for SEO tags.")
 	flagSet.StringVar(&settings.Lang, "lang", "en", "The language code for the HTML <html> tag (e.g., 'en', 'es', 'fr').")
 
 	// --- Metadata & SEO ---
 	flagSet.StringVar(&settings.AuthorName, "author", "", "The default author name. Injected into JSON-LD structured data and <meta name='author'> tags.")
 	flagSet.StringVar(&settings.PublisherName, "publisher", "", "Organization/Publisher name for structured data. Defaults to the Blog Title if omitted.")
-	flagSet.StringVar(&settings.PublisherLogoPath, "logo", "", "Path to a logo image (relative to current dir). Injected into JSON-LD for Google search result branding.")
+	flagSet.StringVar(&settings.PublisherLogoPath, "logo", "", "Path to a local logo image. Injected into JSON-LD for Google search result branding.")
 	flagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Go layout string for rendering dates (e.g., 'Jan 02, 2006').")
 	flagSet.StringVar(&settings.IndexName, "index-name", "index.html", "The filename to use for directory indexes. Change to 'README.html' if hosting on certain file servers.")
 
@@ -131,7 +132,7 @@ func main() {
 	flagSet.StringVar(&settings.Theme, "theme", "default", themeDesc)
 	flagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Path to a local CSS file. If set, this REPLACES the built-in theme entirely.")
 	flagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Path to a local JS file. Appended to the site's default functionality.")
-	flagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Path to a 'favicon.ico' file to replace the default icon.")
+	flagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Path to a local 'favicon.ico' file to replace the default icon.")
 	flagSet.Var(&shareButtons, "share", "Add a custom share button. Format: 'Name|Icon.svg|URL_Template'. Can be used multiple times. See variables below.")
 
 	// --- Injections ---
@@ -178,7 +179,7 @@ func main() {
 
 		fmt.Fprintf(os.Stderr, "%sFRONTMATTER METADATA:%s\n", cBold+cYellow, cReset)
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "share_url", "Override the URL shared by buttons (good for link-blogging).")
-		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "canonical_url", "Set the 'rel=canonical' tag (good for cross-posting/SEO).")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "canonical_url", "Overrides the auto-generated canonical URL (useful when cross-posting).")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "cover_image", "Path to an image to display on the index and in social cards.")
 		fmt.Fprintln(os.Stderr)
 
