@@ -25,6 +25,8 @@ var regexPatterns = []*regexp.Regexp{
 	regexp.MustCompile(`(?P<hour>\d{2}):(?P<min>\d{2}):(?P<sec>\d{2})`),
 }
 
+var themesPath = "src/assets/themes"
+
 // regexColorScheme finds the standard CSS color-scheme property (e.g., color-scheme: dark;).
 var regexColorScheme = regexp.MustCompile(`(?i)color-scheme\s*:\s*([^;]+);`)
 
@@ -371,7 +373,6 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error 
 		themeName = "default"
 	}
 
-	themesPath := "src/assets/templates/themes"
 	themeFile := themeName + ".css"
 	// Use path.Join (forward slashes) for embed.FS lookup to avoid Windows backslash issues.
 	srcPath := path.Join(themesPath, themeFile)
@@ -405,7 +406,6 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error 
 // GetAvailableThemes scans the embedded assets for available CSS themes.
 // It returns a sorted list of theme names (filenames without extension).
 func GetAvailableThemes(assets fs.FS) ([]string, error) {
-	themesPath := "src/assets/templates/themes"
 	entries, err := fs.ReadDir(assets, themesPath)
 	if err != nil {
 		return nil, err
@@ -426,7 +426,6 @@ func GetAvailableThemes(assets fs.FS) ([]string, error) {
 // It looks for the standard CSS property 'color-scheme: light|dark'.
 // Defaults to "dark" if not found (safe fallback for syntax highlighting).
 func GetThemeType(assets fs.FS, themeName string) string {
-	themesPath := "src/assets/templates/themes"
 	themeFile := themeName + ".css"
 	srcPath := path.Join(themesPath, themeFile)
 
