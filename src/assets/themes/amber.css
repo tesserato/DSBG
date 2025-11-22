@@ -1,0 +1,610 @@
+/* 
+   Jet Black Theme
+   Inspired by high-tech avionics and industrial control panels.
+   Matte black metal, laser-etched typography, and amber accents.
+*/
+
+/*
+    -------------------------------------------
+    GLOBAL VARIABLES & BOX-SIZING
+    -------------------------------------------
+*/
+:root {
+    color-scheme: dark;
+
+    /* Fonts: Technical, Monospaced, "Laser Etched" look */
+    --header-font: "JetBrains Mono", "Roboto Mono", "Consolas", monospace;
+    --body-font: "JetBrains Mono", "Roboto Mono", "Consolas", monospace;
+
+    /* Font sizes */
+    --base-font-size: 0.95rem;
+    --header-font-size: 1rem;
+    --body-font-size: 0.95rem;
+
+    /* Colors */
+    --background: #0a0a0a;
+    /* Deepest matte black */
+    --text: #e0e0e0;
+    /* Off-white labels */
+    --muted: #888888;
+    /* Faded etching */
+
+    /* Panel styling */
+    --card: #161616;
+    /* Slightly lighter module background */
+    --border: #333333;
+    /* Panel seams */
+
+    /* The "Switch" Accent (Amber/Orange from the knob) */
+    --accent: #ff9d00;
+
+    --link: var(--accent);
+    --shadow: #000000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/*
+    -------------------------------------------
+    BASIC HTML STYLES
+    -------------------------------------------
+*/
+html {
+    padding: 0;
+    font-family: var(--body-font);
+    font-size: var(--base-font-size);
+    background-color: var(--background);
+    color: var(--text);
+    margin: 0 auto;
+    /* Subtle noise texture to mimic matte metal could go here */
+}
+
+html * {
+    transition: all 0.15s cubic-bezier(0.2, 0, 0.4, 1);
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+    max-width: 950px;
+    width: 100%;
+    padding: 2rem;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+hr {
+    height: 1px;
+    width: 100%;
+    border: none;
+    background-color: var(--border);
+    margin: 1rem 0;
+}
+
+pre {
+    height: auto;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    width: fit-content;
+}
+
+.hljs {
+    background: #0f0f0f !important;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1rem;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    /* Recessed screen look */
+}
+
+code {
+    font-size: 0.9rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
+}
+
+/*
+    -------------------------------------------
+    NAVIGATION
+    -------------------------------------------
+*/
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    font-size: 0.85rem;
+    color: var(--text);
+    gap: 0.2rem;
+    /* Tight gap like control buttons */
+    margin-bottom: 0.7rem;
+    flex-wrap: wrap;
+}
+
+nav a {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: var(--muted);
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    /* Beveled button look */
+    box-shadow: 0 2px 0 #000;
+    transform: translateY(0);
+}
+
+nav a:hover {
+    color: #000;
+    background-color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 2px 0 rgba(180, 80, 0, 0.5);
+    text-shadow: none;
+}
+
+/*
+    -------------------------------------------
+    IMAGES
+    -------------------------------------------
+*/
+img {
+    max-width: 100%;
+    height: auto;
+    align-self: center;
+}
+
+header img {
+    height: 1.5rem;
+    filter: grayscale(100%) brightness(1.5);
+    /* Make logo look like white print */
+}
+
+.detail img {
+    border: 1px solid var(--border);
+    margin-top: 1rem;
+    opacity: 0.9;
+}
+
+.actionicons {
+    width: 1.8rem;
+    height: 1.8rem;
+    filter: invert(1);
+}
+
+/*
+    -------------------------------------------
+    ARTICLE DETAIL BOX (The "Module")
+    -------------------------------------------
+*/
+.detail {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1.2rem;
+
+    background-color: var(--card);
+    padding: 2rem;
+    width: 100%;
+    margin: 0 0 1.5rem 0;
+
+    /* Industrial Borders */
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    /* Subtle inset light to define edges like metal */
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 10px 20px rgba(0, 0, 0, 0.5);
+
+    color: var(--text);
+    position: relative;
+}
+
+/* Cosmetic screws/rivets in corners */
+.detail::before, .detail::after {
+    content: "+";
+    position: absolute;
+    color: #333;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    top: 0.5rem;
+}
+
+.detail::before {
+    left: 0.7rem;
+}
+
+.detail::after {
+    right: 0.7rem;
+}
+
+.detail:hover {
+    border-color: #444;
+}
+
+.articlelinks {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.headline {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/*
+    -------------------------------------------
+    TAGS & BUTTONS (The Switch Look)
+    -------------------------------------------
+*/
+#buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0;
+}
+
+/* Default Button */
+button,
+.headline button {
+    appearance: none;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    /* Slight round like the knob */
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-family: var(--body-font);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+    color: var(--background);
+    background-color: var(--text);
+    /* Off-white active state */
+
+    /* Mimic the "bar" on the knob */
+    border-left: 4px solid var(--accent);
+    transition: all 0.1s ease;
+}
+
+/* Hover / Active */
+button:hover,
+.headline button:hover {
+    background-color: var(--accent);
+    color: #000;
+    border-left: 4px solid #fff;
+    box-shadow: 0 0 15px rgba(255, 157, 0, 0.3);
+    /* Glow */
+}
+
+/* Inactive/Off State */
+.off,
+button.off {
+    opacity: 1;
+    background-color: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    /* Remove accent bar */
+}
+
+.off:hover,
+button.off:hover {
+    border-color: var(--text);
+    color: var(--text);
+    box-shadow: none;
+    background-color: transparent;
+}
+
+/* Toggle Knobs */
+#hide_all_btn,
+#show_all_btn {
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    background-color: #111;
+    border: 1px solid #333;
+    box-shadow: 0 4px 8px #000;
+}
+
+/* The "Stripe" on the knob */
+#show_all_btn::after {
+    content: "";
+    width: 4px;
+    height: 60%;
+    background-color: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 5px var(--accent);
+}
+
+#hide_all_btn::after {
+    content: "";
+    width: 4px;
+    height: 60%;
+    background-color: #333;
+    /* Off state */
+    border-radius: 2px;
+}
+
+/*
+    -------------------------------------------
+    HEADER STYLES
+    -------------------------------------------
+*/
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border);
+}
+
+header h1 {
+    font-family: var(--header-font);
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    /* W I D E spacing like "JET SUIT" */
+    color: var(--text);
+}
+
+header h2 {
+    font-family: var(--header-font);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    max-width: 600px;
+}
+
+/*
+    -------------------------------------------
+    TYPOGRAPHY & LINKS
+    -------------------------------------------
+*/
+h1, h2, h3, h4, h5 {
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+p {
+    margin-top: 0.5rem;
+    color: #ccc;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--link);
+    border-bottom: 1px dotted var(--link);
+    transition: all 0.2s;
+}
+
+a:hover {
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    text-shadow: 0 0 8px var(--accent);
+}
+
+blockquote {
+    border-left: 2px solid var(--accent);
+    background: rgba(255, 157, 0, 0.05);
+    padding: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: var(--muted);
+}
+
+/*
+    -------------------------------------------
+    ARTICLE INFO
+    -------------------------------------------
+*/
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.date {
+    margin: 0;
+}
+
+/*
+    -------------------------------------------
+    INPUTS (Search)
+    -------------------------------------------
+*/
+#search-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    font-size: 0.9rem;
+    font-family: var(--body-font);
+    color: var(--text);
+    background-color: #000;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#search-input::placeholder {
+    color: #444;
+}
+
+#search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(255, 157, 0, 0.1);
+}
+
+#search-results {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+    border: 1px solid var(--border);
+    border-top: none;
+    background-color: #050505;
+    display: none;
+}
+
+#search-results li {
+    padding: 0.8rem;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.search-result-snippet strong {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/*
+    -------------------------------------------
+    FOOTER
+    -------------------------------------------
+*/
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/*
+    -------------------------------------------
+    SHARE BUTTONS
+    -------------------------------------------
+*/
+.sharebuttons {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.sharebuttons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    line-height: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: #111;
+    transition: transform 0.1s;
+}
+
+.sharebuttons a:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+    background: #222;
+}
+
+.sharebuttons img {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0 !important;
+    align-self: center !important;
+    object-fit: contain;
+    filter: invert(1);
+    /* White icons on black */
+}
+
+/*
+    -------------------------------------------
+    RESPONSIVE
+    -------------------------------------------
+*/
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+
+    .headline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .info {
+        align-self: flex-start;
+        flex-direction: row;
+        gap: 1rem;
+    }
+}
+
+/* 
+   Diagonal Hatching Pattern 
+   Applies to specific UI elements to mimic the "IN" area.
+*/
+.headline button:hover,
+#search-results li:hover {
+    background-image: repeating-linear-gradient(-45deg,
+            transparent,
+            transparent 4px,
+            rgba(255, 157, 0, 0.1) 4px,
+            rgba(255, 157, 0, 0.1) 5px);
+}
