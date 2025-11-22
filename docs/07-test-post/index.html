@@ -43,7 +43,7 @@
 
     <!-- Article-specific Open Graph time metadata -->
     <meta property="article:published_time" content='2025-02-16T00:00:00Z'>
-    <meta property="article:modified_time" content='2025-11-22T13:06:27Z'>
+    <meta property="article:modified_time" content='2025-11-22T18:23:33Z'>
 
     <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
     <script type="application/ld+json">
@@ -60,7 +60,7 @@
     "https://tesserato.github.io/DSBG/07-test-post/potato.webp"
   ],
   "datePublished": "2025-02-16T00:00:00Z",
-  "dateModified": "2025-11-22T13:06:27Z",
+  "dateModified": "2025-11-22T18:23:33Z",
   "author": {
     "@type": "Person",
     "name": "Dead Simple Blog Generator"
@@ -73,9 +73,9 @@
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/07-test-post/index.html">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css?v=1763841175">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
@@ -170,8 +170,12 @@
 <p>Here’s a mix of common Markdown elements to show you how they look:</p>
 <h2 id="math">Math</h2>
 <p>Inline math ($ … $): <span class="math inline">\(E = mc^2\)</span></p>
-<p>Paragraph math (\$\$ … \$\$):</p>
-<p>$$ \hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi}dx $$</p>
+<p>Paragraph math<br/>
+(\$\$<br/>
+…<br/>
+\$\$):</p>
+<p><span class="math display">\[\hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi} dx 
+\]</span></p>
 <h2 id="lists">Lists</h2>
 <ul>
 <li>Unordered list item</li>
@@ -532,7 +536,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js' async defer></script>
+    <script src='../script.js?v=1763841175' async defer></script>
 </body>
 
 </html>

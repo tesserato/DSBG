@@ -26,9 +26,14 @@ Here's a mix of common Markdown elements to show you how they look:
 
 Inline math (\$ ... \$): $ E = mc^2 $
 
-Paragraph math (\\\$\\\$ ... \\\$\\\$):
+Paragraph math 
+(\\\$\\\$
+ ... 
+\\\$\\\$):
 
-\$\$ \hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi}dx \$\$
+$$ 
+\hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi} dx 
+$$
 
 ## Lists
 

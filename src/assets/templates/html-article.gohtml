@@ -60,7 +60,7 @@
     <link rel="canonical" href="{{if .Art.CanonicalUrl}}{{.Art.CanonicalUrl}}{{else}}{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}{{end}}">
     <link rel="stylesheet" href="{{ genRelativeLink .Art.LinkToSelf "style.css"}}?v={{.Settings.BuildVersion}}">
     <link rel="icon" type="image/x-icon" href="{{genRelativeLink .Art.LinkToSelf "favicon.ico"}}">
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/{{.Settings.HighlightTheme}}.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>

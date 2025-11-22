@@ -1,86 +1,48 @@
-/* 
-   BLACK THEME v2 (Stealth / Relief)
-   Matte black, dark neumorphism, embossed typography, and tight shadows.
-*/
-
-/*
-    -------------------------------------------
-    GLOBAL VARIABLES & BOX-SIZING
-    -------------------------------------------
-*/
 :root {
     color-scheme: dark;
-
-    /* Fonts */
     --header-font: "Anton", "Impact", "Arial Black", sans-serif;
     --body-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-    /* Typography scale */
     --base-font-size: 1rem;
     --body-font-size: 1rem;
     --header-font-size: 1.1rem;
     --line-height: 1.6;
-
-    /* Palette */
     --bg: #111111;
     --bg-elevated: #101010;
     --bg-recessed: #0c0c0c;
-
     --text: #c4c4c4;
     --text-muted: #666666;
     --text-soft: #888888;
-
     --link: #ffffff;
     --accent: #f5c451;
-    /* Warm accent for focus/hover; tweak to taste */
-
-    /* Neumorphic shadows */
     --shadow-light: #2e2e2e;
-    /* light source (top-left) */
     --shadow-dark: #050505;
-    /* shadow (bottom-right) */
-
-    /* Borders & surfaces */
     --card: #111111;
     --border: #151515;
-
-    /* Radii & spacing */
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-pill: 999px;
-
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
     --space-md: 1rem;
     --space-lg: 1.5rem;
     --space-xl: 2.5rem;
-
     --max-width: 900px;
-
-    /* Motion */
     --transition-fast: 0.15s ease-out;
-    --transition-medium: 0.2s ease-in-out;
+    --transition-medium: 0.2s ease-in-out
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+*, ::before, ::after {
+    box-sizing: border-box
 }
 
-/*
-    -------------------------------------------
-    BASIC HTML STYLES
-    -------------------------------------------
-*/
 html {
     padding: 0;
     margin: 0;
     font-family: var(--body-font);
     font-size: var(--base-font-size);
     background-color: var(--bg);
-    color: var(--text);
+    color: var(--text)
 }
 
 body {
@@ -95,172 +57,119 @@ body {
     padding: var(--space-xl);
     margin: 0 auto;
     line-height: var(--line-height);
-    background-color: var(--bg);
+    background-color: var(--bg)
 }
 
-/* Only animate what matters, not everything */
-a,
-button,
-input,
-nav a,
-.sharebuttons a,
-#search-input {
-    transition:
-        background-color var(--transition-medium),
-        color var(--transition-medium),
-        border-color var(--transition-medium),
-        box-shadow var(--transition-medium),
-        transform var(--transition-fast);
+a, button, input, nav a, .sharebuttons a, #search-input {
+    transition: background-color var(--transition-medium), color var(--transition-medium), border-color var(--transition-medium), box-shadow var(--transition-medium), transform var(--transition-fast)
 }
 
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
+@media (prefers-reduced-motion:reduce) {
+    *, ::before, ::after {
         transition: none !important;
         animation: none !important;
-        scroll-behavior: auto !important;
+        scroll-behavior: auto !important
     }
 }
 
 hr {
     height: 2px;
     width: 100%;
-    border: none;
+    border: 0;
     background-color: var(--bg);
     margin: 1.5rem 0;
     border-radius: 2px;
-    /* Etched line effect - Tightened */
-    box-shadow:
-        inset 1px 1px 1px var(--shadow-dark),
-        inset -1px -1px 1px var(--shadow-light);
+    box-shadow: inset 1px 1px 1px var(--shadow-dark), inset -1px -1px 1px var(--shadow-light)
 }
 
-/*
-    -------------------------------------------
-    CODE BLOCKS
-    -------------------------------------------
-*/
 pre {
     margin: 0;
     padding: 0;
     max-width: 100%;
-    width: fit-content;
+    width: fit-content
 }
 
 .hljs {
     background: var(--bg-recessed) !important;
     border-radius: var(--radius-md);
     padding: 1.5rem;
-    /* Recessed / Engraved look - Tightened */
-    box-shadow:
-        inset 2px 2px 5px var(--shadow-dark),
-        inset -1px -1px 2px var(--shadow-light);
+    box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
     border: 1px solid var(--border);
-    overflow-x: auto;
+    overflow-x: auto
 }
 
 code {
-    font-size: 0.9rem;
-    padding: 0.2rem 0.4rem;
+    font-size: .9rem;
+    padding: .2rem .4rem;
     border-radius: var(--radius-sm);
     background: #181818;
     color: #f5f5f5;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.12);
+    text-shadow: 0 0 5px rgba(255, 255, 255, .12)
 }
 
-/*
-    -------------------------------------------
-    NAVIGATION
-    -------------------------------------------
-*/
 nav {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: 0;
-    font-size: 0.8rem;
+    font-size: .8rem;
     color: var(--text-soft);
     gap: 1rem;
     margin-bottom: 1rem;
-    flex-wrap: wrap;
+    flex-wrap: wrap
 }
 
 nav a {
     display: block;
-    padding: 0.5rem 1rem;
+    padding: .5rem 1rem;
     text-decoration: none;
     color: var(--text-soft);
     background-color: var(--bg-elevated);
     border-radius: var(--radius-pill);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-
-    /* Raised Button - Crisp */
-    box-shadow:
-        3px 3px 6px var(--shadow-dark),
-        -1px -1px 2px var(--shadow-light);
+    letter-spacing: .1em;
+    box-shadow: 3px 3px 6px var(--shadow-dark), -1px -1px 2px var(--shadow-light)
 }
 
 nav a:hover {
     color: #fff;
     transform: translateY(-1px);
-    box-shadow:
-        4px 4px 8px var(--shadow-dark),
-        -2px -2px 4px var(--shadow-light);
+    box-shadow: 4px 4px 8px var(--shadow-dark), -2px -2px 4px var(--shadow-light)
 }
 
 nav a:active {
-    /* Pressed */
-    box-shadow:
-        inset 2px 2px 4px var(--shadow-dark),
-        inset -1px -1px 2px var(--shadow-light);
+    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
     transform: translateY(0);
-    color: #fff;
+    color: #fff
 }
 
-/*
-    -------------------------------------------
-    IMAGES
-    -------------------------------------------
-*/
 img {
     max-width: 100%;
     height: auto;
-    align-self: center;
+    align-self: center
 }
 
 header img {
     height: 1.5rem;
     filter: grayscale(100%) contrast(1.2);
-    opacity: 0.6;
+    opacity: .6
 }
 
 .detail img {
     border-radius: var(--radius-sm);
     margin-top: 1.5rem;
-    opacity: 0.9;
-    /* Lifted Image - Crisp */
-    box-shadow:
-        5px 5px 10px var(--shadow-dark),
-        -2px -2px 5px var(--shadow-light);
+    opacity: .9;
+    box-shadow: 5px 5px 10px var(--shadow-dark), -2px -2px 5px var(--shadow-light)
 }
 
 .actionicons {
     width: 1.8rem;
     height: 1.8rem;
     filter: invert(1);
-    opacity: 0.35;
+    opacity: .35
 }
 
-/*
-    -------------------------------------------
-    ARTICLE DETAIL BOX
-    -------------------------------------------
-*/
 .detail {
     align-self: center;
     display: flex;
@@ -268,20 +177,13 @@ header img {
     align-items: flex-start;
     justify-content: flex-start;
     gap: var(--space-lg);
-
     background-color: var(--card);
     padding: var(--space-xl);
     width: 100%;
     margin: 0 0 2.5rem 0;
-
     border-radius: var(--radius-lg);
-
-    /* Subtle Lift - Crisp */
-    box-shadow:
-        5px 5px 15px var(--shadow-dark),
-        -2px -2px 5px var(--shadow-light);
-
-    color: var(--text);
+    box-shadow: 5px 5px 15px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
+    color: var(--text)
 }
 
 .articlelinks {
@@ -291,7 +193,7 @@ header img {
     justify-content: space-between;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1rem
 }
 
 .headline {
@@ -301,84 +203,55 @@ header img {
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 0.8rem;
+    gap: .8rem;
     padding-bottom: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem
 }
 
-/*
-    -------------------------------------------
-    TAGS CONTAINER
-    -------------------------------------------
-*/
 #buttons {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
-    gap: 0.75rem;
+    gap: .75rem;
     width: 100%;
     margin-top: 1rem;
-    padding: 0;
+    padding: 0
 }
 
-/*
-    -------------------------------------------
-    BUTTONS & TAGS
-    -------------------------------------------
-*/
-button,
-.headline button {
+button, .headline button {
     appearance: none;
     border: 1px solid #1a1a1a;
-    padding: 0.4rem 1rem;
+    padding: .4rem 1rem;
     border-radius: var(--radius-pill);
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-family: var(--body-font);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-
+    letter-spacing: .05em;
     color: var(--text-soft);
     background-color: var(--bg-elevated);
-
-    /* Raised Look - Crisp */
-    box-shadow:
-        3px 3px 6px var(--shadow-dark),
-        -1px -1px 2px var(--shadow-light);
+    box-shadow: 3px 3px 6px var(--shadow-dark), -1px -1px 2px var(--shadow-light)
 }
 
-/* Hover / Active */
-button:hover,
-.headline button:hover {
+button:hover, .headline button:hover {
     color: #fff;
     border-color: #333;
-    box-shadow:
-        4px 4px 8px var(--shadow-dark),
-        -2px -2px 4px var(--shadow-light);
-    transform: translateY(-1px);
+    box-shadow: 4px 4px 8px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
+    transform: translateY(-1px)
 }
 
-/* "Pressed" state */
-.off,
-button.off,
-button:active {
+.off, button.off, button:active {
     color: #444;
-    box-shadow:
-        inset 2px 2px 4px var(--shadow-dark),
-        inset -1px -1px 2px var(--shadow-light);
+    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
     transform: translateY(0);
-    opacity: 0.6;
-    border-color: transparent;
+    opacity: .6;
+    border-color: transparent
 }
 
-/* 
-   SHOW ALL / HIDE ALL 
-*/
-#hide_all_btn,
-#show_all_btn {
+#hide_all_btn, #show_all_btn {
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
@@ -386,41 +259,34 @@ button:active {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0;
+    font-size: 0
 }
 
-/* Indicators inside buttons */
-#show_all_btn::after,
-#hide_all_btn::after {
+#show_all_btn::after, #hide_all_btn::after {
     content: "";
     display: block;
     width: 6px;
     height: 6px;
-    border-radius: 50%;
+    border-radius: 50%
 }
 
 #show_all_btn::after {
     background: #fff;
-    box-shadow: 0 0 6px #fff;
+    box-shadow: 0 0 6px #fff
 }
 
 #hide_all_btn::after {
     background: #333;
-    box-shadow: inset 1px 1px 2px #000;
+    box-shadow: inset 1px 1px 2px #000
 }
 
-/*
-    -------------------------------------------
-    HEADER STYLES (Embossed Effect)
-    -------------------------------------------
-*/
 header {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-lg);
-    padding-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg)
 }
 
 header h1 {
@@ -430,78 +296,58 @@ header h1 {
     margin: 0;
     font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: -.02em;
     color: var(--bg);
-
-    /* Relief Effect */
-    text-shadow:
-        /* 0.5px 0.5px 3px rgb(98, 171, 207), */
-        -1px -1px 1px rgb(127, 127, 127),
-        2px 2px 3px black;
+    text-shadow: -1px -1px 1px #7f7f7f, 2px 2px 3px #000
 }
 
 header h2 {
     font-family: var(--body-font);
-    font-size: 0.9rem;
+    font-size: .9rem;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
-    text-align: center;
-    max-width: 600px;
+    letter-spacing: .2em;
+    text-align: justify
 }
 
-/*
-    -------------------------------------------
-    TYPOGRAPHY & LINKS
-    -------------------------------------------
-*/
-h1,
-h2,
-h3,
-h4,
-h5,
-p {
+h1, h2, h3, h4, h5, p {
     margin: 0;
-    padding: 0;
+    padding: 0
 }
 
-h1,
-h2 {
-    color: #ffffff;
+h1, h2 {
+    color: #fff;
     font-family: var(--header-font);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: .05em
 }
 
 h2 {
     font-size: 1.8rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: .5rem
 }
 
 p {
-    margin-top: 0.5rem;
-    color: var(--text);
+    margin-top: .5rem;
+    color: var(--text)
 }
 
 a {
     text-decoration: none;
     font-weight: 700;
     color: var(--link);
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid transparent
 }
 
 a:hover {
     border-bottom: 1px solid var(--link);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 8px rgba(255, 255, 255, .3)
 }
 
-/* Keyboard focus visible */
-a:focus-visible,
-button:focus-visible,
-#search-input:focus-visible {
+a:focus-visible, button:focus-visible, #search-input:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm)
 }
 
 blockquote {
@@ -511,58 +357,42 @@ blockquote {
     font-style: italic;
     border-left: 2px solid #333;
     background: #101010;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm)
 }
 
-/*
-    -------------------------------------------
-    ARTICLE INFO
-    -------------------------------------------
-*/
 .info {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    font-size: 0.75rem;
+    font-size: .75rem;
     color: var(--text-muted);
     font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: .1em
 }
 
 .date {
-    margin: 0;
+    margin: 0
 }
 
-/*
-    -------------------------------------------
-    INPUTS (Search)
-    -------------------------------------------
-*/
 #search-input {
     width: 100%;
     padding: 1rem 1.5rem;
     margin-bottom: 2rem;
-    outline: none;
+    outline: 0;
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);
     font-size: 1rem;
     font-family: var(--body-font);
     color: #fff;
     background-color: var(--bg-recessed);
-
-    /* Deeply pressed - Crisp */
-    box-shadow:
-        inset 3px 3px 6px var(--shadow-dark),
-        inset -1px -1px 2px var(--shadow-light);
+    box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light)
 }
 
 #search-input:focus {
-    box-shadow:
-        inset 4px 4px 8px var(--shadow-dark),
-        inset -2px -2px 4px var(--shadow-light);
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
     color: #fff;
-    border-color: #222;
+    border-color: #222
 }
 
 #search-results {
@@ -572,52 +402,42 @@ blockquote {
     border-radius: var(--radius-lg);
     background-color: var(--bg-elevated);
     display: none;
-    box-shadow:
-        5px 5px 10px var(--shadow-dark),
-        -2px -2px 5px var(--shadow-light);
+    box-shadow: 5px 5px 10px var(--shadow-dark), -2px -2px 5px var(--shadow-light)
 }
 
 #search-results li {
-    padding: 0.8rem 0;
-    border-bottom: 1px solid #1a1a1a;
+    padding: .8rem 0;
+    border-bottom: 1px solid #1a1a1a
 }
 
 #search-results li:last-child {
-    border-bottom: none;
+    border-bottom: none
 }
 
 .search-result-snippet strong {
     color: #fff;
     background: #333;
     padding: 0 4px;
-    border-radius: 2px;
+    border-radius: 2px
 }
 
-/*
-    -------------------------------------------
-    FOOTER
-    -------------------------------------------
-*/
 footer {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     padding-top: 3rem;
-    font-size: 0.8rem;
+    font-size: .8rem;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: .1em
 }
 
-/* -------------------------------------------
-   SHARE BUTTONS – Clean Matte Circles
-   ------------------------------------------- */
 .sharebuttons {
     display: flex;
-    gap: 0.8rem;
-    margin-top: 0.75rem;
-    flex-wrap: wrap;
+    gap: .8rem;
+    margin-top: .75rem;
+    flex-wrap: wrap
 }
 
 .sharebuttons a {
@@ -628,115 +448,98 @@ footer {
     height: 2.4rem;
     padding: 0;
     line-height: 0;
-
     border-radius: 50%;
     border: 1px solid #202020;
-    background: #111111;
-
-    /* Subtle neumorphic lift, no glow */
-    box-shadow:
-        3px 3px 6px var(--shadow-dark),
-        -2px -2px 4px var(--shadow-light);
-
+    background: #111;
+    box-shadow: 3px 3px 6px var(--shadow-dark), -2px -2px 4px var(--shadow-light);
     color: var(--text-soft);
-    text-decoration: none;
+    text-decoration: none
 }
 
-/* Hover: slight lift + thin ring */
 .sharebuttons a:hover {
     transform: translateY(-1px);
     border-color: #333;
-    box-shadow:
-        4px 4px 8px var(--shadow-dark),
-        -2px -2px 4px var(--shadow-light),
-        0 0 0 1px rgba(255, 255, 255, 0.04);
-    /* very subtle ring */
-    color: #ffffff;
+    box-shadow: 4px 4px 8px var(--shadow-dark), -2px -2px 4px var(--shadow-light), 0 0 0 1px rgba(255, 255, 255, .04);
+    color: #fff
 }
 
-/* Active: pressed in */
 .sharebuttons a:active {
     transform: translateY(0);
-    box-shadow:
-        inset 2px 2px 4px var(--shadow-dark),
-        inset -2px -2px 3px var(--shadow-light);
+    box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 3px var(--shadow-light);
     border-color: #151515;
-    opacity: 0.85;
+    opacity: .85
 }
 
-/* Icon images */
 .sharebuttons img {
     width: 1.2rem;
     height: 1.2rem;
     margin: 0 !important;
     object-fit: contain;
-    opacity: 0.9;
+    opacity: .9;
     filter: invert(1);
-    /* keep them light on dark */
-    box-shadow: none;
-    /* kill any halo from the asset or resets */
+    box-shadow: none
 }
 
-/*
-    -------------------------------------------
-    CUSTOM SCROLLBAR (WEBKIT)
-    -------------------------------------------
-*/
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 10px
 }
 
 ::-webkit-scrollbar-track {
-    background: #0c0c0c;
+    background: #0c0c0c
 }
 
 ::-webkit-scrollbar-thumb {
     background: #262626;
     border-radius: 999px;
-    border: 2px solid #0c0c0c;
+    border: 2px solid #0c0c0c
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #333333;
+    background: #333
 }
 
-/*
-    -------------------------------------------
-    RESPONSIVE
-    -------------------------------------------
-*/
-@media (max-width: 600px) {
+@media (max-width:600px) {
     body {
         padding: 1.25rem;
-        gap: 1.75rem;
+        gap: 1.75rem
     }
 
     header h1 {
         font-size: 2.5rem;
-        text-align: center;
+        text-align: center
     }
 
     .detail {
-        padding: 1.5rem;
+        padding: 1.5rem
     }
 
     .headline {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-start
     }
 
     .info {
         align-self: flex-start;
         flex-direction: row;
         gap: 1rem;
-        margin-top: 0.5rem;
+        margin-top: .5rem
     }
 
     nav {
-        gap: 0.5rem;
+        gap: .5rem
     }
 
     nav a {
-        padding-inline: 0.75rem;
+        padding-inline: .75rem
     }
+}
+
+thead th {
+    font-weight: 700;
+    color: var(--text);
+    border-bottom: 2px solid var(--text)
+}
+
+mjx-container[display] {
+    text-align: left !important
 }

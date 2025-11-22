@@ -1,36 +1,29 @@
-/*
-    -------------------------------------------
-    GLOBAL VARIABLES & BOX-SIZING
-    -------------------------------------------
-*/
 :root {
     color-scheme: light;
-    /* Fonts */
     --header-font: "Georgia";
     --body-font: "Garamond";
-
-    /* Font sizes */
     --base-font-size: 1rem;
     --header-font-size: 1rem;
     --body-font-size: 1rem;
 
-    /* Colors */
     --background: rgb(234, 234, 234);
     --text: rgb(85, 85, 85);
     --card: rgb(237, 237, 237);
     --link: rgb(201, 38, 38);
     --shadow: rgba(0, 0, 0, 0.25);
+
+    /* table palette */
+    --table-border: rgba(0, 0, 0, 0.15);
+    --table-header: #dcdcdc;
+    --table-row-even: #f8f8f8;
+    --table-row-odd: #f1f1f1;
+    --table-row-hover: rgba(201, 38, 38, 0.05);
 }
 
 * {
     box-sizing: border-box;
 }
 
-/*
-    -------------------------------------------
-    BASIC HTML STYLES
-    -------------------------------------------
-*/
 html {
     padding: 0;
     font-family: var(--body-font);
@@ -45,8 +38,8 @@ html * {
 }
 
 body {
-    -webkit-font-smoothing: antialiased; /* Improve font rendering on webkit browsers */
-    -moz-osx-font-smoothing: grayscale; /* Improve font rendering on macOS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -60,11 +53,10 @@ body {
     line-height: 1.5;
 }
 
-
 hr {
     height: 1px;
     width: 100%;
-    border: none;
+    border: 0;
     background-color: var(--link);
 }
 
@@ -78,8 +70,8 @@ pre {
 
 .hljs {
     box-shadow:
-        0.3rem 0.3rem .3rem 0 var(--shadow) inset,
-        0rem 0rem .3rem 0 var(--card) inset;
+        0.3rem 0.3rem 0.3rem 0 var(--shadow) inset,
+        0 0 0.3rem 0 var(--card) inset;
 }
 
 code {
@@ -87,16 +79,11 @@ code {
     word-break: normal;
     padding: 0.2rem;
     border-radius: 0.4em;
-    background: rgba(0, 0, 0, 0);
+    background: transparent;
 }
 
+/* NAVIGATION */
 
-
-/*
-    -------------------------------------------
-    NAVIGATION
-    -------------------------------------------
-*/
 nav {
     display: flex;
     align-items: center;
@@ -105,14 +92,14 @@ nav {
     font-size: 1rem;
     color: var(--text);
     gap: 0.7rem;
-    margin-bottom: .7rem;
+    margin-bottom: 0.7rem;
     flex-wrap: wrap;
 }
 
 nav a {
     display: block;
     padding: 0.1rem 0.3rem;
-    margin: 0rem;
+    margin: 0;
     text-decoration: none;
     color: var(--background);
     background-color: var(--text);
@@ -120,8 +107,8 @@ nav a {
     filter: opacity(100%);
     text-shadow: none;
     box-shadow:
-        0.1rem 0.1rem .3rem 0 var(--shadow),
-        -.0rem -.0rem .1rem 0 var(--text);
+        0.1rem 0.1rem 0.3rem 0 var(--shadow),
+        0 0 0.1rem 0 var(--text);
 }
 
 nav a:hover {
@@ -129,11 +116,7 @@ nav a:hover {
     box-shadow: none;
 }
 
-/*
-    -------------------------------------------
-    IMAGES
-    -------------------------------------------
-*/
+/* IMAGES */
 
 img {
     max-width: 100%;
@@ -176,12 +159,8 @@ header a img:hover,
     filter: invert(50%);
 }
 
+/* ARTICLE DETAIL BOX */
 
-/*
-    -------------------------------------------
-    ARTICLE DETAIL BOX
-    -------------------------------------------
-*/
 .detail {
     align-self: center;
     display: flex;
@@ -193,10 +172,10 @@ header a img:hover,
     background-color: var(--card);
     padding: 1rem;
     margin: 0 0 1.6rem 0;
-    border: none;
+    border: 0;
     box-shadow:
-        .5rem .5rem 1.2rem 0 var(--shadow),
-        -.0rem -.0rem 1rem 0 var(--card);
+        0.5rem 0.5rem 1.2rem 0 var(--shadow),
+        0 0 1rem 0 var(--card);
     color: var(--text);
 }
 
@@ -263,56 +242,68 @@ details summary {
     margin-left: auto;
 }
 
-/*
-    -------------------------------------------
-    TABLE STYLES
-    -------------------------------------------
-*/
+/* TABLES – NEW COLORS */
 
 .table-wrapper {
-    overflow-x: auto;
+    display: inline-block;
     max-width: 100%;
+    margin: 0.75rem auto;
+    padding: 0.5rem 0.75rem;
+    overflow-x: auto;
     border-radius: 0.4em;
+    background-color: var(--card);
     box-shadow:
-        .3rem .3rem .5rem 0 var(--shadow),
-        -.0rem -.0rem .1rem 0 var(--card);
-    /* white-space: nowrap; */}
+        0.3rem 0.3rem 0.6rem 0 var(--shadow),
+        0 0 0.2rem 0 var(--card);
+}
 
 table {
-    /* display: block;
-    max-width: -moz-fit-content;*/
-    width: fit-content; 
+    width: auto;
     border-collapse: collapse;
+    border-spacing: 0;
+    background-color: #ffffff;
+    color: var(--text);
+    font-size: calc(var(--body-font-size) * 1);
     margin: 0 auto;
-    background-color: var(--card);
-
 }
 
 th,
 td {
-    padding: 0.4rem;
+    padding: 0.5rem 0.75rem;
     text-align: left;
+    border-bottom: 1px solid var(--table-border);
+    white-space: nowrap;
 }
 
 thead th {
-    font-weight: bold;
-    color: var(--text);
-    border-bottom: 2px solid var(--text);
+    font-weight: 600;
+    background: linear-gradient(to bottom, var(--table-header), var(--card));
+    border-bottom: 2px solid var(--table-border);
 }
 
+/* Zebra stripes */
 tbody tr:nth-child(odd) {
-    background-color: var(--background);
+    background-color: var(--table-row-odd);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
+/* Hover */
+tbody tr:hover {
+    background-color: var(--table-row-hover);
 }
 
 tfoot td {
-    font-weight: bold;
+    font-weight: 700;
     background-color: var(--background);
 }
 
 caption {
     padding: 0.5rem;
     text-align: center;
-    font-weight: bold;
+    font-weight: 700;
     color: var(--text);
 }
 
@@ -320,18 +311,15 @@ body {
     overflow-x: auto;
 }
 
-/*
-    -------------------------------------------
-    TAG FILTER BUTTONS (Show All / Hide All)
-    -------------------------------------------
-*/
+/* TAG FILTER BUTTONS (Show All / Hide All) */
+
 #hide_all_btn,
 #show_all_btn.off {
     border-radius: 50%;
     color: transparent;
     box-shadow:
-        0.2rem 0.2rem .3rem 0 var(--shadow) inset,
-        -.0rem -.0rem .1rem 0 var(--card);
+        0.2rem 0.2rem 0.3rem 0 var(--shadow) inset,
+        0 0 0.1rem 0 var(--card);
 }
 
 #show_all_btn,
@@ -339,8 +327,8 @@ body {
     border-radius: 50%;
     color: transparent;
     box-shadow:
-        0.3rem 0.3rem .3rem 0 var(--shadow),
-        -.0rem -.0rem .1rem 0 var(--card);
+        0.3rem 0.3rem 0.3rem 0 var(--shadow),
+        0 0 0.1rem 0 var(--card);
 }
 
 #hide_all_btn:hover,
@@ -349,25 +337,22 @@ body {
     text-shadow: 0 0 0.8rem var(--shadow);
 }
 
-/*
-    -------------------------------------------
-    BUTTONS
-    -------------------------------------------
-*/
+/* BUTTONS */
+
 button {
     align-self: flex-end;
     width: fit-content;
-    border: none;
+    border: 0;
     padding: 0.3rem 0.5rem;
     border-radius: 0.15rem;
     cursor: pointer;
-    font-size: .9rem;
+    font-size: 0.9rem;
     font-family: var(--body-font);
     color: var(--text);
     background-color: var(--card);
     box-shadow:
-        0.1rem 0.1rem .3rem 0 var(--shadow),
-        -.0rem -.0rem .1rem 0 var(--card);
+        0.1rem 0.1rem 0.3rem 0 var(--shadow),
+        0 0 0.1rem 0 var(--card);
 }
 
 button:hover {
@@ -377,15 +362,14 @@ button:hover {
 .off {
     opacity: 0.3;
     box-shadow:
-        0.1rem 0.1rem .3rem 0 var(--shadow) inset,
-        0rem 0rem .1rem 0 var(--card) inset;
-    /* Preserve button appearance */
+        0.1rem 0.1rem 0.3rem 0 var(--shadow) inset,
+        0 0 0.1rem 0 var(--card) inset;
     color: var(--text);
     background-color: var(--card);
     border-radius: 0.15rem;
-    font-size: .9rem;
+    font-size: 0.9rem;
     font-family: var(--body-font);
-    border: none;
+    border: 0;
     padding: 0.3rem 0.5rem;
     width: fit-content;
     cursor: pointer;
@@ -394,23 +378,11 @@ button:hover {
 .off:hover {
     opacity: 0.3;
     box-shadow:
-        0.1rem 0.1rem .3rem 0 var(--shadow) inset,
-        0rem 0rem .1rem 0 var(--card) inset;
+        0.1rem 0.1rem 0.3rem 0 var(--shadow) inset,
+        0 0 0.1rem 0 var(--card) inset;
 }
 
 /* Ensure images always stay centered, even if parent has .off */
-.off img,
-.off a img,
-.off .description img,
-.off .detail img,
-.off header img {
-    align-self: center !important;
-    display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-/* Strongest possible selector for images inside .off or button.off, covering all cases */
 .off img,
 .off a img,
 .off .description img,
@@ -429,19 +401,14 @@ button.off header img {
     float: none !important;
 }
 
-/* Also, ensure parent flex containers do not override alignment for images inside .off */
 .off,
 button.off {
     align-items: initial !important;
     justify-content: initial !important;
 }
 
+/* HEADER */
 
-/*
-    -------------------------------------------
-    HEADER STYLES
-    -------------------------------------------
-*/
 header {
     width: 100%;
     display: flex;
@@ -468,12 +435,12 @@ header h1 {
 
 header h2 {
     font-family: var(--header-font);
-    font-size: calc(var(--header-font-size) * 1.0);
+    font-size: calc(var(--header-font-size) * 1);
     margin: 0;
     padding: 0;
     font-weight: 400;
     opacity: 70%;
-    text-align: center;
+    text-align: justify;
 }
 
 header a {
@@ -481,11 +448,8 @@ header a {
     text-align: left;
 }
 
-/*
-    -------------------------------------------
-    TYPOGRAPHY
-    -------------------------------------------
-*/
+/* TYPOGRAPHY */
+
 h1,
 h2,
 h3,
@@ -500,7 +464,8 @@ a {
     margin-right: auto;
     word-break: normal;
     line-height: 1.4rem;
-    }
+}
+
 h1,
 h2,
 h3 {
@@ -511,7 +476,6 @@ p {
     font-family: var(--body-font);
     font-size: calc(var(--body-font-size) * 1.2);
     line-height: 120%;
-    
 }
 
 a {
@@ -546,7 +510,7 @@ h4 {
 }
 
 h5 {
-    font-size: calc(var(--header-font-size) * 1.0);
+    font-size: calc(var(--header-font-size) * 1);
     font-family: var(--header-font);
 }
 
@@ -573,11 +537,8 @@ sup {
     margin-right: 0.2rem;
 }
 
-/*
-    -------------------------------------------
-    ARTICLE INFO
-    -------------------------------------------
-*/
+/* ARTICLE INFO */
+
 .info {
     align-self: flex-end;
     display: flex;
@@ -585,7 +546,7 @@ sup {
     row-gap: 0.2rem;
     align-items: end;
     justify-content: space-between;
-    font-size: calc(var(--body-font-size) * 1.0);
+    font-size: calc(var(--body-font-size) * 1);
     color: var(--text);
     opacity: 0.8;
     width: min-content;
@@ -600,11 +561,7 @@ sup {
     width: max-content;
 }
 
-/*
-    -------------------------------------------
-    LIST STYLES
-    -------------------------------------------
-*/
+/* LISTS */
 
 li {
     margin: 0;
@@ -612,9 +569,8 @@ li {
     font-size: calc(var(--body-font-size) * 1.2);
 }
 
-/* Unordered list styles */
 ul li::marker {
-    content: '· ';
+    content: "· ";
     color: var(--link);
 }
 
@@ -639,8 +595,6 @@ ul ul ul ul {
     margin-left: 3rem;
     list-style-type: none;
 }
-
-/* Ordered list styles */
 
 ol li::marker {
     color: var(--link);
@@ -668,23 +622,15 @@ ol ol ol ol {
     list-style-type: decimal;
 }
 
+/* INPUTS */
 
-/*
-    -------------------------------------------
-    INPUTS
-    -------------------------------------------
-*/
-input[type=checkbox] {
+input[type="checkbox"] {
     accent-color: var(--link);
     filter: saturate(1.5);
 }
 
+/* ASIDE */
 
-/*
-    -------------------------------------------
-    ASIDE ELEMENT
-    -------------------------------------------
-*/
 aside {
     margin: 0 0 0 1rem;
     padding: 0;
@@ -701,29 +647,21 @@ aside img:hover {
     filter: opacity(25%);
 }
 
+/* TAGS CONTAINER */
 
-/*
-    -------------------------------------------
-    TAGS CONTAINER & FILTER
-    -------------------------------------------
-*/
 #buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    gap: .8rem;
+    gap: 0.8rem;
     margin: 0;
     padding: 0;
     flex-wrap: wrap;
 }
 
+/* FOOTER */
 
-/*
-    -------------------------------------------
-    FOOTER
-    -------------------------------------------
-*/
 footer {
     display: flex;
     justify-content: center;
@@ -731,31 +669,28 @@ footer {
     width: 100%;
 }
 
-/*
-    -------------------------------------------
-   SEARCH STYLES
-    -------------------------------------------
-*/
+/* SEARCH */
+
 #search-input {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
-    outline: none;
-    border: none;
+    outline: 0;
+    border: 0;
     border-radius: 0.7rem;
-    font-size: calc(var(--body-font-size) * 1.0);
+    font-size: calc(var(--body-font-size) * 1);
     color: var(--text);
     background-color: var(--card);
     box-shadow:
-        0.1rem 0.1rem .3rem 0 var(--shadow) inset,
-        0rem 0rem .1rem 0 var(--background) inset;
+        0.1rem 0.1rem 0.3rem 0 var(--shadow) inset,
+        0 0 0.1rem 0 var(--background) inset;
 }
 
 #search-input:focus {
     border-radius: 0.15rem;
     box-shadow:
-        0.1rem 0.1rem .5rem 0 var(--shadow),
-        0rem 0rem .2rem 0 var(--background);
+        0.1rem 0.1rem 0.5rem 0 var(--shadow),
+        0 0 0.2rem 0 var(--background);
 }
 
 #search-results {
@@ -764,13 +699,13 @@ footer {
     padding: 0;
     margin: 0;
     margin-bottom: 1rem;
-    border: none;
+    border: 0;
     border-radius: 0.25rem;
     background-color: var(--card);
     box-shadow:
-        0.1rem 0.1rem .5rem 0 var(--shadow),
-        0rem 0rem .2rem 0 var(--background);
-    display: none; /* Hidden by default */
+        0.1rem 0.1rem 0.5rem 0 var(--shadow),
+        0 0 0.2rem 0 var(--background);
+    display: none;
 }
 
 #search-results li {
@@ -798,8 +733,12 @@ footer {
 
 .search-result-snippet strong {
     color: var(--text);
-    font-weight: bold;
-    background-color: rgba(255, 255, 0, 0.2); /* Subtle highlight */
+    font-weight: 700;
+    background-color: rgba(255, 255, 0, 0.2);
     padding: 0 0.2rem;
     border-radius: 0.2rem;
+}
+
+mjx-container[display] {
+    text-align: left !important;
 }

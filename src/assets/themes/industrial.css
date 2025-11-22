@@ -1,64 +1,56 @@
-/* 
-   OP-1 Field Theme 
-   Inspired by Teenage Engineering's industrial design.
-   Matte aluminum, high contrast grids, and colorful encoder accents.
-*/
+@keyframes detail-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(6px) scale(.99)
+    }
 
-/*
-    -------------------------------------------
-    GLOBAL VARIABLES & BOX-SIZING
-    -------------------------------------------
-*/
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
+}
+
 :root {
     color-scheme: light;
-    /* Fonts: Technical, Monospaced */
     --header-font: "JetBrains Mono", "Roboto Mono", "Fira Code", monospace;
     --body-font: "JetBrains Mono", "Roboto Mono", "Fira Code", monospace;
-
-    /* Font sizes */
     --base-font-size: 0.95rem;
     --header-font-size: 1rem;
     --body-font-size: 0.95rem;
-
-    /* Colors */
     --background: #e4e4e7;
-    /* Aluminum Chassis */
     --text: #18181b;
-    /* Label Text */
     --card: #ffffff;
-    /* White Plastic Keys */
     --border: #18181b;
-    /* High contrast grid lines */
-
-    /* Accents */
-    --accent-orange: #ff4f00;
-    --accent-ochre: #c59c6d;
-    --accent-grey: #6e6e73;
-
+    --accent-orange: #ff7a1a;
+    --accent-ochre: #f2b261;
+    --accent-grey: #71717a;
+    --accent-ring: rgba(0, 0, 0, 0.08);
     --link: var(--accent-orange);
-    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow: rgba(0, 0, 0, 0.1)
 }
 
 * {
-    box-sizing: border-box;
+    box-sizing: border-box
 }
 
-/*
-    -------------------------------------------
-    BASIC HTML STYLES
-    -------------------------------------------
-*/
 html {
     padding: 0;
     font-family: var(--body-font);
     font-size: var(--base-font-size);
     background-color: var(--background);
-    color: var(--text);
-    margin: 0 auto;
+    color: var(--text)
 }
 
 html * {
-    transition: all 0.1s cubic-bezier(0.2, 0, 0.4, 1);
+    transition: color 140ms cubic-bezier(.2, 0, .3, 1), background-color 140ms cubic-bezier(.2, 0, .3, 1), border-color 140ms cubic-bezier(.2, 0, .3, 1), box-shadow 140ms cubic-bezier(.2, 0, .3, 1), transform 140ms cubic-bezier(.2, 0, .3, 1)
+}
+
+body, hr {
+    width: 100%
+}
+
+body, html {
+    margin: 0 auto
 }
 
 body {
@@ -69,118 +61,119 @@ body {
     align-items: flex-start;
     gap: 1.5rem;
     max-width: 900px;
-    width: 100%;
     padding: 1.5rem;
-    margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.6
 }
 
 hr {
     height: 2px;
-    width: 100%;
-    border: none;
+    border: 0;
     background-color: var(--border);
-    margin: 1rem 0;
+    margin: 1rem 0
+}
+
+img, pre {
+    max-width: 100%;
+    height: auto
 }
 
 pre {
-    height: auto;
-    margin: 0;
-    padding: 0;
-    max-width: 100%;
-    width: fit-content;
+    width: fit-content
 }
 
 .hljs {
     background: #f4f4f5 !important;
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    padding: 1rem;
+    border-radius: .5rem;
+    padding: 1rem
 }
 
 code {
-    font-size: 0.9rem;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.2rem;
+    padding: .2rem .4rem;
+    border-radius: .2rem;
     background: #f4f4f5;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: var(--accent-orange);
+    border: 1px solid rgba(0, 0, 0, .1);
+    color: var(--accent-orange)
 }
 
-/*
-    -------------------------------------------
-    NAVIGATION
-    -------------------------------------------
-*/
-nav {
+#buttons, header, nav {
     display: flex;
-    align-items: center;
+    align-items: center
+}
+
+code, nav {
+    font-size: .9rem
+}
+
+nav {
     justify-content: flex-start;
     padding: 0;
-    font-size: 0.9rem;
-    color: var(--text);
-    gap: 0.5rem;
-    margin-bottom: 0.7rem;
-    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: .7rem;
+    flex-wrap: wrap
+}
+
+.detail img, .hljs, nav a {
+    border: 1px solid var(--border)
+}
+
+nav, nav a {
+    color: var(--text)
 }
 
 nav a {
     display: block;
-    padding: 0.4rem 0.8rem;
+    padding: .4rem .8rem;
     text-decoration: none;
-    color: var(--text);
     background-color: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0.4rem;
-    font-weight: bold;
+    border-radius: .4rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
-    /* Raised Key Look */
+    letter-spacing: .05em;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+    transform: translateY(0)
+}
+
+#hide_all_btn:hover, #show_all_btn:hover, nav a:hover {
+    transform: translateY(1px);
+    border-color: var(--accent-orange)
 }
 
 nav a:hover {
     background-color: var(--accent-orange);
-    color: white;
-    border-color: var(--accent-orange);
-    transform: translateY(1px);
-    box-shadow: none;
-    /* Pressed Look */
+    color: #fff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .12)
 }
 
-/*
-    -------------------------------------------
-    IMAGES
-    -------------------------------------------
-*/
+nav a:active {
+    transform: translateY(2px) scale(.98);
+    box-shadow: 0 0 0 transparent
+}
+
 img {
-    max-width: 100%;
-    height: auto;
-    align-self: center;
+    align-self: center
 }
 
-header img {
+.actionicons, header img {
     height: 1.5rem;
-    filter: grayscale(100%);
+    filter: grayscale(100%)
 }
 
 .detail img {
-    border-radius: 0.5rem;
-    border: 1px solid var(--border);
-    margin-top: 1rem;
+    border-radius: .5rem;
+    margin-top: 1rem
 }
 
 .actionicons {
     width: 1.8rem;
-    height: 1.8rem;
-    filter: grayscale(100%);
+    height: 1.8rem
 }
 
-/*
-    -------------------------------------------
-    ARTICLE DETAIL BOX
-    -------------------------------------------
-*/
+.detail, .headline button, button {
+    border: 1px solid var(--border);
+    color: var(--text);
+    transform: translateY(0)
+}
+
 .detail {
     align-self: center;
     display: flex;
@@ -191,127 +184,103 @@ header img {
     background-color: var(--card);
     padding: 1.5rem;
     width: 100%;
-    margin: 0 0 1.5rem 0;
-    border: 1px solid var(--border);
-    border-radius: 0.8rem;
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
-    color: var(--text);
+    margin: 0 0 1.5rem;
+    border-radius: .8rem;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, .05);
+    animation: detail-pop 220ms cubic-bezier(.2, 0, .3, 1) both;
+    will-change: transform, opacity
 }
 
 .detail:hover {
     border-color: var(--accent-grey);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 0 rgba(0, 0, 0, .06)
+}
+
+.articlelinks, .headline {
+    width: 100%;
+    display: flex;
+    justify-content: space-between
 }
 
 .articlelinks {
-    width: 100%;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1rem
 }
 
 .headline {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
-    border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
-    padding-bottom: 0.8rem;
-    margin-bottom: 0.5rem;
+    gap: .5rem;
+    border-bottom: 1px dashed rgba(0, 0, 0, .2);
+    padding-bottom: .8rem;
+    margin-bottom: .5rem
 }
 
-/*
-    -------------------------------------------
-    TAGS CONTAINER (Tag Cloud Layout Fix)
-    -------------------------------------------
-*/
-#buttons {
-    display: flex;
+#buttons, header {
+    width: 100%
+}
+
+#buttons, .headline {
     flex-direction: row;
-    flex-wrap: wrap;
-    /* Allow buttons to wrap to next line */
-    justify-content: flex-start;
-    /* Align to left */
-    align-items: center;
-    gap: 0.6rem;
-    width: 100%;
-    margin-top: 1rem;
-    padding: 0;
+    flex-wrap: wrap
 }
 
-/*
-    -------------------------------------------
-    BUTTONS & TAGS (The "Key" Look)
-    -------------------------------------------
-*/
+#buttons {
+    justify-content: flex-start;
+    gap: .6rem;
+    margin-top: 1rem;
+    padding: 0
+}
 
-/* Default Button (Active/Pressed State) */
-button,
-.headline button {
+.headline button, button {
     appearance: none;
-    border: 1px solid var(--border);
-    padding: 0.35rem 0.9rem;
+    padding: .35rem .9rem;
     border-radius: 50px;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-family: var(--body-font);
-    font-weight: bold;
+    font-weight: 700;
     text-transform: uppercase;
-
-    /* Active State Visualization: High Contrast White */
-    color: var(--text);
-    background-color: #ffffff;
-
-    /* "Raised" 3D effect */
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
-    transform: translateY(0);
-}
-
-/* Hover Effect */
-button:hover,
-.headline button:hover {
-    background-color: var(--accent-ochre);
-    color: white;
-    border-color: var(--accent-ochre);
-}
-
-/* Inactive/Off State (Recessed) */
-.off,
-button.off {
-    opacity: 0.6;
-    background-color: transparent;
-    /* Blend with chassis */
-    color: var(--accent-grey);
-    border-color: rgba(0, 0, 0, 0.1);
-
-    /* "Recessed/Flat" effect */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    transform: translateY(2px);
-    /* Physically push down */
-}
-
-/* Hovering an inactive button brings it back to life slightly */
-.off:hover,
-button.off:hover {
-    opacity: 1;
     background-color: #fff;
-    border-color: var(--border);
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
-    transform: translateY(0);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, .15)
 }
 
-/* 
-   SHOW ALL / HIDE ALL KNOBS 
-   Distinct styling to tell them apart and from tags.
-*/
+.headline button:hover, button:hover {
+    background-color: var(--accent-ochre);
+    color: #fff;
+    border-color: var(--accent-ochre);
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .15)
+}
 
-#hide_all_btn,
-#show_all_btn {
+.headline button:active, button:active {
+    transform: translateY(2px) scale(.97);
+    box-shadow: 0 0 0 transparent
+}
+
+.off, button.off {
+    opacity: .6;
+    background-color: transparent;
+    color: var(--accent-grey);
+    border-color: rgba(0, 0, 0, .1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1);
+    transform: translateY(2px)
+}
+
+#hide_all_btn, #show_all_btn, .off:hover, button.off:hover {
+    background-color: #fff;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, .15);
+    transform: translateY(0)
+}
+
+.off:hover, button.off:hover {
+    opacity: 1;
+    border-color: var(--border)
+}
+
+#hide_all_btn, #show_all_btn {
     border-radius: 50%;
     width: 2.2rem;
     height: 2.2rem;
@@ -321,248 +290,264 @@ button.off:hover {
     justify-content: center;
     font-size: 0;
     border: 1px solid var(--border);
-    background-color: #fff;
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
-    margin-right: 0.5rem;
-    /* Separation from tags */
+    margin-right: .5rem
 }
 
-/* Show All: Solid Orange Dot (Active/Record) */
+#hide_all_btn::after, #show_all_btn::after {
+    content: "";
+    width: .7rem;
+    height: .7rem;
+    border-radius: 50%
+}
+
 #show_all_btn::after {
-    content: "";
-    width: 0.7rem;
-    height: 0.7rem;
-    border-radius: 50%;
     background-color: var(--accent-orange);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2)
 }
 
-/* Hide All: Hollow Grey Ring (Empty/Stop) */
 #hide_all_btn::after {
-    content: "";
-    width: 0.7rem;
-    height: 0.7rem;
-    border-radius: 50%;
     background-color: transparent;
-    border: 2px solid var(--accent-grey);
+    border: 2px solid var(--accent-grey)
 }
 
-#hide_all_btn:active,
-#show_all_btn:active {
-    box-shadow: none;
-    transform: translateY(3px);
+#hide_all_btn::after, #show_all_btn::after {
+    transition: background-color 140ms cubic-bezier(.2, 0, .3, 1), border-color 140ms cubic-bezier(.2, 0, .3, 1), transform 140ms cubic-bezier(.2, 0, .3, 1)
 }
 
-/*
-    -------------------------------------------
-    HEADER STYLES
-    -------------------------------------------
-*/
+#hide_all_btn:hover, #show_all_btn:hover {
+    box-shadow: 0 0 0 2px var(--accent-ring), 0 2px 0 rgba(0, 0, 0, .12)
+}
+
+#show_all_btn:hover::after {
+    background-color: #ff8c34;
+    transform: scale(1.1)
+}
+
+#hide_all_btn:hover::after {
+    border-color: var(--accent-orange);
+    transform: scale(1.1)
+}
+
+#hide_all_btn:active, #show_all_btn:active {
+    transform: translateY(3px) scale(.96);
+    box-shadow: none
+}
+
 header {
-    width: 100%;
-    display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 1.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 2px solid var(--border);
+    border-bottom: 2px solid var(--border)
+}
+
+header h1, header h2 {
+    font-family: var(--header-font)
 }
 
 header h1 {
-    font-family: var(--header-font);
     font-size: 1.5rem;
     margin: 0;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    align-self: flex-start;
+    letter-spacing: .1em;
+    align-self: flex-start
 }
 
 header h2 {
-    font-family: var(--header-font);
-    font-size: 0.9rem;
-    opacity: 0.7;
-    text-align: center;
-    max-width: 600px;
+    font-size: .9rem;
+    opacity: .7;
+    text-align: justify;
+    /* max-width: 600px */
 }
 
-/*
-    -------------------------------------------
-    TYPOGRAPHY & LINKS
-    -------------------------------------------
-*/
-h1, h2, h3, h4, h5, p {
+h1, h2, h3, h4, h5, p, pre {
     margin: 0;
-    padding: 0;
+    padding: 0
 }
 
 h2 {
-    font-size: 1.2rem;
-    font-weight: 700;
+    font-size: 1.2rem
 }
 
 p {
-    margin-top: 0.5rem;
+    margin-top: .5rem
+}
+
+.info, a, h2 {
+    font-weight: 700
 }
 
 a {
     text-decoration: none;
-    font-weight: bold;
     color: var(--link);
-    transition: color 0.2s;
+    position: relative;
+    transition: color .2s
 }
 
 a:hover {
-    color: var(--accent-ochre);
+    color: var(--accent-ochre)
 }
 
-/*
-    -------------------------------------------
-    ARTICLE INFO
-    -------------------------------------------
-*/
+a:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -.05em;
+    height: 1px;
+    background: currentColor;
+    opacity: .6
+}
+
 .info {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    font-size: 0.75rem;
-    color: var(--accent-grey);
-    font-weight: bold;
+    font-size: .75rem;
+    color: var(--accent-grey)
 }
 
 .date {
-    margin: 0;
+    margin: 0
 }
 
-/*
-    -------------------------------------------
-    INPUTS (Search)
-    -------------------------------------------
-*/
 #search-input {
     width: 100%;
-    padding: 0.6rem 1rem;
+    padding: .6rem 1rem;
     margin-bottom: 1rem;
-    outline: none;
+    outline: 0;
     border: 1px solid var(--border);
-    border-radius: 0.4rem;
-    font-size: 0.9rem;
+    border-radius: .4rem;
+    font-size: .9rem;
     font-family: var(--body-font);
     color: var(--text);
     background-color: var(--card);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .05)
 }
 
 #search-input:focus {
     border-color: var(--accent-orange);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05), 0 0 0 2px rgba(255, 79, 0, 0.2);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .05), 0 0 0 2px var(--accent-ring)
 }
 
 #search-results {
     list-style: none;
     padding: 0;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1.5rem;
     border: 1px solid var(--border);
-    border-radius: 0.4rem;
+    border-radius: .4rem;
     background-color: var(--card);
-    display: none;
+    display: none
 }
 
 #search-results li {
-    padding: 0.8rem;
-    border-bottom: 1px solid #eee;
+    padding: .8rem;
+    border-bottom: 1px solid #eee
 }
 
 #search-results li:last-child {
-    border-bottom: none;
+    border-bottom: none
 }
 
 .search-result-snippet strong {
-    background-color: rgba(255, 79, 0, 0.2);
+    background-color: rgba(255, 166, 92, .22);
     color: var(--text);
-    padding: 0 2px;
+    padding: 0 2px
 }
 
-/*
-    -------------------------------------------
-    FOOTER
-    -------------------------------------------
-*/
-footer {
+.sharebuttons a, footer {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center
+}
+
+footer {
     width: 100%;
     padding-top: 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    font-size: 0.8rem;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    font-size: .8rem;
     color: var(--accent-grey);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: .05em
 }
 
-/*
-    -------------------------------------------
-    SHARE BUTTONS
-    -------------------------------------------
-*/
 .sharebuttons {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: .75rem;
+    justify-content: flex-start
 }
 
 .sharebuttons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.2rem;
-    /* Adjusted size */
-    height: 2.2rem;
+    width: 2.3rem;
+    height: 2.3rem;
     padding: 0;
-    /* Crucial fix */
     line-height: 0;
-    /* Crucial fix for alignment */
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    background: white;
-    transition: transform 0.1s;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, .7);
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, #fff 0, #f6f6f7 55%, #e5e5e7 100%);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .18), 0 0 0 1px rgba(255, 255, 255, .6) inset;
+    transform: translateY(0);
+    transition: transform 130ms cubic-bezier(.2, 0, .3, 1), box-shadow 130ms cubic-bezier(.2, 0, .3, 1), border-color 130ms cubic-bezier(.2, 0, .3, 1), background 130ms cubic-bezier(.2, 0, .3, 1)
 }
 
 .sharebuttons a:hover {
-    transform: scale(1.1);
+    transform: translateY(1px);
     border-color: var(--accent-orange);
+    box-shadow: 0 0 0 transparent, 0 0 0 2px var(--accent-ring);
+    background: radial-gradient(circle at 30% 30%, #fff6ee 0, #fff0e2 55%, #fbd8b4 100%)
+}
+
+.sharebuttons a:active {
+    transform: translateY(2px) scale(.96);
+    box-shadow: 0 0 0 transparent
+}
+
+.sharebuttons a:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent-orange)
 }
 
 .sharebuttons img {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 78%;
+    height: 78%;
     margin: 0 !important;
-    /* Override global styles */
-    align-self: center !important;
     object-fit: contain;
+    filter: grayscale(100%);
+    opacity: .9;
+    transition: opacity 120ms ease-out, transform 120ms ease-out
 }
 
-/*
-    -------------------------------------------
-    RESPONSIVE
-    -------------------------------------------
-*/
-@media (max-width: 600px) {
+.sharebuttons a:hover img {
+    opacity: 1;
+    transform: translateY(-.5px)
+}
+
+thead th {
+    font-weight: bold;
+    color: var(--text);
+    border-bottom: 2px solid var(--text);
+}
+
+@media (max-width:600px) {
     body {
-        padding: 1rem;
+        padding: 1rem
     }
 
     .headline {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-start
     }
 
     .info {
         align-self: flex-start;
         flex-direction: row;
         gap: 1rem;
-        margin-top: 0.5rem;
+        margin-top: .5rem
     }
+}
+
+mjx-container[display] {
+    text-align: left !important;
 }
