@@ -25,7 +25,9 @@ Point it at a folder of Markdown/HTML files, run one command, and get a clean, m
 * **RSS Included**: Automatic, standards-compliant feed.
 * **Pages & Posts**: Tag `PAGE` to add top-level navigation pages.
 * **Easy Customization**: Themes, custom CSS/JS, custom favicon, publisher metadata, and more.
-
+* **SEO-Ready Out of the Box**: Open Graph, JSON-LD schema, canonical/share URL overrides, publisher logo.
+* **Smarter Index Page**: Tag filters, fuzzy full-text search with snippets, and one-click `Copy Markdown` sharing.
+* **Flexible Input & Dates**: Markdown or HTML, auto-extracted tags/metadata, and date parsing from filenames or file mtimes.
 ---
 
 ## Quick Start
@@ -105,7 +107,7 @@ DSBG exposes many options for themes, sorting, metadata, sharing, custom assets,
 
 ## Deploying
 
-The generated `public/` folder is 100% static: deploy anywhere:
+The generated folder is 100% static: deploy anywhere:
 
 * GitHub Pages
 * Netlify
