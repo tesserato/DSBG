@@ -50,6 +50,9 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 # $theme = "black"
 $theme = "industrial"
 
+# Base URL for the raw assets on GitHub
+$ghAssets = "https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets"
+
 ./dsbg.exe -title "Dead Simple Blog Generator" `
     -description "$description" `
     -overwrite `
@@ -60,16 +63,15 @@ $theme = "industrial"
     -elements-top "sample_assets/analytics.html" `
     -elements-bottom "sample_assets/giscus.html" `
     -theme $theme `
-    -share "X|sample_assets/x.svg|https://twitter.com/intent/tweet?url={URL}&text={TITLE}%0A%0A{TEXT}" `
-    -share "Telegram|sample_assets/telegram.svg|https://t.me/share/url?url={URL}&text={TITLE}" `
-    -share "LinkedIn|sample_assets/linkedin.svg|https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
-    -share "Reddit|sample_assets/reddit.svg|https://www.reddit.com/submit?url={URL}&title={TITLE}" `
-    -share "Bluesky|sample_assets/bluesky.svg|https://bsky.app/intent/compose?text={TEXT}%0A%0A{URL}" `
-    -share "Mastodon|sample_assets/mastodon.svg|https://mastodon.social/?text={TEXT}%0A%0A{URL}" `
-    -share "Threads|sample_assets/threads.svg|https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
-    -share "Hacker News|sample_assets/hackernews.svg|https://news.ycombinator.com/submitlink?u={TARGET_URL}&t={TITLE}" `
-    -share "Facebook|sample_assets/facebook.svg|https://www.facebook.com/sharer/sharer.php?u={URL}" `
+    -share "X|$ghAssets/x.svg|https://x.com/intent/tweet?text={DESCRIPTION}&url={URL}" `
+    -share "Telegram|$ghAssets/telegram.svg|https://t.me/share/url?url={URL}&text={DESCRIPTION}" `
+    -share "LinkedIn|$ghAssets/linkedin.svg|https://www.linkedin.com/sharing/share-offsite/?url={URL}" `
+    -share "Reddit|$ghAssets/reddit.svg|https://www.reddit.com/submit?url={URL}&title={TITLE}" `
+    -share "Bluesky|$ghAssets/bluesky.svg|https://bsky.app/intent/compose?text={DESCRIPTION}%20{URL}" `
+    -share "Mastodon|$ghAssets/mastodon.svg|https://mastodon.social/share?text={DESCRIPTION}%20{URL}" `
+    -share "Threads|$ghAssets/threads.svg|https://www.threads.net/intent/post?text={DESCRIPTION}%20{URL}" `
+    -share "Hacker News|$ghAssets/hackernews.svg|https://news.ycombinator.com/submitlink?u={TARGET_URL}&t={TITLE}" `
+    -share "Facebook|$ghAssets/facebook.svg|https://www.facebook.com/sharer/sharer.php?u={URL}" `
     -sort "reverse-date-created" `
-    -css-path "./src/assets/themes/default.css"
-    
+    -css-path "./src/assets/themes/default.css"    
     

@@ -221,8 +221,6 @@ func main() {
 		log.Fatalf("Error parsing flags: %v", err)
 	}
 
-	log.Println("Running in blog generation mode...")
-
 	settings.ShareButtons = shareButtons
 
 	var buf strings.Builder
