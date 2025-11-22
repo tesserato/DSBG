@@ -34,7 +34,7 @@ func GenerateRSS(articles []Article, settings Settings, tmpl *texttemplate.Templ
 		return fmt.Errorf("error executing RSS template: %w", err)
 	}
 
-	filePath := filepath.Join(settings.OutputDirectory, "rss.xml")
+	filePath := filepath.Join(settings.OutputPath, "rss.xml")
 	if err := os.WriteFile(filePath, tp.Bytes(), 0644); err != nil {
 		return fmt.Errorf("error writing RSS file to '%s': %w", filePath, err)
 	}

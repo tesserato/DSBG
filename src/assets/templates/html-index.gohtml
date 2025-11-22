@@ -70,8 +70,8 @@
                 <h3 class="date">♰ {{.Updated.Format $Settings.DateFormat}}</h3>
             </div>
         </div>
-        {{if .CoverImagePath}}
-        <img src="{{.CoverImagePath}}" alt="{{.Title}}">
+        {{if .CoverImage}}
+        <img src="{{.CoverImage}}" alt="{{.Title}}">
         {{end}}
         <p class="description">{{.Description}}</p>
 
@@ -81,7 +81,7 @@
                data-title="{{.Title}}"
                data-description="{{.Description}}"
                data-url="{{$Settings.BaseUrl}}/{{.LinkToSelf}}"
-               data-image-url="{{if .CoverImagePath}}{{$Settings.BaseUrl}}/{{.CoverImagePath}}{{end}}"
+               data-image-url="{{if .CoverImage}}{{$Settings.BaseUrl}}/{{.CoverImage}}{{end}}"
                data-tags="{{range $i, $tag := .Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>

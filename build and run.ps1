@@ -54,8 +54,8 @@ $theme = "industrial"
     -description "$description" `
     -overwrite `
     -watch `
-    -input-path "sample_content" `
-    -output-path "docs" `
+    -input "sample_content" `
+    -output "docs" `
     -base-url "https://tesserato.github.io/DSBG/" `
     -elements-top "sample_assets/analytics.html" `
     -elements-bottom "sample_assets/giscus.html" `
@@ -67,8 +67,9 @@ $theme = "industrial"
     -share "Bluesky|sample_assets/bluesky.svg|https://bsky.app/intent/compose?text={TEXT}%0A%0A{URL}" `
     -share "Mastodon|sample_assets/mastodon.svg|https://mastodon.social/?text={TEXT}%0A%0A{URL}" `
     -share "Threads|sample_assets/threads.svg|https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
-    -share "Hacker News|sample_assets/hackernews.svg|https://news.ycombinator.com/submitlink?u={URL}&t={TITLE}" `
+    -share "Hacker News|sample_assets/hackernews.svg|https://news.ycombinator.com/submitlink?u={TARGET_URL}&t={TITLE}" `
     -share "Facebook|sample_assets/facebook.svg|https://www.facebook.com/sharer/sharer.php?u={URL}" `
-    -sort "reverse-date-created" 
+    -sort "reverse-date-created" `
+    -css-path "./src/assets/themes/default.css"
     
     

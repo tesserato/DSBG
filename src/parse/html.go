@@ -90,9 +90,9 @@ func HTMLFile(path string) (Article, []string, error) {
 			} else {
 				article.Updated = updatedTime
 			}
-		case "cover_image", "coverimagepath":
+		case "cover_image":
 			article.CoverImage = val
-		case "share_url", "url":
+		case "share_url":
 			article.ShareUrl = val
 		case "canonical_url":
 			article.CanonicalUrl = val

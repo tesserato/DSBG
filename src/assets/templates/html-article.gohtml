@@ -3,107 +3,115 @@
 
 <head>
     {{.Settings.AdditionalElementsTop}}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ .Settings.DescriptionMarkdown }}">
-    <title>{{.Settings.Title}}</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="canonical" href="{{ .Settings.BaseUrl }}/index.html">
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/{{ .Settings.HighlightTheme }}.min.css">
-    <script src="https://unpkg.com/lunr/lunr.min.js"></script>
-    <script src="search.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
+    <meta name="keywords" content="{{ stringsJoin .Art.Tags " , "}}">
+    <meta name="description" content="{{ .Art.Description }}">
+    <meta name="author" content="{{ .Settings.AuthorName }}">
 
-    <!-- JSON-LD WebSite Schema -->
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="{{ .Art.Title }}" />
+    <meta property="og:description" content="{{ .Art.Description }}" />
+    <meta property="og:url" content="{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}" />
+    <meta property="og:site_name" content="{{ .Settings.PublisherName }}" />
+    <meta property="og:type" content="article" />
+    {{if .Art.CoverImage}}
+    <meta property="og:image" content="{{ .Settings.BaseUrl }}/{{ .Art.CoverImage }}" />
+    {{end}}
+
+    <!-- Article-specific Open Graph time metadata -->
+    <meta property="article:published_time" content='{{ .Art.Created.Format "2006-01-02T15:04:05Z07:00" }}'>
+    <meta property="article:modified_time" content='{{ .Art.Updated.Format "2006-01-02T15:04:05Z07:00" }}'>
+
+    <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  "url": "{{ .Settings.BaseUrl }}/",
-  "name": "{{ .Settings.Title }}"
+  "@type": "{{ articleSchemaType .Art }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}"
+  },
+  "headline": "{{ .Art.Title }}",
+  "description": "{{ .Art.Description }}",
+  {{- if .Art.CoverImage }}
+  "image": [
+    "{{ .Settings.BaseUrl }}/{{ .Art.CoverImage }}"
+  ],
+  {{- end }}
+  "datePublished": "{{ .Art.Created.Format "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ .Art.Updated.Format "2006-01-02T15:04:05Z07:00" }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Settings.AuthorName }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Settings.PublisherName }}"{{if .Settings.PublisherLogoPath}},
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Settings.BaseUrl }}/{{ .Settings.PublisherLogoPath }}"
+    }{{end}}
+  }
 }
     </script>
+
+    <link rel="canonical" href="{{if .Art.CanonicalUrl}}{{.Art.CanonicalUrl}}{{else}}{{ .Settings.BaseUrl }}/{{ .Art.LinkToSelf }}{{end}}">
+    <link rel="stylesheet" href="{{ genRelativeLink .Art.LinkToSelf "style.css"}}">
+    <link rel="icon" type="image/x-icon" href="{{genRelativeLink .Art.LinkToSelf "favicon.ico"}}">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/{{.Settings.HighlightTheme}}.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <title>{{.Art.Title}}</title>
 </head>
 
 <body>
     <header>
         <div class="articlelinks">
-            <h1>
-                {{.Settings.Title}}
-            </h1>
+            <a href="{{.Settings.BaseUrl}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}> ◁ {{.Settings.Title}}
+            </a>
             <div class="sharebuttons">
-                <a href="rss.xml" target="_blank" title="Subscribe to RSS feed">
-                    <img src="rss.svg" alt="RSS feed icon">
+                <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
+                   onclick="copyMarkdownToClipboard(this)"
+                   data-title="{{.Art.Title}}"
+                   data-description="{{.Art.Description}}"
+                   data-url="{{$.Settings.BaseUrl}}/{{.Art.LinkToSelf}}"
+                   data-image-url="{{if .Art.CoverImage}}{{$.Settings.BaseUrl}}/{{.Art.CoverImage}}{{end}}"
+                   data-tags="{{range $i, $tag := .Art.Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
+                    <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy article Markdown summary">
                 </a>
-            </div>
-        </div>
-        <input type="text" id="search-input" placeholder="Search..." aria-label="Search articles">
-        <section id="search-results-section" aria-live="polite">
-            <ul id="search-results"></ul>
-        </section>
-        <nav>
-            {{range .PageList}}
-            <a href="{{.LinkToSelf}}" {{if $.Settings.OpenInNewTab}}target="_blank" {{end}}>{{.Title}}</a>
-            {{end}}
-        </nav>
-        <div class="description">
-            {{.Settings.DescriptionHTML}}
-        </div>
-        <div id="buttons"></div>
-        <aside></aside>
-    </header>
-    {{ $Settings := .Settings}}
-    <main id="articles-container">
-    {{range .ArticleList}}
-    {{ $Article := . }}
-    <div class="detail">
-        <div class="headline">
-            <a href="{{.LinkToSelf}}" {{if $Settings.OpenInNewTab}}target="_blank" {{end}}>
-                <h2>{{.Title}}</h2>
-            </a>
-            {{range .Tags}}
-            <button class="on" type="button">{{.}}</button>
-            {{end}}
-            <div class="info">
-                <h3 class="date">⋆ {{.Created.Format $Settings.DateFormat}}</h3>
-                <h3 class="date">♰ {{.Updated.Format $Settings.DateFormat}}</h3>
-            </div>
-        </div>
-        {{if .CoverImage}}
-        <img src="{{.CoverImage}}" alt="{{.Title}}">
-        {{end}}
-        <p class="description">{{.Description}}</p>
-
-        <div class="sharebuttons">
-            <a href="javascript:void(0);" class="share" title="Copy Markdown summary to clipboard"
-               onclick="copyMarkdownToClipboard(this)"
-               data-title="{{.Title}}"
-               data-description="{{.Description}}"
-               data-url="{{$Settings.BaseUrl}}/{{.LinkToSelf}}"
-               data-image-url="{{if .CoverImage}}{{$Settings.BaseUrl}}/{{.CoverImage}}{{end}}"
-               data-tags="{{range $i, $tag := .Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
-                <img src="copy.svg" alt="Copy article Markdown summary">
-            </a>
-            {{range $Settings.ShareButtons}}
-            <a href="{{ buildShareUrl .UrlTemplate $Article $Settings }}" target="_blank" rel="noopener noreferrer" title="Share this post on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
-                {{if isImage .Display}}
-                    <img src="{{ genRelativeLink $Article.LinkToSelf .Display }}" alt="Share on {{ .Name }}">
-                {{else}}
-                    {{.Display}}
+                {{range .Settings.ShareButtons}}
+                <a href="{{ buildShareUrl .UrlTemplate $.Art $.Settings }}" target="_blank" rel="noopener noreferrer" title="Share on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
+                    {{if isImage .Display}}
+                        <img src="{{ genRelativeLink $.Art.LinkToSelf .Display }}" alt="Share on {{ .Name }}">
+                    {{else}}
+                        {{.Display}}
+                    {{end}}
+                </a>
                 {{end}}
-            </a>
-            {{end}}
+            </div>
         </div>
-    </div>
-    {{end}}
+        <h1>{{.Art.Title}}</h1>
+        <h2>{{.Art.Description}}</h2>
+    </header>
+
+    <main>
+        <article>
+            {{.Ctt}}
+        </article>
     </main>
-    <script src="script.js" async defer></script>
+
     {{.Settings.AdditionalElemensBottom}}
 
     <footer>
         <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
+
+    <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
+    <script src='{{ genRelativeLink .Art.LinkToSelf "script.js"}}' async defer></script>
 </body>
 
 </html>
