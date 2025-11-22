@@ -47,7 +47,8 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 
 # $theme = "default"
 # $theme = "dark"
-$theme = "black"
+# $theme = "black"
+$theme = "industrial"
 
 ./dsbg.exe -title "Dead Simple Blog Generator" `
     -description "$description" `
@@ -68,6 +69,6 @@ $theme = "black"
     -share "Threads|sample_assets/threads.svg|https://www.threads.net/intent/post?text={TEXT}%0A%0A{URL}" `
     -share "Hacker News|sample_assets/hackernews.svg|https://news.ycombinator.com/submitlink?u={URL}&t={TITLE}" `
     -share "Facebook|sample_assets/facebook.svg|https://www.facebook.com/sharer/sharer.php?u={URL}" `
-    -sort "reverse-date-created"
+    -sort "reverse-date-created" 
     
     

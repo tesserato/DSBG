@@ -24,7 +24,6 @@ Point it at a folder of Markdown/HTML files, run one command, and get a clean, m
 * **Social Sharing Ready**: Add your own share buttons with URL templates.
 * **RSS Included**: Automatic, standards-compliant feed.
 * **Pages & Posts**: Tag `PAGE` to add top-level navigation pages.
-* **Template Scaffolding**: Generate pre-filled Markdown templates via `-template`.
 * **Easy Customization**: Themes, custom CSS/JS, custom favicon, publisher metadata, and more.
 
 ---
@@ -59,12 +58,31 @@ Serves your site at:
 
 ---
 
-## Templates
+## Writing Content
 
-Generate a new Markdown file with frontmatter:
+DSBG uses standard Markdown with YAML frontmatter.
+
+To get a **quick start template** with the current date pre-filled, simply run:
 
 ```bash
-dsbg -template -title "My New Post" -tags "Go,Example"
+dsbg -h
+```
+
+Copy the output from the **TEMPLATE EXAMPLE** section into a new `.md` file.
+
+Example structure:
+
+```yaml
+---
+title: My New Post
+description: A short summary of the post.
+created: 2025 11 22
+tags: Technology, Go
+coverImagePath: image.webp
+---
+
+# Hello World
+...
 ```
 
 ---
@@ -73,7 +91,15 @@ dsbg -template -title "My New Post" -tags "Go,Example"
 
 DSBG exposes many options for themes, sorting, metadata, sharing, custom assets, and more.
 
-**Run `dsbg -h` or `dsbg -template -h` for the full list of commands and flags.**
+**Run `dsbg -h` for the full list of commands, available themes, and flags.**
+
+### Common Flags
+
+*   `-theme`: Choose a built-in style (e.g., `default`, `dark`, `clean`, `paper`, `industrial`, `black`, `colorful`, `terminal`).
+*   `-publisher`: Name of the publisher/organization (for JSON-LD metadata).
+*   `-author-name`: Default author name for posts.
+*   `-sort`: Sort order for the index page (e.g., `date-created`, `reverse-date-updated`).
+*   `-share`: Add custom share buttons (see help for format).
 
 ---
 
