@@ -62,18 +62,6 @@ type ShareButton struct {
 	UrlTemplate string
 }
 
-// TemplateSettings controls generation of a new Markdown template file.
-type TemplateSettings struct {
-	Title           string
-	Description     string
-	Created         string
-	Updated         string
-	CoverImagePath  string
-	Tags            string
-	OutputDirectory string
-	DateFormat      string
-}
-
 // Article models a single article or page, regardless of its original format.
 type Article struct {
 	Title          string

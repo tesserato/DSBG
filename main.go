@@ -26,6 +26,18 @@ import (
 //go:embed src/assets
 var assets embed.FS
 
+// ANSI Color Codes for Help Output
+const (
+	cReset  = "\033[0m"
+	cBold   = "\033[1m"
+	cRed    = "\033[31m"
+	cGreen  = "\033[32m"
+	cYellow = "\033[33m"
+	cBlue   = "\033[34m"
+	cCyan   = "\033[36m"
+	cGray   = "\033[90m"
+)
+
 // shareButtonsFlag is a custom flag type that collects repeated --share flags.
 type shareButtonsFlag []parse.ShareButton
 
@@ -35,7 +47,6 @@ func (s *shareButtonsFlag) String() string {
 }
 
 // Set parses and appends a value to shareButtonsFlag.
-// It supports "Name|URL" or "Name|Display|URL" formats.
 func (s *shareButtonsFlag) Set(value string) error {
 	parts := strings.SplitN(value, "|", 3)
 
@@ -69,150 +80,115 @@ func noFlagsPassed(fs *flag.FlagSet) bool {
 	return !found
 }
 
-// logFlag writes a formatted description of a flag to stderr.
-func logFlag(f *flag.Flag) {
-	defaultValue := f.DefValue
-	if defaultValue != "" {
-		defaultValue = fmt.Sprintf(" (default: %v)", defaultValue)
+// printFlagHelp formats and prints a single flag's help with colors.
+func printFlagHelp(f *flag.Flag) {
+	name := fmt.Sprintf("-%s", f.Name)
+	def := ""
+	if f.DefValue != "" {
+		def = fmt.Sprintf(" (default: %s)", f.DefValue)
 	}
-	fmt.Fprintf(os.Stderr, "  -%v %v\n    %v\n", f.Name, defaultValue, f.Usage)
+	// Flag Name in Green, Default in Gray, Usage in Standard
+	fmt.Fprintf(os.Stderr, "  %s%-24s%s%s%s\n    %s\n", cGreen, name, cGray, def, cReset, f.Usage)
 }
 
 // main is the entrypoint for DSBG (Dead Simple Blog Generator).
 func main() {
-	defaultFlagSet := flag.NewFlagSet("default", flag.ExitOnError)
-	templateFlagSet := flag.NewFlagSet("template", flag.ExitOnError)
+	flagSet := flag.NewFlagSet("dsbg", flag.ExitOnError)
 
 	var settings parse.Settings
 	var shareButtons shareButtonsFlag
 
-	// --- Default FlagSet Flags (site generation) ---
-	defaultFlagSet.StringVar(&settings.Title, "title", "Blog", "Main title of your blog, used in header and page titles.")
-	defaultFlagSet.StringVar(&settings.BaseUrl, "base-url", "", "Base URL of the blog (e.g., https://example.com). Defaults to http://localhost:<port>.")
-	defaultFlagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "Short Markdown description for the homepage.")
-	defaultFlagSet.StringVar(&settings.InputDirectory, "input-path", "content", "Path to source content files (.md or .html).")
-	defaultFlagSet.StringVar(&settings.OutputDirectory, "output-path", "public", "Path to output directory for the generated static site.")
-	defaultFlagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format for rendered dates (Go time layout).")
-	defaultFlagSet.StringVar(&settings.IndexName, "index-name", "index.html", "Filename used as index for each article directory.")
-	defaultFlagSet.StringVar(&settings.Theme, "theme", "default", "Theme to use for styling. Defaults to 'default' if not specified.")
-	defaultFlagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Optional path to a custom CSS file. If provided, overrides the theme selection.")
-	defaultFlagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Optional path to a custom JavaScript file. If empty, DSBG copies the built-in script.js.")
-	defaultFlagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Optional path to a custom favicon.ico. If empty, DSBG copies the built-in favicon.")
-	defaultFlagSet.BoolVar(&settings.DoNotExtractTagsFromPaths, "ignore-tags-from-paths", false, "Disable extracting tags from directory names.")
-	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromPaths, "keep-date-in-paths", false, "Keep date patterns in output paths instead of stripping them.")
-	defaultFlagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "Keep date patterns in titles instead of stripping them.")
-	defaultFlagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open links in a new browser tab.")
-	defaultFlagSet.StringVar(&settings.Port, "port", "666", "Port for the local HTTP preview server.")
-	defaultFlagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Overwrite non-empty output directory without asking for confirmation.")
+	// --- Flag Definitions ---
+	flagSet.StringVar(&settings.Title, "title", "Blog", "Main title of your blog, used in header and page titles.")
+	flagSet.StringVar(&settings.BaseUrl, "base-url", "", "Base URL of the blog (e.g., https://example.com). Defaults to http://localhost:<port>.")
+	flagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "Short Markdown description for the homepage.")
+	flagSet.StringVar(&settings.InputDirectory, "input-path", "content", "Path to source content files (.md or .html).")
+	flagSet.StringVar(&settings.OutputDirectory, "output-path", "public", "Path to output directory for the generated static site.")
+	flagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format for rendered dates (Go time layout).")
+	flagSet.StringVar(&settings.IndexName, "index-name", "index.html", "Filename used as index for each article directory.")
+	flagSet.StringVar(&settings.Theme, "theme", "default", "Theme to use for styling.")
+	flagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Optional path to a custom CSS file. If provided, overrides the theme selection.")
+	flagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Optional path to a custom JavaScript file.")
+	flagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Optional path to a custom favicon.ico.")
+	flagSet.BoolVar(&settings.DoNotExtractTagsFromPaths, "ignore-tags-from-paths", false, "Disable extracting tags from directory names.")
+	flagSet.BoolVar(&settings.DoNotRemoveDateFromPaths, "keep-date-in-paths", false, "Keep date patterns in output paths instead of stripping them.")
+	flagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "Keep date patterns in titles instead of stripping them.")
+	flagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open links in a new browser tab.")
+	flagSet.StringVar(&settings.Port, "port", "666", "Port for the local HTTP preview server.")
+	flagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Overwrite non-empty output directory without asking for confirmation.")
 
 	// Author / Publisher metadata flags.
-	defaultFlagSet.StringVar(&settings.AuthorName, "author-name", "", "Author name for meta tags and structured data (defaults to blog title if empty).")
-	defaultFlagSet.StringVar(&settings.PublisherName, "publisher-name", "", "Publisher/organization name for structured data (defaults to blog title if empty).")
-	defaultFlagSet.StringVar(&settings.PublisherLogoPath, "publisher-logo-path", "", "Path to a publisher logo image (relative to the current working directory). The file is copied to the output directory root and referenced in structured data.")
+	flagSet.StringVar(&settings.AuthorName, "author-name", "", "Author name for meta tags and structured data (defaults to blog title if empty).")
+	flagSet.StringVar(&settings.PublisherName, "publisher", "", "Publisher/organization name for structured data (defaults to blog title if empty).")
+	flagSet.StringVar(&settings.PublisherLogoPath, "publisher-logo-path", "", "Path to a publisher logo image (relative to current dir). Copied to output root.")
 
 	// Custom share flag.
-	defaultFlagSet.Var(&shareButtons, "share", "Repeatable flag to add share buttons. Format: \"Name|URL\" or \"Name|Display|URL\". If Display points to an image path, it will be copied into the output directory.")
+	flagSet.Var(&shareButtons, "share", "Add share buttons. Format: \"Name|URL\" or \"Name|Display|URL\".")
 
 	// Strongly-typed sort is configured via string flags and parsed later.
-	sortFlag := defaultFlagSet.String("sort", "date-created", "Sort order for articles: date-created, reverse-date-created, date-updated, reverse-date-updated, title, reverse-title, path, reverse-path.")
-	pathToAdditionalElementsTop := defaultFlagSet.String("elements-top", "", "HTML file to include at the top of <head> on all pages.")
-	pathToAdditionalElemensBottom := defaultFlagSet.String("elements-bottom", "", "HTML file to include at the bottom of <body> on all pages.")
-	watch := defaultFlagSet.Bool("watch", false, "Enable watch mode: rebuild site and reload assets when source files change.")
+	sortFlag := flagSet.String("sort", "date-created", "Sort order for articles: date-created, reverse-date-created, date-updated, etc.")
+	pathToAdditionalElementsTop := flagSet.String("elements-top", "", "HTML file to include at the top of <head> on all pages.")
+	pathToAdditionalElemensBottom := flagSet.String("elements-bottom", "", "HTML file to include at the bottom of <body> on all pages.")
+	watch := flagSet.Bool("watch", false, "Enable watch mode: rebuild site and reload assets when source files change.")
 
-	// --- Template FlagSet Flags (template generation) ---
-	var templateSettings parse.TemplateSettings
-	templateFlagSet.StringVar(&templateSettings.Title, "title", "", "Title to prefill in the Markdown template.")
-	templateFlagSet.StringVar(&templateSettings.Description, "description", "", "Description to prefill in the Markdown template.")
-	templateFlagSet.StringVar(&templateSettings.Created, "created", "", "Created date to prefill; if empty, uses current date.")
-	templateFlagSet.StringVar(&templateSettings.Updated, "updated", "", "Updated date to prefill; if empty, uses current date.")
-	templateFlagSet.StringVar(&templateSettings.CoverImagePath, "cover-image-path", "", "Cover image path to prefill in the template frontmatter.")
-	templateFlagSet.StringVar(&templateSettings.Tags, "tags", "", "Comma-separated tags to prefill in the template frontmatter.")
-	templateFlagSet.StringVar(&templateSettings.OutputDirectory, "output-path", ".", "Directory in which to create the new Markdown template file.")
-	templateFlagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format used for created/updated fields in the template.")
-
-	// Custom usage: this is the single source of truth about program usage.
-	defaultFlagSet.Usage = func() {
-		fmt.Fprintln(os.Stderr, "DSBG (Dead Simple Blog Generator)")
+	// --- Custom Usage Output ---
+	flagSet.Usage = func() {
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "Usage:")
-		fmt.Fprintln(os.Stderr, "  dsbg [flags]           # Generate a static site")
-		fmt.Fprintln(os.Stderr, "  dsbg -template [flags] # Generate a Markdown template file")
+		fmt.Fprintf(os.Stderr, "%sDSBG: Dead Simple Blog Generator%s\n", cBold+cCyan, cReset)
+		fmt.Fprintln(os.Stderr, "A minimalist, single-binary static site generator.")
 		fmt.Fprintln(os.Stderr)
 
-		fmt.Fprintln(os.Stderr, "Default mode flags (site generation):")
-		defaultFlagSet.VisitAll(logFlag)
-
+		fmt.Fprintf(os.Stderr, "%sUSAGE:%s\n", cBold+cYellow, cReset)
+		fmt.Fprintln(os.Stderr, "  dsbg [flags]")
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "Template mode flags (Markdown scaffolding):")
-		templateFlagSet.VisitAll(logFlag)
 
+		fmt.Fprintf(os.Stderr, "%sFLAGS:%s\n", cBold+cYellow, cReset)
+		flagSet.VisitAll(printFlagHelp)
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "Notes:")
-		fmt.Fprintln(os.Stderr, "  Themes (-theme):")
-		// Dynamically list available themes from assets
+
+		fmt.Fprintf(os.Stderr, "%sTHEMES:%s\n", cBold+cYellow, cReset)
 		if availableThemes, err := parse.GetAvailableThemes(assets); err == nil {
-			fmt.Fprintf(os.Stderr, "    Available: %s\n", strings.Join(availableThemes, ", "))
+			fmt.Fprintf(os.Stderr, "  %s\n", strings.Join(availableThemes, ", "))
 		} else {
-			fmt.Fprintln(os.Stderr, "    default, dark, clean, colorful, paper, terminal")
+			fmt.Fprintln(os.Stderr, "  default, dark, clean, colorful, paper, terminal")
 		}
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "  Sort orders (-sort):")
-		fmt.Fprintln(os.Stderr, "    date-created, reverse-date-created,")
-		fmt.Fprintln(os.Stderr, "    date-updated, reverse-date-updated,")
-		fmt.Fprintln(os.Stderr, "    title, reverse-title,")
-		fmt.Fprintln(os.Stderr, "    path, reverse-path")
+
+		fmt.Fprintf(os.Stderr, "%sEXAMPLE COMMANDS:%s\n", cBold+cYellow, cReset)
+		fmt.Fprintf(os.Stderr, "  dsbg -input-path content -output-path public -title \"My Blog\"\n")
+		fmt.Fprintf(os.Stderr, "  dsbg -watch -theme dark -sort date-updated\n")
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "  Share buttons (-share):")
-		fmt.Fprintln(os.Stderr, "    -share \"Name|URL\"")
-		fmt.Fprintln(os.Stderr, "    -share \"Name|Display|URL\"")
-		fmt.Fprintln(os.Stderr, "    If Display is a local image path, the image is copied into the output")
-		fmt.Fprintln(os.Stderr, "    directory and used as the share icon.")
+
+		// Dynamic Date for the example
+		today := time.Now().Format("2006 01 02")
+
+		fmt.Fprintf(os.Stderr, "%sTEMPLATE EXAMPLE:%s\n", cBold+cYellow, cReset)
+		fmt.Fprintln(os.Stderr, "  Copy and paste this frontmatter at the top of your Markdown files:")
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "  Author / publisher metadata:")
-		fmt.Fprintln(os.Stderr, "    -author-name          # Name used as the article author in meta tags & JSON-LD.")
-		fmt.Fprintln(os.Stderr, "    -publisher-name       # Name used as the publisher organization in JSON-LD.")
-		fmt.Fprintln(os.Stderr, "    -publisher-logo-path  # Local path to a logo image; copied to the output root")
-		fmt.Fprintln(os.Stderr, "                          # and used as publisher.logo in structured data.")
-		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "  Special tags in content frontmatter or HTML meta:")
-		fmt.Fprintln(os.Stderr, "    - 'PAGE'     => article is treated as a static page and appears in the nav.")
-		fmt.Fprintln(os.Stderr, "    - 'news'     => article is marked as NewsArticle in JSON-LD.")
-		fmt.Fprintln(os.Stderr, "    - 'article'  => also treated as NewsArticle in JSON-LD.")
-		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "  Search:")
-		fmt.Fprintln(os.Stderr, "    - A search_index.json file is generated for Lunr-based full-text search.")
-		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr, "Examples:")
-		fmt.Fprintln(os.Stderr, "  dsbg -input-path content -output-path public -title \"My Blog\"")
-		fmt.Fprintln(os.Stderr, "  dsbg -watch -base-url \"https://example.com\" -theme dark -sort date-updated")
-		fmt.Fprintln(os.Stderr, "  dsbg -template -title \"My New Post\" -tags \"Go,Example\"")
+		fmt.Fprintf(os.Stderr, "%s  ---%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  title: My New Post%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  description: A short summary of the post.%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  created: %s%s\n", cCyan, today, cReset)
+		fmt.Fprintf(os.Stderr, "%s  updated: %s%s\n", cCyan, today, cReset)
+		fmt.Fprintf(os.Stderr, "%s  tags: Technology, Go, Blog%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  coverImagePath: image.webp%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  url: (optional override)%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  ---%s\n", cCyan, cReset)
 		fmt.Fprintln(os.Stderr)
 	}
 
+	// Show usage if no arguments are provided
 	if len(os.Args) <= 1 {
-		defaultFlagSet.Usage()
+		flagSet.Usage()
 		return
 	}
 
-	mode := strings.TrimPrefix(os.Args[1], "-")
-	mode = strings.TrimPrefix(mode, "--")
-	mode = strings.ToLower(mode)
-	switch mode {
-	case "template":
-		log.Println("Running in template creation mode...")
-		if err := templateFlagSet.Parse(os.Args[2:]); err != nil {
-			log.Fatalf("Error parsing template flags: %v", err)
-		}
-		if err := createMarkdownTemplate(templateSettings); err != nil {
-			log.Fatalf("Error creating markdown template: %v", err)
-		}
-		return
-	default:
-		if err := defaultFlagSet.Parse(os.Args[1:]); err != nil {
-			log.Fatalf("Error parsing flags: %v", err)
-		}
-		log.Println("Running in blog generation mode...")
+	// Parse flags
+	if err := flagSet.Parse(os.Args[1:]); err != nil {
+		log.Fatalf("Error parsing flags: %v", err)
 	}
+
+	log.Println("Running in blog generation mode...")
 
 	settings.ShareButtons = shareButtons
 
@@ -223,8 +199,8 @@ func main() {
 	settings.DescriptionHTML = template.HTML(buf.String())
 
 	if _, err := os.Stat(settings.InputDirectory); os.IsNotExist(err) {
-		if noFlagsPassed(defaultFlagSet) {
-			defaultFlagSet.Usage()
+		if noFlagsPassed(flagSet) {
+			flagSet.Usage()
 			return
 		}
 		log.Fatalf("Input directory '%s' does not exist.", settings.InputDirectory)
@@ -261,7 +237,6 @@ func main() {
 	}
 
 	// Determine syntax highlight theme based on CSS theme.
-	// Light themes use stackoverflow-light, others use github-dark-dimmed.
 	switch strings.ToLower(settings.Theme) {
 	case "default", "paper", "colorful":
 		settings.HighlightTheme = "stackoverflow-light"
@@ -307,54 +282,7 @@ func main() {
 	}
 }
 
-// createMarkdownTemplate renders a sample Markdown file using the md-article template.
-func createMarkdownTemplate(templateSettings parse.TemplateSettings) error {
-	tmpl, err := template.New("md-article.gomd").ParseFS(assets, "src/assets/templates/md-article.gomd")
-	if err != nil {
-		return fmt.Errorf("error parsing template: %w", err)
-	}
-
-	if templateSettings.Created == "" {
-		templateSettings.Created = time.Now().Format(templateSettings.DateFormat)
-	} else {
-		parsed, err := time.Parse(templateSettings.DateFormat, templateSettings.Created)
-		if err != nil {
-			return fmt.Errorf("error parsing created date: %w", err)
-		}
-		templateSettings.Created = parsed.Format(templateSettings.DateFormat)
-	}
-	if templateSettings.Updated == "" {
-		templateSettings.Updated = time.Now().Format(templateSettings.DateFormat)
-	} else {
-		parsed, err := time.Parse(templateSettings.DateFormat, templateSettings.Updated)
-		if err != nil {
-			return fmt.Errorf("error parsing updated date: %w", err)
-		}
-		templateSettings.Updated = parsed.Format(templateSettings.DateFormat)
-	}
-
-	filename := "new_template.md"
-	if templateSettings.Title != "" || templateSettings.Created != "" {
-		filename = templateSettings.Created + " " + templateSettings.Title + ".md"
-	}
-
-	templatePath := filepath.Join(templateSettings.OutputDirectory, filename)
-	file, err := os.Create(templatePath)
-	if err != nil {
-		return fmt.Errorf("error creating template file: %w", err)
-	}
-	defer file.Close()
-
-	if err := tmpl.Execute(file, templateSettings); err != nil {
-		return fmt.Errorf("error executing template: %w", err)
-	}
-
-	fmt.Printf("Markdown template created at: %s\n", templatePath)
-	return nil
-}
-
 // startWatcher monitors input and asset changes and triggers rebuilds.
-// It no longer starts the HTTP server or opens the browser.
 func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -463,7 +391,6 @@ func deleteChildren(dir string) error {
 }
 
 // buildWebsite generates the website based on the provided settings and templates.
-// If clean is true, the output directory contents are removed prior to building.
 func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean bool) error {
 	if clean {
 		// Check output directory safety.
