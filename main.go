@@ -263,7 +263,7 @@ func main() {
 	// Determine syntax highlight theme based on CSS theme.
 	// Light themes use stackoverflow-light, others use github-dark-dimmed.
 	switch strings.ToLower(settings.Theme) {
-	case "default", "paper":
+	case "default", "paper", "colorful":
 		settings.HighlightTheme = "stackoverflow-light"
 	default:
 		settings.HighlightTheme = "github-dark-dimmed"

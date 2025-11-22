@@ -46,7 +46,8 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 
 
 # $theme = "default"
-$theme = "dark"
+# $theme = "dark"
+$theme = "black"
 
 ./dsbg.exe -title "Dead Simple Blog Generator" `
     -description "$description" `
