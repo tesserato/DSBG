@@ -4,6 +4,7 @@
     -------------------------------------------
 */
 :root {
+    color-scheme: light;
     /* Fonts */
     --header-font: "Georgia";
     --body-font: "Garamond";

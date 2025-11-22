@@ -25,6 +25,9 @@ var regexPatterns = []*regexp.Regexp{
 	regexp.MustCompile(`(?P<hour>\d{2}):(?P<min>\d{2}):(?P<sec>\d{2})`),
 }
 
+// regexColorScheme finds the standard CSS color-scheme property (e.g., color-scheme: dark;).
+var regexColorScheme = regexp.MustCompile(`(?i)color-scheme\s*:\s*([^;]+);`)
+
 // RemoveDateFromPath attempts to remove date patterns from a given string.
 func RemoveDateFromPath(stringWithDate string) string {
 	for _, regexPattern := range regexPatterns {
@@ -376,13 +379,19 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error 
 	// Check if theme file exists in assets
 	fileContent, err := fs.ReadFile(assets, srcPath)
 	if err != nil {
-		log.Printf("Warning: Theme '%s' not found. Falling back to default theme.", themeName)
+		// Log available themes to help debug missing themes.
+		available, _ := GetAvailableThemes(assets)
+		log.Printf("Warning: Theme '%s' not found (Available: %s). Falling back to default theme.", themeName, strings.Join(available, ", "))
+
 		// Fallback to default
 		srcPath = path.Join(themesPath, "default.css")
 		fileContent, err = fs.ReadFile(assets, srcPath)
 		if err != nil {
 			return fmt.Errorf("failed to load default theme CSS: %w", err)
 		}
+	} else {
+		// Success case
+		log.Printf("Using theme: %s", themeName)
 	}
 
 	// Use filepath.Join (OS specific separator) for writing to local disk.
@@ -409,7 +418,32 @@ func GetAvailableThemes(assets fs.FS) ([]string, error) {
 			themes = append(themes, name)
 		}
 	}
+	slices.Sort(themes) // Ensure sorted order
 	return themes, nil
+}
+
+// GetThemeType determines if a theme is "light" or "dark" by inspecting the CSS file.
+// It looks for the standard CSS property 'color-scheme: light|dark'.
+// Defaults to "dark" if not found (safe fallback for syntax highlighting).
+func GetThemeType(assets fs.FS, themeName string) string {
+	themesPath := "src/assets/templates/themes"
+	themeFile := themeName + ".css"
+	srcPath := path.Join(themesPath, themeFile)
+
+	content, err := fs.ReadFile(assets, srcPath)
+	if err != nil {
+		return "dark" // Fallback
+	}
+
+	match := regexColorScheme.FindStringSubmatch(string(content))
+	if len(match) > 1 {
+		val := strings.ToLower(strings.TrimSpace(match[1]))
+		if strings.Contains(val, "dark") {
+			return "dark"
+		}
+		return "light"
+	}
+	return "dark" // Fallback
 }
 
 // ParseSortOrder converts a string into a SortOrder, validating supported options.

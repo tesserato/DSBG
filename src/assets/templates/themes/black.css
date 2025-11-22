@@ -4,6 +4,7 @@
     -------------------------------------------
 */
 :root {
+    color-scheme: dark;
     /* Fonts - Keeping consistent with template structure, but professional */
     --header-font: "Georgia", serif;
     --body-font: "Garamond", serif;

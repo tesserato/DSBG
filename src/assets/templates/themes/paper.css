@@ -7,6 +7,7 @@
 }
 
 :root {
+    color-scheme: light;
   --bg: #f5f0e8;
   --bg-elevated: #fdfaf5;
   --text: #1f2933;

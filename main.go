@@ -150,7 +150,7 @@ func main() {
 		if availableThemes, err := parse.GetAvailableThemes(assets); err == nil {
 			fmt.Fprintf(os.Stderr, "  %s\n", strings.Join(availableThemes, ", "))
 		} else {
-			fmt.Fprintln(os.Stderr, "  default, dark, clean, colorful, paper, terminal")
+			fmt.Fprintf(os.Stderr, "  (No themes found in embedded assets)\n")
 		}
 		fmt.Fprintln(os.Stderr)
 
@@ -236,11 +236,11 @@ func main() {
 		settings.PublisherName = settings.Title
 	}
 
-	// Determine syntax highlight theme based on CSS theme.
-	switch strings.ToLower(settings.Theme) {
-	case "default", "paper", "colorful":
+	// Determine syntax highlight theme automatically from CSS.
+	themeType := parse.GetThemeType(assets, settings.Theme)
+	if themeType == "light" {
 		settings.HighlightTheme = "stackoverflow-light"
-	default:
+	} else {
 		settings.HighlightTheme = "github-dark-dimmed"
 	}
 
