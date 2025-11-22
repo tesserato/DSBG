@@ -2,7 +2,7 @@
 title: README - Getting Started with DSBG
 description: How to install and use Dead Simple Blog Generator.
 created: 2025 01 03
-coverImagePath: 01_dsbg_logo.webp
+cover_image: 01_dsbg_logo.webp
 ---
 
 # DSBG: Dead Simple Blog Generator

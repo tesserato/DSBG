@@ -125,6 +125,7 @@ func cleanString(url string) string {
 // resources is a list of relative file paths found in the article (images, scripts, etc).
 // Cover images are copied to live next to the article's index file.
 func CopyHtmlResources(settings Settings, article *Article, resources []string) error {
+	// Note: Using InputPath (from models.go) instead of InputDirectory (from working code)
 	relativeInputPath, err := filepath.Rel(settings.InputPath, article.OriginalPath)
 	if err != nil {
 		return fmt.Errorf("failed to get relative path for '%s': %w", article.OriginalPath, err)
@@ -154,6 +155,7 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 		}
 	}
 
+	// Note: Using OutputPath (from models.go)
 	outputPath := filepath.Join(settings.OutputPath, relativeInputPath)
 	outputPath = strings.TrimSuffix(outputPath, filepath.Ext(outputPath))
 	outputPath = filepath.Join(outputPath, settings.IndexName)
@@ -174,15 +176,17 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	originalCoverRel := article.CoverImage
 
 	// Copy cover image so it lives next to the article's index (within outputDirectory).
-	if originalCoverRel != "" {
+	// Only attempt copy if it's a local path.
+	if originalCoverRel != "" && !strings.HasPrefix(strings.ToLower(originalCoverRel), "http") {
 		coverImageOrigPath := filepath.Join(originalDirectory, originalCoverRel)
 		coverImageArticleDestPath := filepath.Join(outputDirectory, originalCoverRel)
 
-		if !slices.Contains(article.Tags, "PAGE") {
-			file, err := os.ReadFile(coverImageOrigPath)
-			if err != nil {
-				return fmt.Errorf("error reading cover image '%s': %w", coverImageOrigPath, err)
-			}
+		// We intentionally copy cover images even for pages now, to ensure metadata images exist.
+		file, err := os.ReadFile(coverImageOrigPath)
+		if err != nil {
+			// Log warning instead of failing hard, as user might have put a bad path
+			log.Printf("Warning: Could not read cover image '%s' for article '%s': %v", coverImageOrigPath, article.Title, err)
+		} else {
 			if err := os.MkdirAll(filepath.Dir(coverImageArticleDestPath), 0755); err != nil {
 				return fmt.Errorf("error creating directory for cover image '%s': %w", coverImageArticleDestPath, err)
 			}
@@ -193,16 +197,40 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	}
 
 	for _, resourceOrigRelPath := range resources {
-		resourceOrigRelPathLower := strings.ToLower(resourceOrigRelPath)
-		if strings.Contains(resourceOrigRelPathLower, "http") {
+		resourceOrigRelPath = strings.TrimSpace(resourceOrigRelPath)
+		if resourceOrigRelPath == "" {
 			continue
 		}
-		resourceOrigPath := filepath.Join(originalDirectory, resourceOrigRelPath)
-		resourceDestPath := filepath.Join(outputDirectory, resourceOrigRelPath)
+
+		resourceOrigRelPathLower := strings.ToLower(resourceOrigRelPath)
+
+		// Skip true external URLs only
+		if strings.HasPrefix(resourceOrigRelPathLower, "http://") ||
+			strings.HasPrefix(resourceOrigRelPathLower, "https://") ||
+			strings.HasPrefix(resourceOrigRelPathLower, "//") {
+			continue
+		}
+
+		// Strip query string and fragment, and normalize root-relative paths
+		cleanPath := resourceOrigRelPath
+		if u, err := url.Parse(resourceOrigRelPath); err == nil && u.Path != "" {
+			cleanPath = u.Path
+		}
+
+		// Treat leading "/" as project-root-relative, not filesystem-root
+		cleanPath = strings.TrimPrefix(cleanPath, "/")
+		if cleanPath == "" {
+			continue
+		}
+
+		resourceOrigPath := filepath.Join(originalDirectory, cleanPath)
+		resourceDestPath := filepath.Join(outputDirectory, cleanPath)
 
 		input, err := os.ReadFile(resourceOrigPath)
 		if err != nil {
-			return fmt.Errorf("failed to read resource file '%s': %w", resourceOrigPath, err)
+			// Log warning so build doesn't crash on one missing image
+			log.Printf("Warning: Failed to read resource file '%s' (from '%s'): %v", resourceOrigPath, resourceOrigRelPath, err)
+			continue
 		}
 
 		if err := os.MkdirAll(filepath.Dir(filepath.FromSlash(resourceDestPath)), 0755); err != nil {
@@ -224,7 +252,8 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 
 	// If a cover image was specified, normalize its path to be relative to the article's output
 	// location so templates and Open Graph tags can reference it consistently.
-	if originalCoverRel != "" && !slices.Contains(article.Tags, "PAGE") {
+	// Only update if it was a local path.
+	if originalCoverRel != "" && !strings.HasPrefix(strings.ToLower(originalCoverRel), "http") {
 		coverRootRel := filepath.Join(filepath.Dir(article.LinkToSelf), originalCoverRel)
 		article.CoverImage = filepath.ToSlash(coverRootRel)
 	}
@@ -398,6 +427,11 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error 
 	} else {
 		// Success case
 		log.Printf("Using theme: %s", themeName)
+	}
+
+	// Ensure output directory exists
+	if err := os.MkdirAll(outputDirectory, 0755); err != nil {
+		return fmt.Errorf("failed to create output directory '%s': %w", outputDirectory, err)
 	}
 
 	// Use filepath.Join (OS specific separator) for writing to local disk.

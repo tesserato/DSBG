@@ -2,7 +2,7 @@
 title: "Extended Test Post: Edge Cases and Markdown Features"
 description: "An extended test post to explore more edge cases and Markdown features, including citations, tables (long and short), and more. This post aims to thoroughly test formatting and rendering capabilities. Lets extend this description, for example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 created: 2025 02 16
-coverImagePath: potato.webp
+cover_image: potato.webp
 tags: [test tag 01, test tag 02, test tag 03, test tag 04, test tag 05, test tag 06, test tag 07, test tag 08, test tag 09, test tag 10, edge case, markdown feature, citation, table]
 ---
 
