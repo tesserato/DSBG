@@ -25,7 +25,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Sat, 22 Nov 2025 19:52:55 +0000</lastBuildDate>
+		<lastBuildDate>Sat, 22 Nov 2025 23:11:09 +0000</lastBuildDate>
 		<item>
 			<title>HTML post with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</link>
@@ -158,7 +158,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/strings/idealstring/index.html">
-    <link rel="stylesheet" href="../../style.css?v=1763841175">
+    <link rel="stylesheet" href="../../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -357,7 +357,7 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../../script.js?v=1763841175' async defer></script>
+    <script src='../../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -439,7 +439,7 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/strings/idealbar/index.html">
-    <link rel="stylesheet" href="../../style.css?v=1763841175">
+    <link rel="stylesheet" href="../../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -616,7 +616,7 @@ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../../script.js?v=1763841175' async defer></script>
+    <script src='../../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -756,7 +756,7 @@ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/07-test-post/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763841175">
+    <link rel="stylesheet" href="../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1219,7 +1219,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763841175' async defer></script>
+    <script src='../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1319,7 +1319,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/06v006/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763841175">
+    <link rel="stylesheet" href="../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1421,7 +1421,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763841175' async defer></script>
+    <script src='../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1509,7 +1509,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/05v005/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763841175">
+    <link rel="stylesheet" href="../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1610,7 +1610,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763841175' async defer></script>
+    <script src='../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1698,7 +1698,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/0320250110pathdates/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763841175">
+    <link rel="stylesheet" href="../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1801,7 +1801,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763841175' async defer></script>
+    <script src='../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1884,7 +1884,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/markdown-page-example/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763841175">
+    <link rel="stylesheet" href="../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1984,7 +1984,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763841175' async defer></script>
+    <script src='../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -2071,7 +2071,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/04themes/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763841175">
+    <link rel="stylesheet" href="../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -2175,7 +2175,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763841175' async defer></script>
+    <script src='../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -2237,7 +2237,7 @@ _underscores_<br/>
 
     <!-- Article-specific Open Graph time metadata -->
     <meta property="article:published_time" content='2025-01-03T00:00:00Z'>
-    <meta property="article:modified_time" content='2025-11-22T15:20:54Z'>
+    <meta property="article:modified_time" content='2025-11-22T23:10:28Z'>
 
     <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
     <script type="application/ld+json">
@@ -2254,7 +2254,7 @@ _underscores_<br/>
     "https://tesserato.github.io/DSBG/01readme/01_dsbg_logo.webp"
   ],
   "datePublished": "2025-01-03T00:00:00Z",
-  "dateModified": "2025-11-22T15:20:54Z",
+  "dateModified": "2025-11-22T23:10:28Z",
   "author": {
     "@type": "Person",
     "name": "Dead Simple Blog Generator"
@@ -2267,7 +2267,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/01readme/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763841175">
+    <link rel="stylesheet" href="../style.css?v=1763853069">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -2356,7 +2356,7 @@ _underscores_<br/>
     <main>
         <article>
             <html><head></head><body><h1 id="dsbg-dead-simple-blog-generator">DSBG: Dead Simple Blog Generator</h1>
-<p><img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/art/logo.webp" alt="DSBG Screenshot"/></p>
+<p><img src="https://github.com/tesserato/DSBG/blob/main/art/DemoSmall.gif?raw=true" alt="Demo"/></p>
 <p>DSBG is a <strong>minimalist, single-binary static blog generator</strong> written in Go.<br/>
 Point it at a folder of Markdown/HTML files, run one command, and get a clean, modern, fast blog.</p>
 <hr/>
@@ -2450,7 +2450,7 @@ coverImagePath: image.webp
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763841175' async defer></script>
+    <script src='../script.js?v=1763853069' async defer></script>
 </body>
 
 </html>]]></content:encoded>

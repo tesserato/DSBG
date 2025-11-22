@@ -7,7 +7,7 @@ cover_image: 01_dsbg_logo.webp
 
 # DSBG: Dead Simple Blog Generator
 
-![DSBG Screenshot](https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/art/logo.webp)
+![Demo](https://github.com/tesserato/DSBG/blob/main/art/DemoSmall.gif?raw=true)
 
 DSBG is a **minimalist, single-binary static blog generator** written in Go.
 Point it at a folder of Markdown/HTML files, run one command, and get a clean, modern, fast blog.
