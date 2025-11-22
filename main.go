@@ -36,6 +36,7 @@ const (
 	cBlue   = "\033[34m"
 	cCyan   = "\033[36m"
 	cGray   = "\033[90m"
+	cWhite  = "\033[97m"
 )
 
 // shareButtonsFlag is a custom flag type that collects repeated --share flags.
@@ -82,9 +83,12 @@ func noFlagsPassed(fs *flag.FlagSet) bool {
 
 // printFlagHelp formats and prints a single flag's help with colors.
 func printFlagHelp(f *flag.Flag) {
+	if f == nil {
+		return
+	}
 	name := fmt.Sprintf("-%s", f.Name)
 	def := ""
-	if f.DefValue != "" {
+	if f.DefValue != "" && f.DefValue != "false" && f.DefValue != "0" {
 		def = fmt.Sprintf(" (default: %s)", f.DefValue)
 	}
 	// Flag Name in Green, Default in Gray, Usage in Standard
@@ -98,38 +102,48 @@ func main() {
 	var settings parse.Settings
 	var shareButtons shareButtonsFlag
 
-	// --- Flag Definitions ---
-	flagSet.StringVar(&settings.Title, "title", "Blog", "Main title of your blog, used in header and page titles.")
-	flagSet.StringVar(&settings.BaseUrl, "base-url", "", "Base URL of the blog (e.g., https://example.com). Defaults to http://localhost:<port>.")
-	flagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "Short Markdown description for the homepage.")
-	flagSet.StringVar(&settings.InputDirectory, "input-path", "content", "Path to source content files (.md or .html).")
-	flagSet.StringVar(&settings.OutputDirectory, "output-path", "public", "Path to output directory for the generated static site.")
-	flagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Date format for rendered dates (Go time layout).")
-	flagSet.StringVar(&settings.IndexName, "index-name", "index.html", "Filename used as index for each article directory.")
-	flagSet.StringVar(&settings.Theme, "theme", "default", "Theme to use for styling.")
-	flagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Optional path to a custom CSS file. If provided, overrides the theme selection.")
-	flagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Optional path to a custom JavaScript file.")
-	flagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Optional path to a custom favicon.ico.")
-	flagSet.BoolVar(&settings.DoNotExtractTagsFromPaths, "ignore-tags-from-paths", false, "Disable extracting tags from directory names.")
-	flagSet.BoolVar(&settings.DoNotRemoveDateFromPaths, "keep-date-in-paths", false, "Keep date patterns in output paths instead of stripping them.")
-	flagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "Keep date patterns in titles instead of stripping them.")
-	flagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "Open links in a new browser tab.")
-	flagSet.StringVar(&settings.Port, "port", "666", "Port for the local HTTP preview server.")
-	flagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Overwrite non-empty output directory without asking for confirmation.")
+	// Prepare dynamic theme list for help text
+	themeDesc := "Selects the built-in color scheme/CSS framework to use."
+	if availableThemes, err := parse.GetAvailableThemes(assets); err == nil {
+		themeDesc += fmt.Sprintf(" Available: [%s]", strings.Join(availableThemes, ", "))
+	}
 
-	// Author / Publisher metadata flags.
-	flagSet.StringVar(&settings.AuthorName, "author-name", "", "Author name for meta tags and structured data (defaults to blog title if empty).")
-	flagSet.StringVar(&settings.PublisherName, "publisher", "", "Publisher/organization name for structured data (defaults to blog title if empty).")
-	flagSet.StringVar(&settings.PublisherLogoPath, "publisher-logo-path", "", "Path to a publisher logo image (relative to current dir). Copied to output root.")
+	// --- General Config ---
+	flagSet.StringVar(&settings.Title, "title", "Blog", "The main title of your website. Used in the browser tab, header, and RSS feed.")
+	flagSet.StringVar(&settings.BaseUrl, "base-url", "", "The public URL (e.g., https://example.com). Essential for generating correct Canonical URLs, RSS feeds, and Open Graph social meta tags.")
+	flagSet.StringVar(&settings.InputPath, "input", "content", "Directory containing your source Markdown (.md) or HTML files.")
+	flagSet.StringVar(&settings.OutputPath, "output", "public", "Directory where the generated static site will be saved.")
+	flagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Skip the confirmation prompt when the output directory is not empty.")
+	flagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "A short summary of your site. Supports Markdown links. Appears on the homepage (rendered) and in the HTML <meta name='description'> tag (plain text).")
 
-	// Custom share flag.
-	flagSet.Var(&shareButtons, "share", "Add share buttons. Format: \"Name|URL\" or \"Name|Display|URL\".")
+	// --- Metadata & SEO ---
+	flagSet.StringVar(&settings.AuthorName, "author", "", "The default author name. Injected into JSON-LD structured data and <meta name='author'> tags.")
+	flagSet.StringVar(&settings.PublisherName, "publisher", "", "Organization/Publisher name for structured data. Defaults to the Blog Title if omitted.")
+	flagSet.StringVar(&settings.PublisherLogoPath, "logo", "", "Path to a logo image (relative to current dir). Injected into JSON-LD for Google search result branding.")
+	flagSet.StringVar(&settings.DateFormat, "date-format", "2006 01 02", "Go layout string for rendering dates (e.g., 'Jan 02, 2006').")
+	flagSet.StringVar(&settings.IndexName, "index-name", "index.html", "The filename to use for directory indexes. Change to 'README.html' if hosting on certain file servers.")
 
-	// Strongly-typed sort is configured via string flags and parsed later.
-	sortFlag := flagSet.String("sort", "date-created", "Sort order for articles: date-created, reverse-date-created, date-updated, etc.")
-	pathToAdditionalElementsTop := flagSet.String("elements-top", "", "HTML file to include at the top of <head> on all pages.")
-	pathToAdditionalElemensBottom := flagSet.String("elements-bottom", "", "HTML file to include at the bottom of <body> on all pages.")
-	watch := flagSet.Bool("watch", false, "Enable watch mode: rebuild site and reload assets when source files change.")
+	// --- Theme & Customization ---
+	flagSet.StringVar(&settings.Theme, "theme", "default", themeDesc)
+	flagSet.StringVar(&settings.PathToCustomCss, "css-path", "", "Path to a local CSS file. If set, this REPLACES the built-in theme entirely.")
+	flagSet.StringVar(&settings.PathToCustomJs, "js-path", "", "Path to a local JS file. Appended to the site's default functionality.")
+	flagSet.StringVar(&settings.PathToCustomFavicon, "favicon-path", "", "Path to a 'favicon.ico' file to replace the default icon.")
+	flagSet.Var(&shareButtons, "share", "Add a custom share button. Format: 'Name|Icon.svg|URL_Template'. Can be used multiple times. See variables below.")
+
+	// --- Injections ---
+	pathToAdditionalElementsTop := flagSet.String("elements-top", "", "Path to an HTML snippet to inject at the top of the <head> tag (e.g., Analytics scripts).")
+	pathToAdditionalElemensBottom := flagSet.String("elements-bottom", "", "Path to an HTML snippet to inject at the bottom of the <body> tag (e.g., Comment widgets).")
+
+	// --- Behavior Toggles ---
+	sortFlag := flagSet.String("sort", "date-created", "Order of articles on the homepage. Options: date-created, date-updated, title, path (prefix with 'reverse-' to flip).")
+	flagSet.BoolVar(&settings.DoNotExtractTagsFromPaths, "ignore-tags-from-paths", false, "If true, folder names in the source path (e.g., content/linux/...) are NOT added as tags.")
+	flagSet.BoolVar(&settings.DoNotRemoveDateFromPaths, "keep-date-in-paths", false, "If true, date patterns in filenames (2023-01-01-post.md) are preserved in the output URL.")
+	flagSet.BoolVar(&settings.DoNotRemoveDateFromTitles, "keep-date-in-titles", false, "If true, date patterns in filenames are preserved in the Article Title string.")
+	flagSet.BoolVar(&settings.OpenInNewTab, "open-in-new-tab", false, "If true, clicking articles on the homepage opens them in a new browser tab/window.")
+
+	// --- Dev Server ---
+	watch := flagSet.Bool("watch", false, "Watch mode: Starts a local web server and automatically rebuilds the site when source files change.")
+	flagSet.StringVar(&settings.Port, "port", "666", "The port to use for the local preview server (used with -watch).")
 
 	// --- Custom Usage Output ---
 	flagSet.Usage = func() {
@@ -142,21 +156,40 @@ func main() {
 		fmt.Fprintln(os.Stderr, "  dsbg [flags]")
 		fmt.Fprintln(os.Stderr)
 
-		fmt.Fprintf(os.Stderr, "%sFLAGS:%s\n", cBold+cYellow, cReset)
-		flagSet.VisitAll(printFlagHelp)
-		fmt.Fprintln(os.Stderr)
-
-		fmt.Fprintf(os.Stderr, "%sTHEMES:%s\n", cBold+cYellow, cReset)
-		if availableThemes, err := parse.GetAvailableThemes(assets); err == nil {
-			fmt.Fprintf(os.Stderr, "  %s\n", strings.Join(availableThemes, ", "))
-		} else {
-			fmt.Fprintf(os.Stderr, "  (No themes found in embedded assets)\n")
+		// Helper to print a group of flags
+		printGroup := func(title string, flagNames ...string) {
+			fmt.Fprintf(os.Stderr, "%s%s:%s\n", cBold+cWhite, title, cReset)
+			for _, name := range flagNames {
+				printFlagHelp(flagSet.Lookup(name))
+			}
+			fmt.Fprintln(os.Stderr)
 		}
+
+		printGroup("GENERAL CONFIGURATION", "input", "output", "title", "description", "base-url", "overwrite")
+		printGroup("METADATA & SEO", "author", "publisher", "logo", "date-format")
+		printGroup("THEMING & UI", "theme", "css-path", "js-path", "favicon-path", "share")
+		printGroup("INJECTIONS", "elements-top", "elements-bottom")
+		printGroup("CONTENT BEHAVIOR", "sort", "ignore-tags-from-paths", "keep-date-in-paths", "keep-date-in-titles", "open-in-new-tab", "index-name")
+		printGroup("LOCAL DEVELOPMENT", "watch", "port")
+
+		fmt.Fprintf(os.Stderr, "%sFRONTMATTER METADATA:%s\n", cBold+cYellow, cReset)
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "share_url", "Override the URL shared by buttons (good for link-blogging).")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "canonical_url", "Set the 'rel=canonical' tag (good for cross-posting/SEO).")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "cover_image", "Path to an image to display on the index and in social cards.")
 		fmt.Fprintln(os.Stderr)
 
-		fmt.Fprintf(os.Stderr, "%sEXAMPLE COMMANDS:%s\n", cBold+cYellow, cReset)
-		fmt.Fprintf(os.Stderr, "  dsbg -input-path content -output-path public -title \"My Blog\"\n")
-		fmt.Fprintf(os.Stderr, "  dsbg -watch -theme dark -sort date-updated\n")
+		fmt.Fprintf(os.Stderr, "%sSHARE TEMPLATE VARIABLES:%s\n", cBold+cYellow, cReset)
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{URL}", "Public URL of the article (or share_url if set)")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TITLE}", "Article title")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{DESCRIPTION}", "Article description")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TARGET_URL}", "The target destination: uses 'share_url' if present, else the first link in text.")
+		fmt.Fprintln(os.Stderr)
+
+		fmt.Fprintf(os.Stderr, "%sSHARE EXAMPLES:%s\n", cBold+cYellow, cReset)
+		fmt.Fprintf(os.Stderr, "  %s1. Standard Share:%s\n", cWhite, cReset)
+		fmt.Fprintf(os.Stderr, "     -share \"X|https://x.com/intent/tweet?text={TITLE}&url={URL}\"\n")
+		fmt.Fprintf(os.Stderr, "  %s2. 'HackerNews' Style Submission (uses share_url or first link):%s\n", cWhite, cReset)
+		fmt.Fprintf(os.Stderr, "     -share \"HN|https://news.ycombinator.com/submitlink?u={TARGET_URL}&t={TITLE}\"\n")
 		fmt.Fprintln(os.Stderr)
 
 		// Dynamic Date for the example
@@ -169,10 +202,10 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s  title: My New Post%s\n", cCyan, cReset)
 		fmt.Fprintf(os.Stderr, "%s  description: A short summary of the post.%s\n", cCyan, cReset)
 		fmt.Fprintf(os.Stderr, "%s  created: %s%s\n", cCyan, today, cReset)
-		fmt.Fprintf(os.Stderr, "%s  updated: %s%s\n", cCyan, today, cReset)
-		fmt.Fprintf(os.Stderr, "%s  tags: Technology, Go, Blog%s\n", cCyan, cReset)
-		fmt.Fprintf(os.Stderr, "%s  coverImagePath: image.webp%s\n", cCyan, cReset)
-		fmt.Fprintf(os.Stderr, "%s  url: (optional override)%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  tags: Technology, Go%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  cover_image: image.webp%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  share_url: (optional override)%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  canonical_url: (optional SEO override)%s\n", cCyan, cReset)
 		fmt.Fprintf(os.Stderr, "%s  ---%s\n", cCyan, cReset)
 		fmt.Fprintln(os.Stderr)
 	}
@@ -198,12 +231,12 @@ func main() {
 	}
 	settings.DescriptionHTML = template.HTML(buf.String())
 
-	if _, err := os.Stat(settings.InputDirectory); os.IsNotExist(err) {
+	if _, err := os.Stat(settings.InputPath); os.IsNotExist(err) {
 		if noFlagsPassed(flagSet) {
 			flagSet.Usage()
 			return
 		}
-		log.Fatalf("Input directory '%s' does not exist.", settings.InputDirectory)
+		log.Fatalf("Input directory '%s' does not exist.", settings.InputPath)
 	}
 
 	if *pathToAdditionalElementsTop != "" {
@@ -290,11 +323,11 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 	}
 	defer watcher.Close()
 
-	if err := watcher.Add(settings.InputDirectory); err != nil {
+	if err := watcher.Add(settings.InputPath); err != nil {
 		log.Fatal(err)
 	}
 
-	err = filepath.WalkDir(settings.InputDirectory, func(path string, d fs.DirEntry, err error) error {
+	err = filepath.WalkDir(settings.InputPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -319,7 +352,7 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 		_ = watcher.Add(settings.PathToCustomFavicon)
 	}
 
-	log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputDirectory)
+	log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputPath)
 	for {
 		select {
 		case event, ok := <-watcher.Events:
@@ -331,7 +364,7 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 				if err := buildWebsite(settings, templates, false); err != nil {
 					log.Printf("Rebuild failed: %v\n", err)
 				}
-				log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputDirectory)
+				log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputPath)
 			}
 		case err, ok := <-watcher.Errors:
 			if !ok {
@@ -364,8 +397,8 @@ func openBrowser(url string) error {
 func serve(settings parse.Settings) {
 	addr := ":" + settings.Port
 	url := fmt.Sprintf("http://localhost%s", addr)
-	fmt.Printf("Serving website from '%s' at %s. Press Ctrl+C to stop.\n", settings.OutputDirectory, url)
-	http.Handle("/", http.FileServer(http.Dir(settings.OutputDirectory)))
+	fmt.Printf("Serving website from '%s' at %s. Press Ctrl+C to stop.\n", settings.OutputPath, url)
+	http.Handle("/", http.FileServer(http.Dir(settings.OutputPath)))
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("Server error: %v", err)
 	}
@@ -395,12 +428,12 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 	if clean {
 		// Check output directory safety.
 		if !settings.ForceOverwrite {
-			f, err := os.Open(settings.OutputDirectory)
+			f, err := os.Open(settings.OutputPath)
 			if err == nil {
 				defer f.Close()
 				_, err = f.Readdirnames(1)
 				if err == nil {
-					fmt.Printf("Output directory '%s' is not empty. Overwrite? (y/n): ", settings.OutputDirectory)
+					fmt.Printf("Output directory '%s' is not empty. Overwrite? (y/n): ", settings.OutputPath)
 					reader := bufio.NewReader(os.Stdin)
 					response, _ := reader.ReadString('\n')
 					response = strings.TrimSpace(strings.ToLower(response))
@@ -413,14 +446,14 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 		}
 
 		// Try to clean children first to avoid root lock issues.
-		if err := deleteChildren(settings.OutputDirectory); err != nil {
+		if err := deleteChildren(settings.OutputPath); err != nil {
 			if !os.IsNotExist(err) {
 				log.Printf("Warning: Failed to clean output directory: %v. Trying to proceed...", err)
 			}
 		}
 	}
 
-	if err := os.MkdirAll(settings.OutputDirectory, 0755); err != nil {
+	if err := os.MkdirAll(settings.OutputPath, 0755); err != nil {
 		return fmt.Errorf("error creating output directory: %v", err)
 	}
 
@@ -432,7 +465,7 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 		if parse.IsImage(btn.Display) {
 			src := btn.Display
 			destName := filepath.Base(src)
-			destPath := filepath.Join(settings.OutputDirectory, destName)
+			destPath := filepath.Join(settings.OutputPath, destName)
 			if err := copyFile(src, destPath); err != nil {
 				log.Printf("Warning: Failed to copy share icon '%s': %v", src, err)
 			}
@@ -447,7 +480,7 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 
 		src := settings.PublisherLogoPath
 		destName := filepath.Base(src)
-		destPath := filepath.Join(settings.OutputDirectory, destName)
+		destPath := filepath.Join(settings.OutputPath, destName)
 		if err := copyFile(src, destPath); err != nil {
 			log.Printf("Warning: Failed to copy publisher logo '%s': %v", src, err)
 		} else {
@@ -456,7 +489,7 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 		}
 	}
 
-	files, err := parse.GetPaths(settings.InputDirectory, []string{".md", ".html"})
+	files, err := parse.GetPaths(settings.InputPath, []string{".md", ".html"})
 	if err != nil {
 		return fmt.Errorf("error getting content files: %v", err)
 	}
@@ -529,7 +562,7 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 	if err != nil {
 		return fmt.Errorf("error marshaling search index to JSON: %v", err)
 	}
-	searchIndexPath := filepath.Join(settings.OutputDirectory, "search_index.json")
+	searchIndexPath := filepath.Join(settings.OutputPath, "search_index.json")
 	if err := os.WriteFile(searchIndexPath, searchIndexJSON, 0644); err != nil {
 		return fmt.Errorf("error saving search index JSON file: %v", err)
 	}
@@ -543,36 +576,36 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 	}
 
 	if settings.PathToCustomCss == "" {
-		if err := parse.SaveThemeCSS(assets, settings.Theme, settings.OutputDirectory); err != nil {
+		if err := parse.SaveThemeCSS(assets, settings.Theme, settings.OutputPath); err != nil {
 			return fmt.Errorf("error processing theme CSS: %v", err)
 		}
 	} else {
-		if err := copyFile(settings.PathToCustomCss, filepath.Join(settings.OutputDirectory, "style.css")); err != nil {
+		if err := copyFile(settings.PathToCustomCss, filepath.Join(settings.OutputPath, "style.css")); err != nil {
 			return fmt.Errorf("error handling custom CSS file: %v", err)
 		}
 	}
 
 	if settings.PathToCustomJs == "" {
-		saveAsset("script.js", "script.js", settings.OutputDirectory)
+		saveAsset("script.js", "script.js", settings.OutputPath)
 	} else {
-		if err := copyFile(settings.PathToCustomJs, filepath.Join(settings.OutputDirectory, "script.js")); err != nil {
+		if err := copyFile(settings.PathToCustomJs, filepath.Join(settings.OutputPath, "script.js")); err != nil {
 			return fmt.Errorf("error handling custom JavaScript file: %v", err)
 		}
 	}
 
 	if settings.PathToCustomFavicon == "" {
-		saveAsset("favicon.ico", "favicon.ico", settings.OutputDirectory)
+		saveAsset("favicon.ico", "favicon.ico", settings.OutputPath)
 	} else {
-		if err := copyFile(settings.PathToCustomFavicon, filepath.Join(settings.OutputDirectory, "favicon.ico")); err != nil {
+		if err := copyFile(settings.PathToCustomFavicon, filepath.Join(settings.OutputPath, "favicon.ico")); err != nil {
 			return fmt.Errorf("error handling custom favicon file: %v", err)
 		}
 	}
 
-	saveAsset("search.js", "search.js", settings.OutputDirectory)
-	saveAsset("rss.svg", "rss.svg", settings.OutputDirectory)
-	saveAsset("copy.svg", "copy.svg", settings.OutputDirectory)
+	saveAsset("search.js", "search.js", settings.OutputPath)
+	saveAsset("rss.svg", "rss.svg", settings.OutputPath)
+	saveAsset("copy.svg", "copy.svg", settings.OutputPath)
 
-	log.Println("Website generated successfully in:", settings.OutputDirectory)
+	log.Println("Website generated successfully in:", settings.OutputPath)
 	return nil
 }
 

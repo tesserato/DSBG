@@ -125,7 +125,7 @@ func cleanString(url string) string {
 // resources is a list of relative file paths found in the article (images, scripts, etc).
 // Cover images are copied to live next to the article's index file.
 func CopyHtmlResources(settings Settings, article *Article, resources []string) error {
-	relativeInputPath, err := filepath.Rel(settings.InputDirectory, article.OriginalPath)
+	relativeInputPath, err := filepath.Rel(settings.InputPath, article.OriginalPath)
 	if err != nil {
 		return fmt.Errorf("failed to get relative path for '%s': %w", article.OriginalPath, err)
 	}
@@ -154,7 +154,7 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 		}
 	}
 
-	outputPath := filepath.Join(settings.OutputDirectory, relativeInputPath)
+	outputPath := filepath.Join(settings.OutputPath, relativeInputPath)
 	outputPath = strings.TrimSuffix(outputPath, filepath.Ext(outputPath))
 	outputPath = filepath.Join(outputPath, settings.IndexName)
 
@@ -171,7 +171,7 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	}
 
 	originalDirectory := filepath.Dir(article.OriginalPath)
-	originalCoverRel := article.CoverImagePath
+	originalCoverRel := article.CoverImage
 
 	// Copy cover image so it lives next to the article's index (within outputDirectory).
 	if originalCoverRel != "" {
@@ -215,9 +215,9 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	}
 
 	// Compute LinkToSelf and LinkToSave.
-	linkToSelf, err := filepath.Rel(settings.OutputDirectory, outputPath)
+	linkToSelf, err := filepath.Rel(settings.OutputPath, outputPath)
 	if err != nil {
-		return fmt.Errorf("failed to get relative link from '%s' to '%s': %w", settings.OutputDirectory, outputPath, err)
+		return fmt.Errorf("failed to get relative link from '%s' to '%s': %w", settings.OutputPath, outputPath, err)
 	}
 	article.LinkToSelf = filepath.ToSlash(linkToSelf)
 	article.LinkToSave = filepath.ToSlash(outputPath)
@@ -226,7 +226,7 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	// location so templates and Open Graph tags can reference it consistently.
 	if originalCoverRel != "" && !slices.Contains(article.Tags, "PAGE") {
 		coverRootRel := filepath.Join(filepath.Dir(article.LinkToSelf), originalCoverRel)
-		article.CoverImagePath = filepath.ToSlash(coverRootRel)
+		article.CoverImage = filepath.ToSlash(coverRootRel)
 	}
 
 	return nil
@@ -309,27 +309,32 @@ func encodeComponent(s string) string {
 // BuildShareUrl replaces placeholders in the urlTemplate with encoded article data,
 // and returns the final URL as a template.URL value.
 func BuildShareUrl(urlTemplate string, article Article, settings Settings) template.URL {
-	finalUrl := article.Url
+	finalUrl := article.ShareUrl
 	if finalUrl == "" {
 		finalUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.LinkToSelf, "/"))
 	}
 
-	linkUrl := article.Url
-	if linkUrl == "" {
-		linkUrl = extractFirstLink(article.HtmlContent)
+	// Logic for {TARGET_URL}: use share_url if present, otherwise first extracted link.
+	targetUrl := article.ShareUrl
+	if targetUrl == "" {
+		targetUrl = extractFirstLink(article.HtmlContent)
+	}
+	// Fallback: if no share_url and no link in text, use the post URL itself.
+	if targetUrl == "" {
+		targetUrl = finalUrl
 	}
 
 	encodedUrl := encodeComponent(finalUrl)
 	encodedTitle := encodeComponent(article.Title)
 	encodedDesc := encodeComponent(article.Description)
 	encodedText := encodeComponent(article.TextContent)
-	encodedLinkUrl := encodeComponent(linkUrl)
+	encodedTargetUrl := encodeComponent(targetUrl)
 
 	result := strings.ReplaceAll(urlTemplate, "{URL}", encodedUrl)
 	result = strings.ReplaceAll(result, "{TITLE}", encodedTitle)
 	result = strings.ReplaceAll(result, "{DESCRIPTION}", encodedDesc)
 	result = strings.ReplaceAll(result, "{TEXT}", encodedText)
-	result = strings.ReplaceAll(result, "{LINK-URL}", encodedLinkUrl)
+	result = strings.ReplaceAll(result, "{TARGET_URL}", encodedTargetUrl)
 
 	return template.URL(result)
 }

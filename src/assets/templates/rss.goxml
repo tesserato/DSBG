@@ -19,9 +19,9 @@
 			<pubDate>{{ .Created | formatPubDate }}</pubDate>
 			<description>{{ .Description | htmlEscape }}</description>
             <content:encoded><![CDATA[{{ .HtmlContent }}]]></content:encoded>
-			{{- if .CoverImagePath }}
+			{{- if .CoverImage }}
 			<media:content
-				url="{{ $.Settings.BaseUrl}}/{{ .CoverImagePath }}"
+				url="{{ $.Settings.BaseUrl}}/{{ .CoverImage }}"
 				medium="image"
 				type="image/jpeg"
 			/>

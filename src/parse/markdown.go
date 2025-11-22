@@ -141,10 +141,12 @@ func MarkdownFile(path string) (Article, []string, error) {
 						article.Updated = t
 					}
 				}
-			case "coverimagepath":
-				article.CoverImagePath = value.(string)
-			case "url":
-				article.Url = value.(string)
+			case "cover_image", "coverimagepath":
+				article.CoverImage = value.(string)
+			case "share_url", "url":
+				article.ShareUrl = value.(string)
+			case "canonical_url":
+				article.CanonicalUrl = value.(string)
 			case "tags":
 				switch reflect.TypeOf(value).Kind() {
 				case reflect.Slice:

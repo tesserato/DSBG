@@ -90,10 +90,12 @@ func HTMLFile(path string) (Article, []string, error) {
 			} else {
 				article.Updated = updatedTime
 			}
-		case "coverimagepath":
-			article.CoverImagePath = val
-		case "url":
-			article.Url = val
+		case "cover_image", "coverimagepath":
+			article.CoverImage = val
+		case "share_url", "url":
+			article.ShareUrl = val
+		case "canonical_url":
+			article.CanonicalUrl = val
 		}
 	}
 
@@ -148,7 +150,7 @@ func GenerateHtmlIndex(articles []Article, settings Settings, tmpl *texttemplate
 		return fmt.Errorf("error executing HTML index template: %w", err)
 	}
 
-	filePath := filepath.Join(settings.OutputDirectory, settings.IndexName)
+	filePath := filepath.Join(settings.OutputPath, settings.IndexName)
 	if err := os.WriteFile(filePath, tp.Bytes(), 0644); err != nil {
 		return fmt.Errorf("error writing HTML index file to '%s': %w", filePath, err)
 	}

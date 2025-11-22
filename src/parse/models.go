@@ -25,8 +25,8 @@ type Settings struct {
 	Title                     string
 	DescriptionMarkdown       string
 	DescriptionHTML           template.HTML
-	InputDirectory            string
-	OutputDirectory           string
+	InputPath                 string
+	OutputPath                string
 	DateFormat                string
 	IndexName                 string
 	Theme                     string
@@ -64,16 +64,17 @@ type ShareButton struct {
 
 // Article models a single article or page, regardless of its original format.
 type Article struct {
-	Title          string
-	Description    string
-	CoverImagePath string
-	Created        time.Time
-	Updated        time.Time
-	Tags           []string
-	TextContent    string
-	HtmlContent    string
-	OriginalPath   string
-	LinkToSelf     string
-	LinkToSave     string
-	Url            string
+	Title        string
+	Description  string
+	CoverImage   string
+	Created      time.Time
+	Updated      time.Time
+	Tags         []string
+	TextContent  string
+	HtmlContent  string
+	OriginalPath string
+	LinkToSelf   string
+	LinkToSave   string
+	ShareUrl     string
+	CanonicalUrl string
 }
