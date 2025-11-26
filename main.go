@@ -312,6 +312,10 @@ func main() {
 	}
 
 	if *watch {
+		// Set ForceOverwrite to true for watch mode to avoid prompts on rebuilds
+		// since we established ownership of the directory with the first build.
+		settings.ForceOverwrite = true
+
 		// In watch mode, start the server and open the browser ONCE here.
 		addr := ":" + settings.Port
 		url := fmt.Sprintf("http://localhost%s", addr)
@@ -375,12 +379,13 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 			if !ok {
 				return
 			}
-			if event.Has(fsnotify.Write) {
+			if event.Has(fsnotify.Write) || event.Has(fsnotify.Create) || event.Has(fsnotify.Remove) || event.Has(fsnotify.Rename) {
 				log.Println("File change detected:", event.Name, "- Rebuilding website...")
 				// Update build version on rebuild so cache busts instantly
 				settings.BuildVersion = fmt.Sprintf("%d", time.Now().Unix())
 
-				if err := buildWebsite(settings, templates, false); err != nil {
+				// Perform a clean build to remove orphans from deletions
+				if err := buildWebsite(settings, templates, true); err != nil {
 					log.Printf("Rebuild failed: %v\n", err)
 				}
 				log.Printf("\n%s Watching for changes in '%s'...\n", time.Now().Format(time.RFC850), settings.InputPath)
