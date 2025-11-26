@@ -197,6 +197,12 @@ func main() {
 		fmt.Fprintf(os.Stderr, "     -share \"HN|https://news.ycombinator.com/submitlink?u={TARGET_URL}&t={TITLE}\"\n")
 		fmt.Fprintln(os.Stderr)
 
+		fmt.Fprintf(os.Stderr, "%sHTML PAGE WARNING:%s\n", cBold+cRed, cReset)
+		fmt.Fprintf(os.Stderr, "  HTML files tagged with 'PAGE' (in meta tags) will have their %sentire parent folder%s copied\n", cBold, cReset)
+		fmt.Fprintf(os.Stderr, "  to the output directory to preserve local resources (videos, scripts, etc).\n")
+		fmt.Fprintf(os.Stderr, "  %sEnsure HTML PAGEs live in their own dedicated folders.%s\n", cYellow, cReset)
+		fmt.Fprintln(os.Stderr)
+
 		// Dynamic Date for the example
 		today := time.Now().Format("2006 01 02")
 

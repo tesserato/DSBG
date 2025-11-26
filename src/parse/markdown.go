@@ -62,15 +62,22 @@ func MarkdownFile(path string) (Article, []string, error) {
 	reader := text.NewReader(data)
 	doc := p.Parse(reader, parser.WithContext(context))
 
-	// Extract resources from the AST (images).
+	// Extract resources from the AST (images and links).
 	var resources []string
 	_ = ast.Walk(doc, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
 			return ast.WalkContinue, nil
 		}
+		// Extract images
 		if n.Kind() == ast.KindImage {
 			if img, ok := n.(*ast.Image); ok {
 				resources = append(resources, string(img.Destination))
+			}
+		}
+		// Extract generic links (useful for linked PDFs, videos, zip files, etc.)
+		if n.Kind() == ast.KindLink {
+			if link, ok := n.(*ast.Link); ok {
+				resources = append(resources, string(link.Destination))
 			}
 		}
 		return ast.WalkContinue, nil

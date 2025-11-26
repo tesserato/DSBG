@@ -124,6 +124,37 @@ func cleanString(url string) string {
 	return url
 }
 
+// copyDirectoryRecursively copies all contents of srcDir to destDir.
+func copyDirectoryRecursively(srcDir, destDir string) error {
+	return filepath.WalkDir(srcDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		// Calculate the relative path from the source directory
+		relPath, err := filepath.Rel(srcDir, path)
+		if err != nil {
+			return err
+		}
+		destPath := filepath.Join(destDir, relPath)
+
+		if d.IsDir() {
+			return os.MkdirAll(destPath, 0755)
+		}
+
+		// Read the source file
+		input, err := os.ReadFile(path)
+		if err != nil {
+			return fmt.Errorf("error reading file '%s': %w", path, err)
+		}
+
+		// Write to the destination file
+		if err := os.WriteFile(destPath, input, 0644); err != nil {
+			return fmt.Errorf("error writing file '%s': %w", destPath, err)
+		}
+		return nil
+	})
+}
+
 // CopyHtmlResources copies associated resources for an article and determines
 // the article's output path. Resources include images and other linked assets.
 func CopyHtmlResources(settings Settings, article *Article, resources []string) error {
@@ -173,72 +204,61 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	}
 
 	originalDirectory := filepath.Dir(article.OriginalPath)
-	originalCoverRel := article.CoverImage
 
-	// Copy cover image so it lives next to the article's index (within outputDirectory).
-	// Only attempt copy if it's a local path.
-	if originalCoverRel != "" && !strings.HasPrefix(strings.ToLower(originalCoverRel), "http") {
-		coverImageOrigPath := filepath.Join(originalDirectory, originalCoverRel)
-		coverImageArticleDestPath := filepath.Join(outputDirectory, originalCoverRel)
-
-		// We intentionally copy cover images even for pages now, to ensure metadata images exist.
-		file, err := os.ReadFile(coverImageOrigPath)
-		if err != nil {
-			// Log warning instead of failing hard, as user might have put a bad path
-			log.Printf("Warning: Could not read cover image '%s' for article '%s': %v", coverImageOrigPath, article.Title, err)
-		} else {
-			if err := os.MkdirAll(filepath.Dir(coverImageArticleDestPath), 0755); err != nil {
-				return fmt.Errorf("error creating directory for cover image '%s': %w", coverImageArticleDestPath, err)
+	// SPECIAL CASE: If this is an HTML file marked as "PAGE", copy the entire directory contents.
+	// This ensures complex HTML pages with relative dependencies (js, css, media) are preserved.
+	if strings.HasSuffix(strings.ToLower(article.OriginalPath), ".html") && slices.Contains(article.Tags, "PAGE") {
+		if err := copyDirectoryRecursively(originalDirectory, outputDirectory); err != nil {
+			log.Printf("Warning: Failed to copy directory for HTML PAGE '%s': %v", article.Title, err)
+		}
+		// We still fall through to handle cover image metadata updates below,
+		// but we skip the manual resource copy loop since we just copied everything.
+	} else {
+		// STANDARD CASE: Extract and copy specific resources.
+		for _, resourceOrigRelPath := range resources {
+			resourceOrigRelPath = strings.TrimSpace(resourceOrigRelPath)
+			if resourceOrigRelPath == "" {
+				continue
 			}
-			if err := os.WriteFile(coverImageArticleDestPath, file, 0644); err != nil {
-				return fmt.Errorf("error writing cover image file '%s': %w", coverImageArticleDestPath, err)
+
+			resourceOrigRelPathLower := strings.ToLower(resourceOrigRelPath)
+
+			// Skip true external URLs only
+			if strings.HasPrefix(resourceOrigRelPathLower, "http://") ||
+				strings.HasPrefix(resourceOrigRelPathLower, "https://") ||
+				strings.HasPrefix(resourceOrigRelPathLower, "//") {
+				continue
 			}
-		}
-	}
 
-	for _, resourceOrigRelPath := range resources {
-		resourceOrigRelPath = strings.TrimSpace(resourceOrigRelPath)
-		if resourceOrigRelPath == "" {
-			continue
-		}
+			// Strip query string and fragment, and normalize root-relative paths
+			cleanPath := resourceOrigRelPath
+			if u, err := url.Parse(resourceOrigRelPath); err == nil && u.Path != "" {
+				cleanPath = u.Path
+			}
 
-		resourceOrigRelPathLower := strings.ToLower(resourceOrigRelPath)
+			// Treat leading "/" as project-root-relative, not filesystem-root
+			cleanPath = strings.TrimPrefix(cleanPath, "/")
+			if cleanPath == "" {
+				continue
+			}
 
-		// Skip true external URLs only
-		if strings.HasPrefix(resourceOrigRelPathLower, "http://") ||
-			strings.HasPrefix(resourceOrigRelPathLower, "https://") ||
-			strings.HasPrefix(resourceOrigRelPathLower, "//") {
-			continue
-		}
+			resourceOrigPath := filepath.Join(originalDirectory, cleanPath)
+			resourceDestPath := filepath.Join(outputDirectory, cleanPath)
 
-		// Strip query string and fragment, and normalize root-relative paths
-		cleanPath := resourceOrigRelPath
-		if u, err := url.Parse(resourceOrigRelPath); err == nil && u.Path != "" {
-			cleanPath = u.Path
-		}
+			input, err := os.ReadFile(resourceOrigPath)
+			if err != nil {
+				// Log warning so build doesn't crash on one missing image
+				log.Printf("Warning: Failed to read resource file '%s' (from '%s'): %v", resourceOrigPath, resourceOrigRelPath, err)
+				continue
+			}
 
-		// Treat leading "/" as project-root-relative, not filesystem-root
-		cleanPath = strings.TrimPrefix(cleanPath, "/")
-		if cleanPath == "" {
-			continue
-		}
+			if err := os.MkdirAll(filepath.Dir(filepath.FromSlash(resourceDestPath)), 0755); err != nil {
+				return fmt.Errorf("failed to create directory for resource '%s': %w", resourceDestPath, err)
+			}
 
-		resourceOrigPath := filepath.Join(originalDirectory, cleanPath)
-		resourceDestPath := filepath.Join(outputDirectory, cleanPath)
-
-		input, err := os.ReadFile(resourceOrigPath)
-		if err != nil {
-			// Log warning so build doesn't crash on one missing image
-			log.Printf("Warning: Failed to read resource file '%s' (from '%s'): %v", resourceOrigPath, resourceOrigRelPath, err)
-			continue
-		}
-
-		if err := os.MkdirAll(filepath.Dir(filepath.FromSlash(resourceDestPath)), 0755); err != nil {
-			return fmt.Errorf("failed to create directory for resource '%s': %w", resourceDestPath, err)
-		}
-
-		if err := os.WriteFile(resourceDestPath, input, 0644); err != nil {
-			return fmt.Errorf("failed to write resource file to '%s': %w", resourceDestPath, err)
+			if err := os.WriteFile(resourceDestPath, input, 0644); err != nil {
+				return fmt.Errorf("failed to write resource file to '%s': %w", resourceDestPath, err)
+			}
 		}
 	}
 
@@ -252,7 +272,29 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	// If a cover image was specified, normalize its path to be relative to the article's output
 	// location so templates and Open Graph tags can reference it consistently.
 	// Only update if it was a local path.
+	originalCoverRel := article.CoverImage
 	if originalCoverRel != "" && !strings.HasPrefix(strings.ToLower(originalCoverRel), "http") {
+		// Even if we copied the whole folder, we ensure the cover image path logic is consistent.
+		// If we DIDN'T copy the whole folder (standard case), we must copy the cover image specifically.
+		isHtmlPage := strings.HasSuffix(strings.ToLower(article.OriginalPath), ".html") && slices.Contains(article.Tags, "PAGE")
+
+		if !isHtmlPage {
+			coverImageOrigPath := filepath.Join(originalDirectory, originalCoverRel)
+			coverImageArticleDestPath := filepath.Join(outputDirectory, originalCoverRel)
+
+			file, err := os.ReadFile(coverImageOrigPath)
+			if err != nil {
+				log.Printf("Warning: Could not read cover image '%s' for article '%s': %v", coverImageOrigPath, article.Title, err)
+			} else {
+				if err := os.MkdirAll(filepath.Dir(coverImageArticleDestPath), 0755); err != nil {
+					return fmt.Errorf("error creating directory for cover image '%s': %w", coverImageArticleDestPath, err)
+				}
+				if err := os.WriteFile(coverImageArticleDestPath, file, 0644); err != nil {
+					return fmt.Errorf("error writing cover image file '%s': %w", coverImageArticleDestPath, err)
+				}
+			}
+		}
+
 		coverRootRel := filepath.Join(filepath.Dir(article.LinkToSelf), originalCoverRel)
 		article.CoverImage = filepath.ToSlash(coverRootRel)
 	}
@@ -275,18 +317,35 @@ func genRelativeLink(linkToSelf string, name string) string {
 	return upDir + name
 }
 
-// ExtractResources traverses an HTML node tree and extracts src/href values
-// from img, script, and link tags.
+// ExtractResources traverses an HTML node tree and extracts src/href/data values
+// from tags like img, script, link, video, audio, source, track, object, iframe, and a.
 func ExtractResources(n *html.Node) []string {
 	var resources []string
 	var f func(*html.Node)
 	f = func(n *html.Node) {
 		if n.Type == html.ElementNode {
-			if n.Data == "img" || n.Data == "script" || n.Data == "link" {
+			// Define tags and the attributes we want to extract from them.
+			// This now includes standard media tags and generic links/anchors.
+			targetAttrs := map[string][]string{
+				"img":    {"src"},
+				"script": {"src"},
+				"link":   {"href"},
+				"video":  {"src", "poster"},
+				"audio":  {"src"},
+				"source": {"src"},
+				"track":  {"src"},
+				"object": {"data"},
+				"iframe": {"src"},
+				"embed":  {"src"},
+				"a":      {"href"},
+			}
+
+			if attrsToScan, found := targetAttrs[n.Data]; found {
 				for _, attr := range n.Attr {
-					if attr.Key == "src" || attr.Key == "href" {
-						resources = append(resources, attr.Val)
-						break
+					for _, target := range attrsToScan {
+						if attr.Key == target {
+							resources = append(resources, attr.Val)
+						}
 					}
 				}
 			}
