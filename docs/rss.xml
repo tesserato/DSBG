@@ -25,7 +25,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Sat, 22 Nov 2025 23:11:09 +0000</lastBuildDate>
+		<lastBuildDate>Wed, 26 Nov 2025 11:53:54 +0000</lastBuildDate>
 		<item>
 			<title>HTML post with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</link>
@@ -158,7 +158,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/strings/idealstring/index.html">
-    <link rel="stylesheet" href="../../style.css?v=1763853069">
+    <link rel="stylesheet" href="../../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -353,11 +353,11 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../../script.js?v=1763853069' async defer></script>
+    <script src='../../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -439,7 +439,7 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/strings/idealbar/index.html">
-    <link rel="stylesheet" href="../../style.css?v=1763853069">
+    <link rel="stylesheet" href="../../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -612,11 +612,11 @@ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../../script.js?v=1763853069' async defer></script>
+    <script src='../../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -756,7 +756,7 @@ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/07-test-post/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763853069">
+    <link rel="stylesheet" href="../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1215,11 +1215,11 @@ _underscores_<br/>
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763853069' async defer></script>
+    <script src='../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1319,7 +1319,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/06v006/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763853069">
+    <link rel="stylesheet" href="../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1417,11 +1417,11 @@ _underscores_<br/>
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763853069' async defer></script>
+    <script src='../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1509,7 +1509,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/05v005/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763853069">
+    <link rel="stylesheet" href="../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1606,11 +1606,11 @@ _underscores_<br/>
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763853069' async defer></script>
+    <script src='../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1698,7 +1698,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/0320250110pathdates/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763853069">
+    <link rel="stylesheet" href="../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1797,11 +1797,11 @@ _underscores_<br/>
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763853069' async defer></script>
+    <script src='../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1884,7 +1884,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/markdown-page-example/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763853069">
+    <link rel="stylesheet" href="../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1980,11 +1980,11 @@ _underscores_<br/>
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763853069' async defer></script>
+    <script src='../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -2071,7 +2071,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/04themes/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763853069">
+    <link rel="stylesheet" href="../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -2171,11 +2171,11 @@ _underscores_<br/>
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763853069' async defer></script>
+    <script src='../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -2237,7 +2237,7 @@ _underscores_<br/>
 
     <!-- Article-specific Open Graph time metadata -->
     <meta property="article:published_time" content='2025-01-03T00:00:00Z'>
-    <meta property="article:modified_time" content='2025-11-22T23:10:28Z'>
+    <meta property="article:modified_time" content='2025-11-26T11:53:08Z'>
 
     <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
     <script type="application/ld+json">
@@ -2254,7 +2254,7 @@ _underscores_<br/>
     "https://tesserato.github.io/DSBG/01readme/01_dsbg_logo.webp"
   ],
   "datePublished": "2025-01-03T00:00:00Z",
-  "dateModified": "2025-11-22T23:10:28Z",
+  "dateModified": "2025-11-26T11:53:08Z",
   "author": {
     "@type": "Person",
     "name": "Dead Simple Blog Generator"
@@ -2267,7 +2267,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/01readme/index.html">
-    <link rel="stylesheet" href="../style.css?v=1763853069">
+    <link rel="stylesheet" href="../style.css?v=1764158034">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -2360,34 +2360,34 @@ _underscores_<br/>
 <p>DSBG is a <strong>minimalist, single-binary static blog generator</strong> written in Go.<br/>
 Point it at a folder of Markdown/HTML files, run one command, and get a clean, modern, fast blog.</p>
 <hr/>
-<h2 id="why-dsbg">Why DSBG?</h2>
+<h1 id="why-dsbg">Why DSBG?</h1>
 <ul>
 <li><strong>Zero Setup</strong>: No runtime dependencies. Just one binary.</li>
 <li><strong>Fast by Design</strong>: Concurrent processing, instant rebuilds in watch mode.</li>
 <li><strong>Clean, Modern Output</strong>: Responsive layout, dark/light themes, code highlighting, MathJax.</li>
-<li><strong>Smart Content Handling</strong>: Frontmatter, automatic resource copying, tag extraction, date parsing.</li>
+<li><strong>Smart Content Handling</strong>: Frontmatter, tag extraction, date parsing, automatic resource copying:DSBG only copies resources (images, PDFs, videos) that are explicitly referenced in your Markdown or HTML. Unused files in your content folder are not moved to the output.</li>
 <li><strong>Full-Text Search</strong>: Built-in Lunr-powered search index.</li>
 <li><strong>Social Sharing Ready</strong>: Add your own share buttons with URL templates.</li>
 <li><strong>RSS Included</strong>: Automatic, standards-compliant feed.</li>
-<li><strong>Pages &amp; Posts</strong>: Tag <code>PAGE</code> to add top-level navigation pages.</li>
+<li><strong>Pages &amp; Posts</strong>: Tag <code>PAGE</code> to add top-level navigation pages. <strong>Note:</strong> HTML files tagged as <code>PAGE</code> should live in their own dedicated subfolders; DSBG copies the entire parent folder to preserve local scripts and assets.</li>
 <li><strong>Easy Customization</strong>: Themes, custom CSS/JS, custom favicon, publisher metadata, and more.</li>
 <li><strong>SEO-Ready Out of the Box</strong>: Open Graph, JSON-LD schema, canonical/share URL overrides, publisher logo.</li>
 <li><strong>Smarter Index Page</strong>: Tag filters, fuzzy full-text search with snippets, and one-click <code>Copy Markdown</code> sharing.</li>
 <li><strong>Flexible Input &amp; Dates</strong>: Markdown or HTML, auto-extracted tags/metadata, and date parsing from filenames or file mtimes.</li>
 </ul>
 <hr/>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="install">Install</h3>
+<h1 id="quick-start">Quick Start</h1>
+<h2 id="install">Install</h2>
 <p><strong>Binary Releases:</strong><br/>
 Download the latest release from GitHub.</p>
 <p><strong>Or via Go:</strong></p>
 <pre><code class="language-bash">go install github.com/tesserato/DSBG@latest
 </code></pre>
-<h3 id="generate-a-site">Generate a Site</h3>
-<pre><code class="language-bash">dsbg -input-path content/ -output-path public/ -title &#34;My Blog&#34;
+<p>or</p>
+<pre><code class="language-bash">go install github.com/tesserato/DSBG@v0.1.4
 </code></pre>
-<h3 id="live-preview">Live Preview</h3>
-<pre><code class="language-bash">dsbg -input-path content/ -watch
+<h2 id="generate-a-site">Generate a Site</h2>
+<pre><code class="language-bash">dsbg -input content/ -output public/ -title &#34;My Blog&#34; -watch
 </code></pre>
 <p>Serves your site at:<br/>
 <code>http://localhost:666</code></p>
@@ -2408,22 +2408,15 @@ coverImagePath: image.webp
 ---
 
 # Hello World
-...
+
+My first post with DSBG!
 </code></pre>
 <hr/>
-<h2 id="configuration--flags">Configuration &amp; Flags</h2>
+<h1 id="configuration--flags">Configuration &amp; Flags</h1>
 <p>DSBG exposes many options for themes, sorting, metadata, sharing, custom assets, and more.</p>
 <p><strong>Run <code>dsbg -h</code> for the full list of commands, available themes, and flags.</strong></p>
-<h3 id="common-flags">Common Flags</h3>
-<ul>
-<li><code>-theme</code>: Choose a built-in style (e.g., <code>default</code>, <code>dark</code>, <code>clean</code>, <code>paper</code>, <code>industrial</code>, <code>black</code>, <code>colorful</code>, <code>terminal</code>).</li>
-<li><code>-publisher</code>: Name of the publisher/organization (for JSON-LD metadata).</li>
-<li><code>-author-name</code>: Default author name for posts.</li>
-<li><code>-sort</code>: Sort order for the index page (e.g., <code>date-created</code>, <code>reverse-date-updated</code>).</li>
-<li><code>-share</code>: Add custom share buttons (see help for format).</li>
-</ul>
 <hr/>
-<h2 id="deploying">Deploying</h2>
+<h1 id="deploying">Deploying</h1>
 <p>The generated folder is 100% static: deploy anywhere:</p>
 <ul>
 <li>GitHub Pages</li>
@@ -2433,12 +2426,68 @@ coverImagePath: image.webp
 <li>Any static hosting service</li>
 </ul>
 <hr/>
-<h2 id="contributing">Contributing</h2>
+<h1 id="notes">Notes</h1>
+<h2 id="1-urls--file-structure">1. URLs &amp; File Structure</h2>
+<ul>
+<li><strong>“Clean URL” Transformation:</strong> DSBG converts every input file into a directory containing an <code>index.html</code>.
+<ul>
+<li><em>Input:</em> <code>content/posts/my-cool-story.md</code></li>
+<li><em>Output:</em> <code>public/posts/my-cool-story/index.html</code></li>
+<li><em>Result:</em> Your URL becomes <code>domain.com/posts/my-cool-story/</code> (trailing slash).</li>
+</ul>
+</li>
+<li><strong>URL Sanitization:</strong> URLs are aggressive sanitized. Non-alphanumeric characters are removed, and spaces/underscores become dashes (e.g., <code>C# for C++/CLI</code> becomes <code>csharp-for-cpluspluscli</code>).</li>
+<li><strong>Dates in URLs:</strong> By default, date patterns (e.g., <code>2024-11-03-</code>) are stripped from filenames and URLs. Use <code>-keep-date-in-paths</code> to preserve them.</li>
+</ul>
+<h2 id="2-dates--sorting">2. Dates &amp; Sorting</h2>
+<ul>
+<li><strong>Date Hierarchy:</strong> The creation date is determined in this priority order:
+<ol>
+<li>Frontmatter/Meta Tag (<code>created: YYYY-MM-DD</code>).</li>
+<li>Filename Pattern (<code>2023-10-05-my-post.md</code>).</li>
+<li>File Modification Time (Warning: This may change if you clone the repo to a new machine).</li>
+</ol>
+</li>
+<li><strong>Date Formats:</strong> Dates must be in recognizable numeric formats (e.g., <code>2024-03-03 10:00</code>) for the parser to detect them.</li>
+<li><strong>Sorting:</strong> The <code>-sort</code> flag is strict and only accepts specific values like <code>date-created</code>, <code>reverse-date-created</code>, <code>title</code>, etc.</li>
+</ul>
+<h2 id="3-tags--organization">3. Tags &amp; Organization</h2>
+<ul>
+<li><strong>Folders = Tags:</strong> By default, folder names become tags. A file in <code>content/linux/kernel/</code> gets <code>linux</code> and <code>kernel</code> tags automatically. Disable with <code>-ignore-tags-from-paths</code>.</li>
+<li><strong><code>PAGE</code> Tag:</strong> Articles tagged with <code>PAGE</code> are removed from the main feed and added to the top navigation bar.</li>
+<li><strong>HTML <code>PAGE</code> Isolation:</strong> If an HTML file is tagged as <code>PAGE</code>, its <strong>entire parent folder</strong> is copied recursively to the output. <strong>Isolate HTML pages in their own subfolders</strong> to avoid duplicating unrelated files.</li>
+</ul>
+<h2 id="4-resource-handling">4. Resource Handling</h2>
+<ul>
+<li><strong>Smart Copying:</strong> DSBG only copies resources (images, PDFs, videos) explicitly referenced in your content. Unreferenced files are ignored.</li>
+<li><strong>Relative Paths:</strong> Root-relative paths (e.g., <code>/img/logo.png</code>) are treated as relative to the <strong>article’s directory</strong>, not the site root.</li>
+<li><strong>Strict Validation:</strong> By default, the build <strong>fails</strong> if a referenced resource is missing. Use <code>-ignore-errors</code> to log warnings instead.</li>
+</ul>
+<h2 id="5-seo--social-features">5. SEO &amp; Social Features</h2>
+<ul>
+<li><strong>Base URL Required:</strong> For production builds, you <strong>must</strong> set <code>-base-url https://yourdomain.com</code>. Without it, RSS feeds, Sitemaps, and Social Sharing preview cards (Open Graph) will point to <code>localhost</code>.</li>
+<li><strong>Canonical URLs:</strong> You can override the auto-generated canonical URL per post using the <code>canonical_url</code> frontmatter field.</li>
+<li><strong>Share URL:</strong> The <code>share_url</code> field overrides the link used by share buttons, useful for “link blogs” where the post title should link to an external site.</li>
+</ul>
+<h2 id="6-theming--customization">6. Theming &amp; Customization</h2>
+<ul>
+<li><strong>Highlighting Detection:</strong> Syntax highlighting (Light/Dark) is automatically chosen by scanning your theme CSS for <code>color-scheme: dark;</code>.</li>
+<li><strong>Custom CSS:</strong> Providing a <code>-css-path</code> <strong>replaces</strong> the built-in theme entirely.</li>
+<li><strong>Custom JS:</strong> Providing a <code>-js-path</code> <strong>appends</strong> your script to the default functionality (search, copy buttons, etc. remain active).</li>
+<li><strong>Table Styling:</strong> All Markdown tables are wrapped in <code>&lt;div class=&#34;table-wrapper&#34;&gt;</code> to allow for responsive scrolling and styling.</li>
+</ul>
+<h2 id="7-watch-mode">7. Watch Mode</h2>
+<ul>
+<li><strong>Port:</strong> Default server port is <code>666</code>.</li>
+<li><strong>Live Reload:</strong> The browser automatically opens on start. Content, assets, and custom CSS/JS are watched for changes.</li>
+<li><strong>Cache Busting:</strong> A version query string (<code>?v=TIMESTAMP</code>) is appended to assets on every rebuild to ensure you always see the latest changes.</li>
+</ul>
+<h1 id="contributing">Contributing</h1>
 <p>PRs and feature suggestions are welcome!</p>
-<p>GitHub: <code>https://github.com/tesserato/dsbg</code></p>
+<p>GitHub: <code>https://github.com/tesserato/DSBG</code></p>
 <h1 id="star-history">Star History</h1>
 <p><a href="https://star-history.com/#tesserato/DSBG&amp;Date"><img src="https://api.star-history.com/svg?repos=tesserato/DSBG&amp;type=Date" alt="Star History Chart"/></a></p>
-<p><a href="https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_souce=badge-dead-simple-blog-generator" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=912370&amp;theme=light&amp;t=1740653394729" alt="Dead Simple Blog Generator - Static Site Generator That Fast-Tracks Your Digital Presence | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a></p>
+<p><a href="https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_source=badge-dead-simple-blog-generator" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=912370&amp;theme=light&amp;t=1740653394729" alt="Dead Simple Blog Generator - Static Site Generator That Fast-Tracks Your Digital Presence | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a></p>
 </body></html>
         </article>
     </main>
@@ -2446,11 +2495,11 @@ coverImagePath: image.webp
     <div class="giscus"></div>
 
     <footer>
-        <a href="https://tesserato.github.io/dsbg/" target="_blank">Created with Dead Simple Blog Generator</a>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1763853069' async defer></script>
+    <script src='../script.js?v=1764158034' async defer></script>
 </body>
 
 </html>]]></content:encoded>
