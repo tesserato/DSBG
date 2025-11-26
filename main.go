@@ -117,6 +117,7 @@ func main() {
 	flagSet.StringVar(&settings.InputPath, "input", "content", "Directory containing your source Markdown (.md) or HTML files.")
 	flagSet.StringVar(&settings.OutputPath, "output", "public", "Directory where the generated static site will be saved.")
 	flagSet.BoolVar(&settings.ForceOverwrite, "overwrite", false, "Skip the confirmation prompt when the output directory is not empty.")
+	flagSet.BoolVar(&settings.IgnoreErrors, "ignore-errors", false, "Log warnings instead of failing on missing resources, missing themes, or invalid dates.")
 
 	flagSet.StringVar(&settings.DescriptionMarkdown, "description", "This is my blog", "A short summary of your site. Rendered as Markdown on the homepage (supports links); stripped to plain text for SEO tags.")
 	flagSet.StringVar(&settings.Lang, "lang", "en", "The language code for the HTML <html> tag (e.g., 'en', 'es', 'fr').")
@@ -170,7 +171,7 @@ func main() {
 			fmt.Fprintln(os.Stderr)
 		}
 
-		printGroup("GENERAL CONFIGURATION", "input", "output", "title", "description", "base-url", "lang", "overwrite")
+		printGroup("GENERAL CONFIGURATION", "input", "output", "title", "description", "base-url", "lang", "overwrite", "ignore-errors")
 		printGroup("METADATA & SEO", "author", "publisher", "logo", "date-format")
 		printGroup("THEMING & UI", "theme", "css-path", "js-path", "favicon-path", "share")
 		printGroup("INJECTIONS", "elements-top", "elements-bottom")
@@ -491,6 +492,9 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 			destName := filepath.Base(src)
 			destPath := filepath.Join(settings.OutputPath, destName)
 			if err := copyFile(src, destPath); err != nil {
+				if !settings.IgnoreErrors {
+					return fmt.Errorf("failed to copy share icon '%s': %w", src, err)
+				}
 				log.Printf("Warning: Failed to copy share icon '%s': %v", src, err)
 			}
 			settings.ShareButtons[i].Display = destName
@@ -506,6 +510,9 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 		destName := filepath.Base(src)
 		destPath := filepath.Join(settings.OutputPath, destName)
 		if err := copyFile(src, destPath); err != nil {
+			if !settings.IgnoreErrors {
+				return fmt.Errorf("failed to copy publisher logo '%s': %w", src, err)
+			}
 			log.Printf("Warning: Failed to copy publisher logo '%s': %v", src, err)
 		} else {
 			// After copying, make the path relative to the site root for templates/JSON-LD.
@@ -538,7 +545,11 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 			for filePath := range pathsCh {
 				article, err := processFile(filePath, *settings, templates)
 				if err != nil {
-					log.Printf("Error processing file %s: %v\n", filePath, err)
+					// Handle error based on IgnoreErrors setting
+					if !settings.IgnoreErrors {
+						log.Fatalf("Error processing file %s: %v", filePath, err)
+					}
+					log.Printf("Warning: Skipping file %s due to error: %v\n", filePath, err)
 					continue
 				}
 
@@ -600,7 +611,7 @@ func buildWebsite(settings *parse.Settings, templates parse.SiteTemplates, clean
 	}
 
 	if settings.PathToCustomCss == "" {
-		if err := parse.SaveThemeCSS(assets, settings.Theme, settings.OutputPath); err != nil {
+		if err := parse.SaveThemeCSS(assets, settings.Theme, settings.OutputPath, settings.IgnoreErrors); err != nil {
 			return fmt.Errorf("error processing theme CSS: %v", err)
 		}
 	} else {
@@ -641,7 +652,7 @@ func processFile(filePath string, settings parse.Settings, templates parse.SiteT
 	filePathLower := strings.ToLower(filePath)
 
 	if strings.HasSuffix(filePathLower, ".md") {
-		article, resources, err = parse.MarkdownFile(filePath)
+		article, resources, err = parse.MarkdownFile(filePath, settings)
 		if err != nil {
 			return parse.Article{}, fmt.Errorf("error parsing markdown file: %w", err)
 		}
@@ -652,7 +663,7 @@ func processFile(filePath string, settings parse.Settings, templates parse.SiteT
 			return parse.Article{}, fmt.Errorf("error formatting markdown: %w", err)
 		}
 	} else if strings.HasSuffix(filePathLower, ".html") {
-		article, resources, err = parse.HTMLFile(filePath)
+		article, resources, err = parse.HTMLFile(filePath, settings)
 		if err != nil {
 			return parse.Article{}, fmt.Errorf("error parsing HTML file: %w", err)
 		}

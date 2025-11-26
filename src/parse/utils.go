@@ -209,6 +209,9 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 	// This ensures complex HTML pages with relative dependencies (js, css, media) are preserved.
 	if strings.HasSuffix(strings.ToLower(article.OriginalPath), ".html") && slices.Contains(article.Tags, "PAGE") {
 		if err := copyDirectoryRecursively(originalDirectory, outputDirectory); err != nil {
+			if !settings.IgnoreErrors {
+				return fmt.Errorf("failed to copy directory for HTML PAGE '%s': %w", article.Title, err)
+			}
 			log.Printf("Warning: Failed to copy directory for HTML PAGE '%s': %v", article.Title, err)
 		}
 		// We still fall through to handle cover image metadata updates below,
@@ -223,17 +226,32 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 
 			resourceOrigRelPathLower := strings.ToLower(resourceOrigRelPath)
 
-			// Skip true external URLs only
+			// 1. Skip absolute external URLs (http/https/ftp)
 			if strings.HasPrefix(resourceOrigRelPathLower, "http://") ||
 				strings.HasPrefix(resourceOrigRelPathLower, "https://") ||
+				strings.HasPrefix(resourceOrigRelPathLower, "ftp://") ||
 				strings.HasPrefix(resourceOrigRelPathLower, "//") {
+				continue
+			}
+
+			// 2. Skip non-resource links (anchors, mailto, tel, sms, www.)
+			if strings.HasPrefix(resourceOrigRelPathLower, "#") ||
+				strings.HasPrefix(resourceOrigRelPathLower, "mailto:") ||
+				strings.HasPrefix(resourceOrigRelPathLower, "tel:") ||
+				strings.HasPrefix(resourceOrigRelPathLower, "sms:") ||
+				strings.HasPrefix(resourceOrigRelPathLower, "www.") {
 				continue
 			}
 
 			// Strip query string and fragment, and normalize root-relative paths
 			cleanPath := resourceOrigRelPath
-			if u, err := url.Parse(resourceOrigRelPath); err == nil && u.Path != "" {
-				cleanPath = u.Path
+			if u, err := url.Parse(resourceOrigRelPath); err == nil {
+				if u.Path != "" {
+					cleanPath = u.Path
+				} else {
+					// If path is empty (e.g. "?query" or "#anchor"), skip it
+					continue
+				}
 			}
 
 			// Treat leading "/" as project-root-relative, not filesystem-root
@@ -242,13 +260,51 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 				continue
 			}
 
+			// 3. Skip internal navigation to other source files (.md, .html)
+			// These are likely links to other posts, not assets to be copied raw.
+			ext := strings.ToLower(filepath.Ext(cleanPath))
+			if ext == ".md" || ext == ".markdown" || ext == ".html" || ext == ".htm" {
+				continue
+			}
+
+			// 4. Skip links without extensions (likely navigation links e.g., [About](about))
+			// Unless they are explicit file references, we assume they are internal routes.
+			if ext == "" {
+				continue
+			}
+
 			resourceOrigPath := filepath.Join(originalDirectory, cleanPath)
 			resourceDestPath := filepath.Join(outputDirectory, cleanPath)
 
+			// Check if resource exists before reading
+			stat, err := os.Stat(resourceOrigPath)
+			if err != nil {
+				if os.IsNotExist(err) {
+					// If strictly missing a file with an extension (e.g. image.png), fail/warn.
+					if !settings.IgnoreErrors {
+						return fmt.Errorf("resource file '%s' not found (referenced in '%s')", resourceOrigPath, article.Title)
+					}
+					log.Printf("Warning: Resource file '%s' not found (referenced in '%s')", resourceOrigPath, article.Title)
+					continue
+				}
+				// Other error
+				if !settings.IgnoreErrors {
+					return fmt.Errorf("failed to stat resource file '%s': %w", resourceOrigPath, err)
+				}
+				continue
+			}
+
+			// Skip if it is a directory
+			if stat.IsDir() {
+				continue
+			}
+
 			input, err := os.ReadFile(resourceOrigPath)
 			if err != nil {
-				// Log warning so build doesn't crash on one missing image
-				log.Printf("Warning: Failed to read resource file '%s' (from '%s'): %v", resourceOrigPath, resourceOrigRelPath, err)
+				if !settings.IgnoreErrors {
+					return fmt.Errorf("failed to read resource file '%s': %w", resourceOrigPath, err)
+				}
+				log.Printf("Warning: Failed to read resource file '%s': %v", resourceOrigPath, err)
 				continue
 			}
 
@@ -284,6 +340,9 @@ func CopyHtmlResources(settings Settings, article *Article, resources []string) 
 
 			file, err := os.ReadFile(coverImageOrigPath)
 			if err != nil {
+				if !settings.IgnoreErrors {
+					return fmt.Errorf("failed to read cover image '%s' for article '%s': %w", coverImageOrigPath, article.Title, err)
+				}
 				log.Printf("Warning: Could not read cover image '%s' for article '%s': %v", coverImageOrigPath, article.Title, err)
 			} else {
 				if err := os.MkdirAll(filepath.Dir(coverImageArticleDestPath), 0755); err != nil {
@@ -460,7 +519,7 @@ func IsImage(s string) bool {
 
 // SaveThemeCSS copies the selected theme CSS file from embedded assets to style.css in the output directory.
 // If themeName is empty or invalid, it attempts to use "default.css".
-func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error {
+func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string, ignoreErrors bool) error {
 	if themeName == "" {
 		themeName = "default"
 	}
@@ -471,6 +530,9 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string) error 
 	fileContent, err := fs.ReadFile(assets, srcPath)
 	if err != nil {
 		available, _ := GetAvailableThemes(assets)
+		if !ignoreErrors {
+			return fmt.Errorf("theme '%s' not found (Available: %s).", themeName, strings.Join(available, ", "))
+		}
 		log.Printf("Warning: Theme '%s' not found (Available: %s). Falling back to default theme.", themeName, strings.Join(available, ", "))
 
 		// Fallback to default

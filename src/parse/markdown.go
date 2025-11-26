@@ -48,7 +48,7 @@ var Markdown = goldmark.New(
 
 // MarkdownFile parses a Markdown file, extracts frontmatter, and populates an Article.
 // It returns the Article and a list of extracted resource paths (e.g., images).
-func MarkdownFile(path string) (Article, []string, error) {
+func MarkdownFile(path string, settings Settings) (Article, []string, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return Article{}, nil, fmt.Errorf("failed to read Markdown file '%s': %w", path, err)
@@ -125,6 +125,9 @@ func MarkdownFile(path string) (Article, []string, error) {
 				case reflect.String:
 					createdTime, err := DateTimeFromString(value.(string))
 					if err != nil {
+						if !settings.IgnoreErrors {
+							return Article{}, nil, fmt.Errorf("failed to parse 'created' date in '%s': %w", path, err)
+						}
 						log.Printf("Warning: Failed to parse 'created' date in '%s': %v\n", path, err)
 					} else {
 						article.Created = createdTime
@@ -139,6 +142,9 @@ func MarkdownFile(path string) (Article, []string, error) {
 				case reflect.String:
 					updatedTime, err := DateTimeFromString(value.(string))
 					if err != nil {
+						if !settings.IgnoreErrors {
+							return Article{}, nil, fmt.Errorf("failed to parse 'updated' date in '%s': %w", path, err)
+						}
 						log.Printf("Warning: Failed to parse 'updated' date in '%s': %v\n", path, err)
 					} else {
 						article.Updated = updatedTime

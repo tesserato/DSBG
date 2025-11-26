@@ -46,6 +46,7 @@ type Settings struct {
 	HighlightTheme            string
 	Port                      string
 	ForceOverwrite            bool
+	IgnoreErrors              bool
 	BuildVersion              string
 
 	// AuthorName is used in meta tags and structured data as the article author.

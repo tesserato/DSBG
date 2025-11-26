@@ -17,7 +17,7 @@ import (
 
 // HTMLFile parses an HTML file, extracts metadata, and populates an Article.
 // It returns the Article and a list of extracted resources.
-func HTMLFile(path string) (Article, []string, error) {
+func HTMLFile(path string, settings Settings) (Article, []string, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return Article{}, nil, fmt.Errorf("failed to read HTML file '%s': %w", path, err)
@@ -79,6 +79,9 @@ func HTMLFile(path string) (Article, []string, error) {
 		case "created":
 			createdTime, err := DateTimeFromString(val)
 			if err != nil {
+				if !settings.IgnoreErrors {
+					return Article{}, nil, fmt.Errorf("failed to parse 'created' date in '%s': %w", path, err)
+				}
 				log.Printf("Warning: Failed to parse 'created' date from meta tag in '%s': %v\n", path, err)
 			} else {
 				article.Created = createdTime
@@ -86,6 +89,9 @@ func HTMLFile(path string) (Article, []string, error) {
 		case "updated":
 			updatedTime, err := DateTimeFromString(val)
 			if err != nil {
+				if !settings.IgnoreErrors {
+					return Article{}, nil, fmt.Errorf("failed to parse 'updated' date in '%s': %w", path, err)
+				}
 				log.Printf("Warning: Failed to parse 'updated' date from meta tag in '%s': %v\n", path, err)
 			} else {
 				article.Updated = updatedTime
