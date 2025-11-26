@@ -485,25 +485,6 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	return template.URL(result)
 }
 
-// CleanContent normalizes text content into a slice of tokens for search indexing.
-func CleanContent(s string) []string {
-	replacements := map[string]string{
-		"’": "'",
-		"–": " ",
-	}
-	removals := []string{
-		"\n", "\r", "\t", "(", ")", "[", "]", "{", "}",
-		"\"", "\\", "/", "”", "#", "-", "*",
-	}
-	for old, new := range replacements {
-		s = strings.ReplaceAll(s, old, new)
-	}
-	for _, char := range removals {
-		s = strings.ReplaceAll(s, char, " ")
-	}
-	return strings.Fields(s)
-}
-
 // IsImage reports whether a filename has a common image extension.
 // It is exported so it can be used by main and templates.
 func IsImage(s string) bool {
@@ -531,7 +512,7 @@ func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string, ignore
 	if err != nil {
 		available, _ := GetAvailableThemes(assets)
 		if !ignoreErrors {
-			return fmt.Errorf("theme '%s' not found (Available: %s).", themeName, strings.Join(available, ", "))
+			return fmt.Errorf("theme '%s' not found (Available: %s)", themeName, strings.Join(available, ", "))
 		}
 		log.Printf("Warning: Theme '%s' not found (Available: %s). Falling back to default theme.", themeName, strings.Join(available, ", "))
 
