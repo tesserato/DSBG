@@ -190,6 +190,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{DESCRIPTION}", "Article description")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{LINK}", "The target destination: uses 'link' if present, else the first link in text.")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{IMAGE}", "Absolute URL to the cover image.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TAGS}", "Space-separated hashtags (e.g. #Tech #GoLang).")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TAG}", "The first tag only (cleaned, no hash).")
 		fmt.Fprintln(os.Stderr)
 
 		fmt.Fprintf(os.Stderr, "%sSHARE EXAMPLES:%s\n", cBold+cYellow, cReset)

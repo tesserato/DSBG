@@ -30,6 +30,10 @@ var themesPath = "src/assets/themes"
 // regexColorScheme finds the standard CSS color-scheme property (e.g., color-scheme: dark;).
 var regexColorScheme = regexp.MustCompile(`(?i)color-scheme\s*:\s*([^;]+);`)
 
+// regexHashtagCleanup matches characters that are NOT letters, numbers, or underscores.
+// Used to sanitize tags for hashtag generation (e.g. "C++" -> "C", "Go Lang" -> "GoLang").
+var regexHashtagCleanup = regexp.MustCompile(`[^\p{L}\p{N}_]+`)
+
 // RemoveDateFromPath attempts to remove date patterns from a given string.
 func RemoveDateFromPath(stringWithDate string) string {
 	for _, regexPattern := range regexPatterns {
@@ -456,17 +460,12 @@ func encodeComponent(s string) string {
 // and returns the final URL as a template.URL value.
 func BuildShareUrl(urlTemplate string, article Article, settings Settings) template.URL {
 	// 1. Determine the "Official" URL of the post.
-	// If 'ExternalLink' (from frontmatter 'link') is set, the post's primary identity
-	// is that external link. Otherwise, it is the blog post's own permalink.
 	finalUrl := article.ExternalLink
 	if finalUrl == "" {
 		finalUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.LinkToSelf, "/"))
 	}
 
 	// 2. Determine the "Target Link" ({LINK}).
-	// This uses the 'ExternalLink' if present.
-	// If not, it tries to find the first link inside the article body (smart link-blog behavior).
-	// If neither, it falls back to the post's own URL.
 	targetLink := article.ExternalLink
 	if targetLink == "" {
 		targetLink = extractFirstLink(article.HtmlContent)
@@ -476,11 +475,28 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	}
 
 	// 3. Determine the Image URL ({IMAGE}).
-	// Combines BaseUrl with the relative CoverImage path.
 	imageUrl := ""
 	if article.CoverImage != "" {
 		imageUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.CoverImage, "/"))
 	}
+
+	// 4. Build Hashtags List ({TAGS}) and First Tag ({TAG})
+	// We strip non-alphanumeric chars (except underscore) to create valid hashtags for most platforms.
+	var cleanedTags []string
+	var cleanedFirstTag string
+
+	for _, tag := range article.Tags {
+		// e.g. "C++" -> "C", "Web Dev" -> "WebDev"
+		clean := regexHashtagCleanup.ReplaceAllString(tag, "")
+		if clean != "" {
+			cleanedTags = append(cleanedTags, "#"+clean)
+			if cleanedFirstTag == "" {
+				cleanedFirstTag = clean
+			}
+		}
+	}
+
+	tagsString := strings.Join(cleanedTags, " ")
 
 	encodedUrl := encodeComponent(finalUrl)
 	encodedTitle := encodeComponent(article.Title)
@@ -488,6 +504,8 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	encodedText := encodeComponent(article.TextContent)
 	encodedTargetLink := encodeComponent(targetLink)
 	encodedImage := encodeComponent(imageUrl)
+	encodedTags := encodeComponent(tagsString)
+	encodedFirstTag := encodeComponent(cleanedFirstTag)
 
 	result := strings.ReplaceAll(urlTemplate, "{URL}", encodedUrl)
 	result = strings.ReplaceAll(result, "{TITLE}", encodedTitle)
@@ -495,6 +513,10 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	result = strings.ReplaceAll(result, "{TEXT}", encodedText)
 	result = strings.ReplaceAll(result, "{LINK}", encodedTargetLink)
 	result = strings.ReplaceAll(result, "{IMAGE}", encodedImage)
+	// Replace {TAGS} -> space-separated list of hash-prefixed tags
+	result = strings.ReplaceAll(result, "{TAGS}", encodedTags)
+	// Replace {TAG} -> just the text of the first tag (no hash), good for specific category params
+	result = strings.ReplaceAll(result, "{TAG}", encodedFirstTag)
 
 	return template.URL(result)
 }
