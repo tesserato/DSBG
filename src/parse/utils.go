@@ -466,12 +466,12 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	}
 
 	// 2. Determine the "Target Link" ({LINK}).
+	// This uses the 'ExternalLink' if present.
+	// If not, it tries to find the first link inside the article body (smart link-blog behavior).
+	// If neither, it remains empty.
 	targetLink := article.ExternalLink
 	if targetLink == "" {
 		targetLink = extractFirstLink(article.HtmlContent)
-	}
-	if targetLink == "" {
-		targetLink = finalUrl
 	}
 
 	// 3. Determine the Image URL ({IMAGE}).
