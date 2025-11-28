@@ -98,8 +98,8 @@ func HTMLFile(path string, settings Settings) (Article, []string, error) {
 			}
 		case "cover_image":
 			article.CoverImage = val
-		case "share_url":
-			article.ShareUrl = val
+		case "link":
+			article.ExternalLink = val
 		case "canonical_url":
 			article.CanonicalUrl = val
 		}

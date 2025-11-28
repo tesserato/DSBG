@@ -455,32 +455,46 @@ func encodeComponent(s string) string {
 // BuildShareUrl replaces placeholders in the urlTemplate with encoded article data,
 // and returns the final URL as a template.URL value.
 func BuildShareUrl(urlTemplate string, article Article, settings Settings) template.URL {
-	finalUrl := article.ShareUrl
+	// 1. Determine the "Official" URL of the post.
+	// If 'ExternalLink' (from frontmatter 'link') is set, the post's primary identity
+	// is that external link. Otherwise, it is the blog post's own permalink.
+	finalUrl := article.ExternalLink
 	if finalUrl == "" {
 		finalUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.LinkToSelf, "/"))
 	}
 
-	// Logic for {TARGET_URL}: use share_url if present, otherwise first extracted link.
-	targetUrl := article.ShareUrl
-	if targetUrl == "" {
-		targetUrl = extractFirstLink(article.HtmlContent)
+	// 2. Determine the "Target Link" ({LINK}).
+	// This uses the 'ExternalLink' if present.
+	// If not, it tries to find the first link inside the article body (smart link-blog behavior).
+	// If neither, it falls back to the post's own URL.
+	targetLink := article.ExternalLink
+	if targetLink == "" {
+		targetLink = extractFirstLink(article.HtmlContent)
 	}
-	// Fallback: if no share_url and no link in text, use the post URL itself.
-	if targetUrl == "" {
-		targetUrl = finalUrl
+	if targetLink == "" {
+		targetLink = finalUrl
+	}
+
+	// 3. Determine the Image URL ({IMAGE}).
+	// Combines BaseUrl with the relative CoverImage path.
+	imageUrl := ""
+	if article.CoverImage != "" {
+		imageUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.CoverImage, "/"))
 	}
 
 	encodedUrl := encodeComponent(finalUrl)
 	encodedTitle := encodeComponent(article.Title)
 	encodedDesc := encodeComponent(article.Description)
 	encodedText := encodeComponent(article.TextContent)
-	encodedTargetUrl := encodeComponent(targetUrl)
+	encodedTargetLink := encodeComponent(targetLink)
+	encodedImage := encodeComponent(imageUrl)
 
 	result := strings.ReplaceAll(urlTemplate, "{URL}", encodedUrl)
 	result = strings.ReplaceAll(result, "{TITLE}", encodedTitle)
 	result = strings.ReplaceAll(result, "{DESCRIPTION}", encodedDesc)
 	result = strings.ReplaceAll(result, "{TEXT}", encodedText)
-	result = strings.ReplaceAll(result, "{TARGET_URL}", encodedTargetUrl)
+	result = strings.ReplaceAll(result, "{LINK}", encodedTargetLink)
+	result = strings.ReplaceAll(result, "{IMAGE}", encodedImage)
 
 	return template.URL(result)
 }

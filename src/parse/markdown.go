@@ -156,8 +156,8 @@ func MarkdownFile(path string, settings Settings) (Article, []string, error) {
 				}
 			case "cover_image":
 				article.CoverImage = value.(string)
-			case "share_url":
-				article.ShareUrl = value.(string)
+			case "link":
+				article.ExternalLink = value.(string)
 			case "canonical_url":
 				article.CanonicalUrl = value.(string)
 			case "tags":

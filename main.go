@@ -179,23 +179,24 @@ func main() {
 		printGroup("LOCAL DEVELOPMENT", "watch", "port")
 
 		fmt.Fprintf(os.Stderr, "%sFRONTMATTER METADATA:%s\n", cBold+cYellow, cReset)
-		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "share_url", "Override the URL shared by buttons (good for link-blogging).")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "link", "Override the URL shared by buttons (good for link-blogging).")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "canonical_url", "Overrides the auto-generated canonical URL (useful when cross-posting).")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "cover_image", "Path to an image to display on the index and in social cards.")
 		fmt.Fprintln(os.Stderr)
 
 		fmt.Fprintf(os.Stderr, "%sSHARE TEMPLATE VARIABLES:%s\n", cBold+cYellow, cReset)
-		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{URL}", "Public URL of the article (or share_url if set)")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{URL}", "Public URL of the article (or the 'link' value if set)")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TITLE}", "Article title")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{DESCRIPTION}", "Article description")
-		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TARGET_URL}", "The target destination: uses 'share_url' if present, else the first link in text.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{LINK}", "The target destination: uses 'link' if present, else the first link in text.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{IMAGE}", "Absolute URL to the cover image.")
 		fmt.Fprintln(os.Stderr)
 
 		fmt.Fprintf(os.Stderr, "%sSHARE EXAMPLES:%s\n", cBold+cYellow, cReset)
 		fmt.Fprintf(os.Stderr, "  %s1. Standard Share:%s\n", cWhite, cReset)
 		fmt.Fprintf(os.Stderr, "     -share \"X|https://x.com/intent/tweet?text={TITLE}&url={URL}\"\n")
-		fmt.Fprintf(os.Stderr, "  %s2. 'HackerNews' Style Submission (uses share_url or first link):%s\n", cWhite, cReset)
-		fmt.Fprintf(os.Stderr, "     -share \"HN|https://news.ycombinator.com/submitlink?u={TARGET_URL}&t={TITLE}\"\n")
+		fmt.Fprintf(os.Stderr, "  %s2. 'HackerNews' Style Submission (uses link or first link):%s\n", cWhite, cReset)
+		fmt.Fprintf(os.Stderr, "     -share \"HN|https://news.ycombinator.com/submitlink?u={LINK}&t={TITLE}\"\n")
 		fmt.Fprintln(os.Stderr)
 
 		fmt.Fprintf(os.Stderr, "%sHTML PAGE WARNING:%s\n", cBold+cRed, cReset)
@@ -216,7 +217,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s  created: %s%s\n", cCyan, today, cReset)
 		fmt.Fprintf(os.Stderr, "%s  tags: Technology, Go%s\n", cCyan, cReset)
 		fmt.Fprintf(os.Stderr, "%s  cover_image: image.webp%s\n", cCyan, cReset)
-		fmt.Fprintf(os.Stderr, "%s  share_url: (optional override)%s\n", cCyan, cReset)
+		fmt.Fprintf(os.Stderr, "%s  link: (optional override for link blogs)%s\n", cCyan, cReset)
 		fmt.Fprintf(os.Stderr, "%s  canonical_url: (optional SEO override)%s\n", cCyan, cReset)
 		fmt.Fprintf(os.Stderr, "%s  ---%s\n", cCyan, cReset)
 		fmt.Fprintln(os.Stderr)
@@ -314,8 +315,9 @@ func main() {
 
 	if *watch {
 		// Set ForceOverwrite to true for watch mode to avoid prompts on rebuilds
-		// since we established ownership of the directory with the first build.
 		settings.ForceOverwrite = true
+		// Force IgnoreErrors to true in watch mode to prevent the server from crashing on transient errors (e.g. malformed date while typing).
+		settings.IgnoreErrors = true
 
 		// In watch mode, start the server and open the browser ONCE here.
 		addr := ":" + settings.Port

@@ -78,6 +78,6 @@ type Article struct {
 	OriginalPath string
 	LinkToSelf   string
 	LinkToSave   string
-	ShareUrl     string
+	ExternalLink string
 	CanonicalUrl string
 }
