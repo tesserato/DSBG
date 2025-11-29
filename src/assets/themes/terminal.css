@@ -13,9 +13,8 @@
     --header-font: "JetBrains Mono", "Roboto Mono", "Fira Code", monospace;
     --body-font: "JetBrains Mono", "Roboto Mono", "Fira Code", monospace;
 
-    --base-font-size: 1rem;
-    --header-font-size: 1.05rem;
-    --body-font-size: 1rem;
+    /* Standardized Sizing */
+    --font-size: 1rem;
     --line-height: 1.6;
 
     /* Core palette (amber on almost-black) */
@@ -58,8 +57,15 @@
     --transition-medium: 0.18s ease-out;
 }
 
-*, ::before, ::after {
+* {
+    font-family: var(--body-font);
     box-sizing: border-box;
+    font-size: var(--font-size);
+    color: var(--text);
+    word-break: break-word;
+    padding: 0;
+    transition: all .1s ease-in-out;
+    /* outline: 1px solid #f00; */
 }
 
 /* -------------------------------------------
@@ -69,13 +75,15 @@ html {
     padding: 0;
     margin: 0;
     font-family: var(--body-font);
-    font-size: var(--base-font-size);
+    font-size: var(--font-size);
     background-color: #000;
     color: var(--text);
 }
 
 html * {
     transition: all var(--transition-fast);
+    scroll-behavior: smooth;
+    margin: auto
 }
 
 body {
@@ -86,7 +94,8 @@ body {
     align-items: flex-start;
     gap: 2rem;
     max-width: var(--max-width);
-    width: 100%;
+    max-width: 900px;
+    width: 95vw;
     padding: 2rem;
     margin: 0 auto;
     line-height: var(--line-height);
@@ -94,6 +103,7 @@ body {
         radial-gradient(ellipse at center, #1c1107 0, #060204 55%, #000 100%);
     position: relative;
     overflow-x: auto;
+    margin: auto
 }
 
 /* scanlines + vignette */
@@ -161,9 +171,9 @@ code {
     border-radius: 2px;
     background: rgba(0, 0, 0, 0.6);
     color: #ffe79e;
-    text-shadow:
+    /* text-shadow:
         0 0 2px rgba(255, 220, 140, 0.9),
-        0 0 7px rgba(255, 191, 73, 0.55);
+        0 0 7px rgba(255, 191, 73, 0.55); */
 }
 
 /* -------------------------------------------
@@ -230,10 +240,10 @@ header img {
         0 0 14px rgba(255, 180, 59, 0.18);
 }
 
-header a img:hover,
+/* header a img:hover,
 .detail a img:hover {
     filter: sepia(100%) contrast(1.3) brightness(1.2);
-}
+} */
 
 .share {
     width: 1rem;
@@ -268,7 +278,7 @@ header {
 
 header h1 {
     font-family: var(--header-font);
-    font-size: 1.8rem;
+    font-size: 1.0rem;
     margin: 0;
     font-weight: 600;
     text-transform: uppercase;
@@ -283,29 +293,44 @@ header h2 {
     font-family: var(--header-font);
     font-size: 0.9rem;
     color: var(--text-muted);
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 0.12em;
-    text-align: center;
+    text-align: justify;
 }
 
 /* -------------------------------------------
    TYPOGRAPHY & LINKS
 ------------------------------------------- */
 h1, h2, h3, h4, h5 {
-    margin: 0;
-    padding: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--heading);
+    font-family: var(--header-font);
+    padding-top: 1rem;
+    padding-bottom: .4rem
+}
+
+h1 {
+    font-size: calc(var(--font-size)*1)
 }
 
 h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: calc(var(--font-size)*.98)
 }
 
+h3 {
+    font-size: calc(var(--font-size)*.96)
+}
+
+h4 {
+    font-size: calc(var(--font-size)*.94)
+}
+
+h5 {
+    font-size: calc(var(--font-size)*.92)
+}
+
+
 p {
-    margin-top: 0.5rem;
+        margin: 0;
+    padding: 0;
     color: var(--text);
 }
 
@@ -343,12 +368,45 @@ blockquote {
     font-size: 0.7rem;
     color: var(--text-muted);
     font-weight: 400;
-    text-transform: uppercase;
     letter-spacing: 0.1em;
+    margin: 0;
+    padding: 0;
 }
 
 .date {
     margin: 0;
+    padding: 0;
+    font-size: .6rem;
+    opacity: .5;
+}
+
+/* -------------------------------------------
+   LISTS
+------------------------------------------- */
+ul, ol {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
+}
+
+ul ul, ol ol {
+    margin-left: 1rem;
+}
+
+ul li::marker {
+    content: "> ";
+    color: var(--accent);
+    font-weight: bold;
+    font-family: monospace;
+}
+
+ol li::marker {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+li {
+    margin-bottom: 0.2rem;
 }
 
 /* -------------------------------------------
@@ -541,11 +599,11 @@ button.off {
     padding: 0;
     line-height: 0;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 20%, rgba(255, 214, 128, 0.22) 0, rgba(0, 0, 0, 0.95) 60%);
+    /* background: radial-gradient(circle at 30% 20%, rgba(255, 214, 128, 0.22) 0, rgba(0, 0, 0, 0.95) 60%);
     border: 1px solid rgba(255, 214, 128, 0.35);
     box-shadow:
         0 0 0 1px rgba(0, 0, 0, 0.95),
-        0 6px 14px rgba(0, 0, 0, 0.9);
+        0 6px 14px rgba(0, 0, 0, 0.9); */
     transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
 }
 
@@ -562,7 +620,7 @@ button.off {
     height: 70%;
     margin: 0 !important;
     object-fit: contain;
-    filter: sepia(100%) brightness(1.3);
+    filter: invert(93%) sepia(13%) saturate(5940%) hue-rotate(324deg) brightness(98%) contrast(107%);
 }
 
 /* -------------------------------------------
@@ -710,7 +768,29 @@ footer {
     }
 }
 
-/* MathJax block alignment */
 mjx-container[display] {
-    text-align: left !important;
+    text-align: left !important
+}
+
+/* 1. Reset the outer container so it doesn't force "Garamond" or "1rem" 
+      onto the math block as a starting point. */
+mjx-container, .MathJax, .mjx-chtml {
+    font-family: initial !important;
+    font-size: initial !important;
+    /* Ensure the math isn't forced to be grey/text-color if it has its own ideas, 
+       though usually inheriting text color is desired. */
+}
+
+/* 2. Reset all internal math elements.
+      CRITICAL: Do NOT use !important here for font-family/size.
+      We want to beat your global `*` selector (specificity 0),
+      but we want to LOSE against MathJax's specific classes (specificity 10+). 
+      'unset' achieves this perfectly. */
+mjx-container *, .MathJax *, .mjx-chtml * {
+    font-family: unset;
+    font-size: unset;
+
+    /* 3. Kill transitions. 
+       MathJax needs instant layout; animations cause overlapping numbers. */
+    transition: none !important;
 }
