@@ -78,7 +78,7 @@ body {
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    /* gap: 2rem; */
 }
 
 hr {
@@ -152,6 +152,7 @@ nav a {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    font-size: calc(var(--font-size) * .8);
     /* Beveled button look */
     box-shadow: 0 2px 0 #000;
     transform: translateY(0);
@@ -187,20 +188,18 @@ header h1 {
     margin: 0;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
-    /* W I D E spacing */
+
     color: var(--text);
-    text-align: center;
+    text-align: left;
 }
 
 header h2 {
     font-family: var(--header-font);
     font-size: 0.8rem;
     color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-align: center;
-    max-width: 600px;
+    /* text-transform: uppercase; */
+    /* letter-spacing: 0.1em; */
+    text-align: left;
 }
 
 header img {
@@ -265,7 +264,6 @@ header img {
 }
 
 .detail img {
-    border: 1px solid var(--border);
     margin-top: 1rem;
     opacity: 0.9;
     align-self: center;
@@ -319,6 +317,12 @@ header img {
 
 .date {
     margin: 0;
+    padding: 0;
+    font-size: calc(var(--font-size)*.6);
+    color: var(--text);
+    filter: brightness(80%);
+    width: max-content;
+    line-height: calc(var(--font-size)*.6);
 }
 
 /* 
@@ -357,15 +361,82 @@ a:hover {
     text-shadow: 0 0 8px var(--accent);
 }
 
+/* 
+   -------------------------------------------
+   BLOCKQUOTES
+   ------------------------------------------- 
+*/
 blockquote {
-    border-left: 2px solid var(--accent);
+    border-left: 4px solid var(--accent);
     background: rgba(255, 157, 0, 0.05);
     padding: 1rem;
     margin: 1rem 0;
     font-style: italic;
     color: var(--muted);
     width: fit-content;
+    border-radius: 0 4px 4px 0;
 }
+
+blockquote p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+blockquote p::before {
+    content: "“";
+    color: var(--accent);
+    font-size: 2em;
+    vertical-align: -0.4em;
+    line-height: 0.1em;
+    margin-right: 0.2rem;
+    font-family: serif;
+    /* Better quote shape */
+}
+
+blockquote p::after {
+    content: "”";
+    color: var(--accent);
+    font-size: 2em;
+    vertical-align: -0.4em;
+    line-height: 0.1em;
+    margin-left: 0.2rem;
+    font-family: serif;
+}
+
+/* 
+   -------------------------------------------
+   LISTS
+   ------------------------------------------- 
+*/
+ul, ol {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
+    /* Fixes indentation issues */
+}
+
+ul ul, ol ol {
+    margin-left: 1rem;
+}
+
+/* Technical "Prompt" Style Markers */
+ul li::marker {
+    content: ">> ";
+    color: var(--accent);
+    font-weight: bold;
+    font-family: monospace;
+}
+
+ol li::marker {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+li {
+    margin-bottom: 0.2rem;
+}
+
 
 /* 
    -------------------------------------------
