@@ -73,7 +73,7 @@
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/05v005/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764441185">
+    <link rel="stylesheet" href="../style.css?v=1764448994">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -98,6 +98,21 @@
                    data-tags="release,share buttons">
                     <img src='../copy.svg' alt="Copy article Markdown summary">
                 </a>
+                <textarea class="dsbg-raw-text" style="display:none;">---
+title: Version 0.0.5 - Share Buttons
+description: Version 0.0.5 of DSBG is out with support for share buttons
+created: 2025 02 08
+updated: 2025 02 08
+tags: [release, share buttons]
+cover_image: 05_share_buttons.png
+---
+
+In addition to minor improvements, particularly to the default themes, version 0.0.5 of DSBG introduces support for share buttons. These buttons utilize native intent APIs to facilitate sharing on Bluesky, Mastodon, Threads, and X. We opted to implement this feature from scratch, rather than relying on a third-party library, to ensure the generated pages remain as fast and tracking-free as possible. At their core, these share buttons are simply static links generated during compilation. Each SVG icon is approximately 1 KB, ensuring a negligible impact on performance.
+
+Download a [pre-built binary](https://github.com/tesserato/DSBG/releases) or use `go install github.com/tesserato/DSBG@v0.0.5`
+
+
+</textarea>
                 
                 <a href="https://x.com/intent/tweet?text=Version%200.0.5%20of%20DSBG%20is%20out%20with%20support%20for%20share%20buttons&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F05v005%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on X" class="share">
                     
@@ -174,7 +189,7 @@
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764441185' async defer></script>
+    <script src='../script.js?v=1764448994' async defer></script>
 </body>
 
 </html>

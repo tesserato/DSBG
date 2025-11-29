@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWLT2BCLJ3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-VWLT2BCLJ3');
+</script>
+
+<!-- GoatCounter -->
+<script data-goatcounter="https://dsbg.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
+<!-- Counter.dev -->
+<script src="https://cdn.counter.dev/script.js" data-id="af32e278-52c0-4ad4-8cf7-496cee1e447f"
+    data-utcoffset="-3"></script>
+
+<!-- Giscus -->
+<script src="https://giscus.app/client.js" data-repo="tesserato/DSBG_comments" data-repo-id="R_kgDON9M2Vw"
+    data-category="Announcements" data-category-id="DIC_kwDON9M2V84CnK7O" data-mapping="pathname" data-strict="0"
+    data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="dark" data-lang="en"
+    crossorigin="anonymous" async>
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
+    <meta name="keywords" content="projects , CodeWeaver , launch">
+    <meta name="description" content="Continuing to open-source internal tools, I'm releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
+Check out https://github.com/tesserato/CodeWeaver for more.
+">
+    <meta name="author" content="Dead Simple Blog Generator">
+
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Launching CodeWeaver" />
+    <meta property="og:description" content="Continuing to open-source internal tools, I'm releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
+Check out https://github.com/tesserato/CodeWeaver for more.
+" />
+    <meta property="og:url" content="https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/index.html" />
+    <meta property="og:site_name" content="Dead Simple Blog Generator" />
+    <meta property="og:type" content="article" />
+    
+    <meta property="og:image" content="https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/codeweaver.gif" />
+    
+
+    <!-- Article-specific Open Graph time metadata -->
+    <meta property="article:published_time" content='2025-02-12T00:00:00Z'>
+    <meta property="article:modified_time" content='2025-11-27T16:41:14Z'>
+
+    <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/index.html"
+  },
+  "headline": "Launching CodeWeaver",
+  "description": "Continuing to open-source internal tools, I'm releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
+Check out https://github.com/tesserato/CodeWeaver for more.
+",
+  "image": [
+    "https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/codeweaver.gif"
+  ],
+  "datePublished": "2025-02-12T00:00:00Z",
+  "dateModified": "2025-11-27T16:41:14Z",
+  "author": {
+    "@type": "Person",
+    "name": "Dead Simple Blog Generator"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dead Simple Blog Generator"
+  }
+}
+    </script>
+
+    <link rel="canonical" href="https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/index.html">
+    <link rel="stylesheet" href="../style.css?v=1764448994">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <title>Launching CodeWeaver</title>
+</head>
+
+<body>
+    <header>
+        <div class="articlelinks">
+            <a href="https://tesserato.github.io/DSBG" > ◁ Dead Simple Blog Generator
+            </a>
+            <div class="sharebuttons">
+                <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
+                   onclick="copyMarkdownToClipboard(this)"
+                   data-title="Launching CodeWeaver"
+                   data-description="Continuing to open-source internal tools, I'm releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
+Check out https://github.com/tesserato/CodeWeaver for more.
+"
+                   data-url="https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/index.html"
+                   data-image-url="https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/codeweaver.gif"
+                   data-tags="projects,CodeWeaver,launch">
+                    <img src='../copy.svg' alt="Copy article Markdown summary">
+                </a>
+                <textarea class="dsbg-raw-text" style="display:none;">---
+title: Launching CodeWeaver
+description: |
+    Continuing to open-source internal tools, I'm releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
+    Check out https://github.com/tesserato/CodeWeaver for more.
+created: 2025 02 12
+cover_image: codeweaver.gif
+tags: projects, CodeWeaver, launch
+---
+
+from https://github.com/tesserato/CodeWeaver:
+
+# CodeWeaver: Generate a Markdown Document of Your Codebase Structure and Content
+
+CodeWeaver is a command-line tool designed to weave your codebase into a single, easy-to-navigate Markdown document. It recursively scans a directory, generating a structured representation of your project's file hierarchy and embedding the content of each file within code blocks. This tool simplifies codebase sharing, documentation, and integration with AI/ML code analysis tools by providing a consolidated and readable Markdown output.
+The output for the current repository can be found [here](https://github.com/tesserato/CodeWeaver/blob/main/codebase.md).
+
+# Key Features
+
+* **Comprehensive Codebase Documentation:** Generates a Markdown file that meticulously outlines your project's directory and file structure in a clear, tree-like format.
+* **Code Content Inclusion:** Embeds the complete content of each file directly within the Markdown document, enclosed in syntax-highlighted code blocks based on file extensions.
+* **Flexible Path Filtering:**  Utilize regular expressions to define ignore patterns, allowing you to exclude specific files and directories from the generated documentation (e.g., `.git`, build artifacts, specific file types).
+* **Optional Path Logging:** Choose to save lists of included and excluded file paths to separate files for detailed tracking and debugging of your ignore rules.
+* **Simple Command-Line Interface:**  Offers an intuitive command-line interface with straightforward options for customization.
+
+# Installation
+
+If you have Go installed, run `go install github.com/tesserato/CodeWeaver@latest`to install the latest version of CodeWeaver or `go install github.com/tesserato/CodeWeaver@vX.Y.Z` to install a specific version.
+
+Alternatively, download the appropriate pre built executable from the [releases page](https://github.com/tesserato/CodeWeaver/releases).
+
+If necessary, make the `codeweaver` executable by using the `chmod` command:
+
+```bash
+chmod +x codeweaver
+```
+
+# Usage
+
+## For help, run
+```bash
+codeweaver -h
+```
+
+## For actual usage, run
+```bash
+codeweaver [options]
+```
+
+**Options:**
+
+| Option                            | Description                                                               | Default Value           |
+| --------------------------------- | ------------------------------------------------------------------------- | ----------------------- |
+| `-dir <directory>`                | The root directory to scan and document.                                  | Current directory (`.`) |
+| `-output <filename>`              | The name of the output Markdown file.                                     | `codebase.md`           |
+| `-ignore "<regex patterns>"`      | Comma-separated list of regular expression patterns for paths to exclude. | `\.git.*`               |
+| `-included-paths-file <filename>` | File to save the list of paths that were included in the documentation.   | None                    |
+| `-excluded-paths-file <filename>` | File to save the list of paths that were excluded from the documentation. | None                    |
+| `-help`                           | Display this help message and exit.                                       |                         |
+
+# Examples
+
+## **Generate documentation for the current directory:**
+
+   ```bash
+   ./codeweaver
+   ```
+   This will create a file named `codebase.md` in the current directory, documenting the structure and content of the current directory and its subdirectories (excluding paths matching the default ignore pattern `\.git.*`).
+
+## **Specify a different input directory and output file:**
+
+   ```bash
+   ./codeweaver -dir=my_project -output=project_docs.md
+   ```
+   This command will process the `my_project` directory and save the documentation to `project_docs.md`.
+
+## **Ignore specific file types and directories:**
+
+   ```bash
+   ./codeweaver -ignore="\.log,temp,build" -output=detailed_docs.md
+   ```
+   This example will generate `detailed_docs.md`, excluding any files or directories with names containing `.log`, `temp`, or `build`. Regular expression patterns are comma-separated.
+
+## **Save lists of included and excluded paths:**
+
+   ```bash
+   ./codeweaver -ignore="node_modules" -included-paths-file=included.txt -excluded-paths-file=excluded.txt -output=code_overview.md
+   ```
+   This command will create `code_overview.md` while also saving the list of included paths to `included.txt` and the list of excluded paths (due to the `node_modules` ignore pattern) to `excluded.txt`.
+
+# Contributing
+
+Contributions are welcome! If you encounter any issues, have suggestions for new features, or want to improve CodeWeaver, please feel free to open an issue or submit a pull request on the project's GitHub repository.
+
+# License
+
+CodeWeaver is released under the [MIT License](LICENSE). See the `LICENSE` file for complete license details.
+</textarea>
+                
+                <a href="https://x.com/intent/tweet?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on X" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/x.svg" alt="Share on X">
+                    
+                </a>
+                
+                <a href="https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html&text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A" target="_blank" rel="noopener noreferrer" title="Share on Telegram" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/telegram.svg" alt="Share on Telegram">
+                    
+                </a>
+                
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on LinkedIn" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/linkedin.svg" alt="Share on LinkedIn">
+                    
+                </a>
+                
+                <a href="https://www.reddit.com/submit?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html&title=Launching%20CodeWeaver" target="_blank" rel="noopener noreferrer" title="Share on Reddit" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/reddit.svg" alt="Share on Reddit">
+                    
+                </a>
+                
+                <a href="https://bsky.app/intent/compose?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Bluesky" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/bluesky.svg" alt="Share on Bluesky">
+                    
+                </a>
+                
+                <a href="https://mastodon.social/share?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Mastodon" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/mastodon.svg" alt="Share on Mastodon">
+                    
+                </a>
+                
+                <a href="https://www.threads.net/intent/post?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Threads" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/threads.svg" alt="Share on Threads">
+                    
+                </a>
+                
+                <a href="https://news.ycombinator.com/submitlink?u={TARGET_URL}&t=Launching%20CodeWeaver" target="_blank" rel="noopener noreferrer" title="Share on Hacker News" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/hackernews.svg" alt="Share on Hacker News">
+                    
+                </a>
+                
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Facebook" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/facebook.svg" alt="Share on Facebook">
+                    
+                </a>
+                
+            </div>
+        </div>
+        <h1>Launching CodeWeaver</h1>
+        <h2>Continuing to open-source internal tools, I'm releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
+Check out https://github.com/tesserato/CodeWeaver for more.
+</h2>
+    </header>
+
+    <main>
+        <article>
+            <html><head></head><body><p>from <a href="https://github.com/tesserato/CodeWeaver">https://github.com/tesserato/CodeWeaver</a>:</p>
+<h1 id="codeweaver-generate-a-markdown-document-of-your-codebase-structure-and-content">CodeWeaver: Generate a Markdown Document of Your Codebase Structure and Content</h1>
+<p>CodeWeaver is a command-line tool designed to weave your codebase into a single, easy-to-navigate Markdown document. It recursively scans a directory, generating a structured representation of your project’s file hierarchy and embedding the content of each file within code blocks. This tool simplifies codebase sharing, documentation, and integration with AI/ML code analysis tools by providing a consolidated and readable Markdown output.<br/>
+The output for the current repository can be found <a href="https://github.com/tesserato/CodeWeaver/blob/main/codebase.md">here</a>.</p>
+<h1 id="key-features">Key Features</h1>
+<ul>
+<li><strong>Comprehensive Codebase Documentation:</strong> Generates a Markdown file that meticulously outlines your project’s directory and file structure in a clear, tree-like format.</li>
+<li><strong>Code Content Inclusion:</strong> Embeds the complete content of each file directly within the Markdown document, enclosed in syntax-highlighted code blocks based on file extensions.</li>
+<li><strong>Flexible Path Filtering:</strong>  Utilize regular expressions to define ignore patterns, allowing you to exclude specific files and directories from the generated documentation (e.g., <code>.git</code>, build artifacts, specific file types).</li>
+<li><strong>Optional Path Logging:</strong> Choose to save lists of included and excluded file paths to separate files for detailed tracking and debugging of your ignore rules.</li>
+<li><strong>Simple Command-Line Interface:</strong>  Offers an intuitive command-line interface with straightforward options for customization.</li>
+</ul>
+<h1 id="installation">Installation</h1>
+<p>If you have Go installed, run <code>go install github.com/tesserato/CodeWeaver@latest</code>to install the latest version of CodeWeaver or <code>go install github.com/tesserato/CodeWeaver@vX.Y.Z</code> to install a specific version.</p>
+<p>Alternatively, download the appropriate pre built executable from the <a href="https://github.com/tesserato/CodeWeaver/releases">releases page</a>.</p>
+<p>If necessary, make the <code>codeweaver</code> executable by using the <code>chmod</code> command:</p>
+<pre><code class="language-bash">chmod +x codeweaver
+</code></pre>
+<h1 id="usage">Usage</h1>
+<h2 id="for-help-run">For help, run</h2>
+<pre><code class="language-bash">codeweaver -h
+</code></pre>
+<h2 id="for-actual-usage-run">For actual usage, run</h2>
+<pre><code class="language-bash">codeweaver [options]
+</code></pre>
+<p><strong>Options:</strong></p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-dir &lt;directory&gt;</code></td>
+<td>The root directory to scan and document.</td>
+<td>Current directory (<code>.</code>)</td>
+</tr>
+<tr>
+<td><code>-output &lt;filename&gt;</code></td>
+<td>The name of the output Markdown file.</td>
+<td><code>codebase.md</code></td>
+</tr>
+<tr>
+<td><code>-ignore &#34;&lt;regex patterns&gt;&#34;</code></td>
+<td>Comma-separated list of regular expression patterns for paths to exclude.</td>
+<td><code>\.git.*</code></td>
+</tr>
+<tr>
+<td><code>-included-paths-file &lt;filename&gt;</code></td>
+<td>File to save the list of paths that were included in the documentation.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>-excluded-paths-file &lt;filename&gt;</code></td>
+<td>File to save the list of paths that were excluded from the documentation.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>-help</code></td>
+<td>Display this help message and exit.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h1 id="examples">Examples</h1>
+<h2 id="generate-documentation-for-the-current-directory"><strong>Generate documentation for the current directory:</strong></h2>
+<pre><code class="language-bash">./codeweaver
+</code></pre>
+<p>This will create a file named <code>codebase.md</code> in the current directory, documenting the structure and content of the current directory and its subdirectories (excluding paths matching the default ignore pattern <code>\.git.*</code>).</p>
+<h2 id="specify-a-different-input-directory-and-output-file"><strong>Specify a different input directory and output file:</strong></h2>
+<pre><code class="language-bash">./codeweaver -dir=my_project -output=project_docs.md
+</code></pre>
+<p>This command will process the <code>my_project</code> directory and save the documentation to <code>project_docs.md</code>.</p>
+<h2 id="ignore-specific-file-types-and-directories"><strong>Ignore specific file types and directories:</strong></h2>
+<pre><code class="language-bash">./codeweaver -ignore=&#34;\.log,temp,build&#34; -output=detailed_docs.md
+</code></pre>
+<p>This example will generate <code>detailed_docs.md</code>, excluding any files or directories with names containing <code>.log</code>, <code>temp</code>, or <code>build</code>. Regular expression patterns are comma-separated.</p>
+<h2 id="save-lists-of-included-and-excluded-paths"><strong>Save lists of included and excluded paths:</strong></h2>
+<pre><code class="language-bash">./codeweaver -ignore=&#34;node_modules&#34; -included-paths-file=included.txt -excluded-paths-file=excluded.txt -output=code_overview.md
+</code></pre>
+<p>This command will create <code>code_overview.md</code> while also saving the list of included paths to <code>included.txt</code> and the list of excluded paths (due to the <code>node_modules</code> ignore pattern) to <code>excluded.txt</code>.</p>
+<h1 id="contributing">Contributing</h1>
+<p>Contributions are welcome! If you encounter any issues, have suggestions for new features, or want to improve CodeWeaver, please feel free to open an issue or submit a pull request on the project’s GitHub repository.</p>
+<h1 id="license">License</h1>
+<p>CodeWeaver is released under the <a href="LICENSE">MIT License</a>. See the <code>LICENSE</code> file for complete license details.</p>
+</body></html>
+        </article>
+    </main>
+
+    <div class="giscus"></div>
+
+    <footer>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
+    </footer>
+
+    <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
+    <script src='../script.js?v=1764448994' async defer></script>
+</body>
+
+</html>

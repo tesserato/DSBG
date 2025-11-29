@@ -149,7 +149,7 @@ initializeTagFilters();
 /**
  * Copies a generated Markdown summary of an article to the clipboard.
  * Reads article data from the data-* attributes of the clicked element.
- * Provides user feedback by changing the button icon.
+ * Does not provide visual feedback on success to keep UI clean.
  * @param {HTMLElement} element The button element that was clicked.
  */
 function copyMarkdownToClipboard(element) {
@@ -160,38 +160,46 @@ function copyMarkdownToClipboard(element) {
     const imageUrl = element.dataset.imageUrl;
     const tags = element.dataset.tags ? element.dataset.tags.split(',') : [];
 
-    // 2. Build the Markdown string in the new, cleaner format.
-    let markdownString = `# ${title}\n\n`;
-
-    if (description) {
-        markdownString += `${description}\n\n`;
+    // Check if the full raw markdown content is available via a sibling hidden textarea
+    let rawText = null;
+    try {
+        // Look for the textarea specifically to use its .value property
+        const rawTextEl = element.parentNode.querySelector('textarea.dsbg-raw-text');
+        if (rawTextEl) {
+            rawText = rawTextEl.value; // .value handles HTML entity decoding automatically
+        }
+    } catch (e) {
+        console.warn("Could not retrieve raw markdown text", e);
     }
 
-    if (imageUrl) {
-        markdownString += `![${title}](${imageUrl})\n\n`;
-    }
+    let markdownString = "";
 
-    markdownString += `${articleUrl}\n\n`;
+    if (rawText) {
+        // Use the raw markdown content if available
+        markdownString = rawText;
+    } else {
+        // Fallback: Build the Markdown string in the summary format.
+        markdownString = `# ${title}\n\n`;
 
-    if (tags.length > 0) {
-        const hashtags = tags.map(tag => `#${tag.trim().replace(/ /g, '')}`).join(' ');
-        markdownString += `${hashtags}`;
+        if (description) {
+            markdownString += `${description}\n\n`;
+        }
+
+        if (imageUrl) {
+            markdownString += `![${title}](${imageUrl})\n\n`;
+        }
+
+        markdownString += `${articleUrl}\n\n`;
+
+        if (tags.length > 0) {
+            const hashtags = tags.map(tag => `#${tag.trim().replace(/ /g, '')}`).join(' ');
+            markdownString += `${hashtags}`;
+        }
     }
 
     // 3. Use the modern Navigator API to copy to the clipboard.
-    navigator.clipboard.writeText(markdownString).then(() => {
-        // 4. Provide user feedback on success.
-        const originalContent = element.innerHTML;
-        const originalClass = element.className;
-
-        element.innerHTML = 'Copied!';
-        element.className += ' copied'; // Add a class for styling
-
-        setTimeout(() => {
-            element.innerHTML = originalContent;
-            element.className = originalClass; // Revert back to original class
-        }, 2000); // Revert back after 2 seconds
-    }).catch(err => {
+    // We do not modify the DOM/UI on success.
+    navigator.clipboard.writeText(markdownString).catch(err => {
         // 5. Log an error if copying fails.
         console.error('Failed to copy Markdown: ', err);
         alert('Failed to copy Markdown. See console for details.');
