@@ -188,6 +188,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{URL}", "Public URL of the article (or the 'link' value if set)")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TITLE}", "Article title")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{DESCRIPTION}", "Article description")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TEXT}", "Article raw markdown content")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{LINK}", "The target destination: uses 'link' if present, else the first link in text.")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{IMAGE}", "Absolute URL to the cover image.")
 		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "{TAGS}", "Space-separated hashtags (e.g. #Tech #GoLang).")

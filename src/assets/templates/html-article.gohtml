@@ -83,6 +83,7 @@
                    data-tags="{{range $i, $tag := .Art.Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
                     <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy article Markdown summary">
                 </a>
+                <textarea class="dsbg-raw-text" style="display:none;">{{.Art.TextContent}}</textarea>
                 {{range .Settings.ShareButtons}}
                 <a href="{{ buildShareUrl .UrlTemplate $.Art $.Settings }}" target="_blank" rel="noopener noreferrer" title="Share on {{ .Name }}" {{if isImage .Display}}class="share"{{end}}>
                     {{if isImage .Display}}

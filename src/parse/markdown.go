@@ -211,10 +211,12 @@ func FormatMarkdown(article *Article, settings Settings, tmpl *texttemplate.Temp
 	err := tmpl.Execute(&tp, struct {
 		Art      Article
 		Ctt      template.HTML
+		Text     string
 		Settings Settings
 	}{
 		Art:      *article,
 		Ctt:      template.HTML(article.HtmlContent),
+		Text:     article.TextContent,
 		Settings: settings,
 	})
 	if err != nil {
