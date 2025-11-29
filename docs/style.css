@@ -28,10 +28,8 @@
     /* outline: 1px solid #f00; */
 }
 
-
-
 html {
-    width: 100vw;
+    /* width: 100vw; */
     scroll-behavior: smooth;
 }
 
@@ -43,8 +41,8 @@ body, html {
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* max-width: 900px; */
-    width: 900px;
+    max-width: 900px;
+    width: 95vw;
     padding: .4rem;
     line-height: 1.5;
     overflow-x: auto
@@ -178,11 +176,12 @@ details summary {
 }
 
 .articlelinks, .headline {
+    display: flex;
+    flex-direction: row;
     flex-flow: wrap;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     margin: 0;
-    display: flex
 }
 
 .articlelinks {
@@ -193,7 +192,12 @@ details summary {
 
 .headline {
     justify-content: flex-end;
-    gap: .6rem .7rem
+    gap: .3rem .3rem
+}
+
+.headline h1, .headline h2 {
+    margin: 0;
+    padding: 0
 }
 
 .content, .description, .sharebuttons {
@@ -302,7 +306,6 @@ caption {
 
 button {
     box-shadow: .1rem .1rem .3rem 0 var(--shadow), 0 0 .1rem 0 var(--card);
-    align-self: flex-end
 }
 
 button:hover {
@@ -340,12 +343,13 @@ button:hover {
 }
 
 .info, header {
+    display: flex;
     flex-direction: column;
-    display: flex
+    justify-content: flex-start;
 }
 
 header {
-    justify-content: flex-start;
+
     align-items: flex-start;
     gap: 1rem;
     width: 100%;
@@ -354,9 +358,9 @@ header {
     padding-bottom: 1rem
 }
 
-header a, header h1 {
+/* header a, header h1 {
     align-self: flex-start
-}
+} */
 
 header h1, header h2 {
     font-family: var(--header-font);
@@ -386,9 +390,9 @@ a, h1, h2, h3, h4, h5, p {
     line-height: 1.4rem
 }
 
-h1, h2, h3 {
+/* h1, h2, h3 {
     letter-spacing: .05rem
-}
+} */
 
 p {
     font-family: var(--body-font);
@@ -461,9 +465,7 @@ sup {
     color: var(--text);
     opacity: .8;
     justify-content: space-between;
-    align-self: flex-end;
-    align-items: end;
-    row-gap: .2rem;
+    height: 100%;
     width: min-content
 }
 
@@ -476,7 +478,9 @@ sup {
     font-size: calc(var(--font-size)*.6);
     color: var(--text);
     filter: brightness(80%);
-    width: max-content
+    width: max-content;
+    line-height: calc(var(--font-size)*.6);
+
 }
 
 li {
@@ -651,10 +655,10 @@ mjx-container, .MathJax, .mjx-chtml {
       but we want to LOSE against MathJax's specific classes (specificity 10+). 
       'unset' achieves this perfectly. */
 mjx-container *, .MathJax *, .mjx-chtml * {
-    font-family: unset; 
+    font-family: unset;
     font-size: unset;
-    
+
     /* 3. Kill transitions. 
        MathJax needs instant layout; animations cause overlapping numbers. */
-    transition: none !important; 
+    transition: none !important;
 }
