@@ -2,9 +2,7 @@
     color-scheme: light;
     --header-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --body-font: "Nunito", system-ui, -apple-system, sans-serif;
-    --base-font-size: 1rem;
-    --header-font-size: 1.1rem;
-    --body-font-size: 1rem;
+    --font-size: 1rem;
     --bg: #E0E5EC;
     --bg-elevated: #E0E5EC;
     --text: #4d5b7c;
@@ -17,16 +15,23 @@
 }
 
 * {
-    box-sizing: border-box
+    font-family: var(--body-font);
+    box-sizing: border-box;
+    font-size: var(--font-size);
+    color: var(--text);
+    word-break: break-word;
+    padding: 0;
+    transition: all .1s ease-in-out;
+    /* outline: 1px solid #f00; */
 }
 
 html {
     padding: 0;
     font-family: var(--body-font);
-    font-size: var(--base-font-size);
+    font-size: var(--font-size);
     background-color: var(--bg);
     color: var(--text);
-    margin: 0 auto
+    margin: auto
 }
 
 html * {
@@ -34,16 +39,14 @@ html * {
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 2rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     max-width: 900px;
-    width: 100%;
-    padding: 2rem;
-    margin: 0 auto;
-    line-height: 1.6
+    width: 95vw;
+    padding: .4rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    margin: auto
 }
 
 hr {
@@ -54,7 +57,7 @@ hr {
     opacity: .1;
     margin: 1.5rem 0;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px var(--shadow-light),-1px -1px 1px var(--shadow-dark)
+    box-shadow: 1px 1px 1px var(--shadow-light), -1px -1px 1px var(--shadow-dark)
 }
 
 pre {
@@ -62,15 +65,15 @@ pre {
     margin: 0;
     padding: 0;
     max-width: 100%;
-    width: fit-content
+    width: 100%
 }
 
 .hljs {
-    background: var(--bg)!important;
+    background: var(--bg) !important;
     border-radius: 15px;
     padding: 1.5rem;
-    box-shadow: inset 6px 6px 12px var(--shadow-dark),inset -6px -6px 12px var(--shadow-light);
-    border: 1px solid rgba(255,255,255,.2)
+    box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    border: 1px solid rgba(255, 255, 255, .2)
 }
 
 code {
@@ -101,7 +104,7 @@ nav a {
     background-color: var(--bg);
     border-radius: 50px;
     font-weight: 700;
-    box-shadow: 6px 6px 12px var(--shadow-dark),-6px -6px 12px var(--shadow-light)
+    box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light)
 }
 
 nav a:hover {
@@ -110,7 +113,7 @@ nav a:hover {
 }
 
 nav a:active {
-    box-shadow: inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
     transform: translateY(0)
 }
 
@@ -126,11 +129,12 @@ header img {
 }
 
 .detail img {
-    border-radius: 20px;
-    margin-top: 1.5rem;
-    padding: 5px;
+    width: 100%;
+    border-radius: .8rem;
+    margin: 0;
+    padding: 0;
     background: var(--bg);
-    box-shadow: 9px 9px 16px var(--shadow-dark),-9px -9px 16px var(--shadow-light)
+    box-shadow: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light)
 }
 
 .actionicons {
@@ -145,14 +149,14 @@ header img {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 1.5rem;
+    gap: 0.5rem;
     background-color: var(--bg);
-    padding: 2.5rem;
+    padding: 0.9rem;
     width: 100%;
     margin: 0 0 2.5rem 0;
-    border-radius: 30px;
-    box-shadow: 15px 15px 30px var(--shadow-dark),-15px -15px 30px var(--shadow-light);
-    border: 1px solid rgba(255,255,255,.4);
+    border-radius: .8rem;
+    box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light);
+    border: 1px solid rgba(255, 255, 255, .4);
     color: var(--text)
 }
 
@@ -171,10 +175,10 @@ header img {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: space-between;
     gap: .8rem;
-    padding-bottom: 1rem;
+    padding-bottom: 0;
     margin-bottom: .5rem;
     border-bottom: 2px solid transparent
 }
@@ -191,7 +195,7 @@ header img {
     padding: 0
 }
 
-button,.headline button {
+button, .headline button {
     appearance: none;
     border: 0;
     padding: .5rem 1.2rem;
@@ -202,22 +206,22 @@ button,.headline button {
     font-weight: 700;
     color: var(--text);
     background-color: var(--bg);
-    box-shadow: 5px 5px 10px var(--shadow-dark),-5px -5px 10px var(--shadow-light)
+    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light)
 }
 
-button:hover,.headline button:hover {
+button:hover, .headline button:hover {
     color: var(--link);
     transform: translateY(-1px)
 }
 
-.off,button.off,button:active {
+.off, button.off, button:active {
     color: var(--text);
     opacity: .6;
-    box-shadow: inset 4px 4px 8px var(--shadow-dark),inset -4px -4px 8px var(--shadow-light);
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
     background-color: var(--bg)
 }
 
-#hide_all_btn,#show_all_btn {
+#hide_all_btn, #show_all_btn {
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
@@ -228,7 +232,7 @@ button:hover,.headline button:hover {
     font-size: 0
 }
 
-#show_all_btn::after,#hide_all_btn::after {
+#show_all_btn::after, #hide_all_btn::after {
     content: "";
     display: block;
     width: 10px;
@@ -256,33 +260,80 @@ header {
 
 header h1 {
     font-family: var(--header-font);
-    font-size: 2.2rem;
+    font-size: 1.2rem;
     margin: 0;
     font-weight: 800;
     color: var(--heading);
-    text-shadow: 2px 2px 4px var(--shadow-dark),-2px -2px 4px var(--shadow-light)
+    text-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light)
 }
 
 header h2 {
     font-family: var(--body-font);
     font-size: 1rem;
+    font-weight: 400;
     color: var(--text);
     opacity: .8;
     text-align: justify
 }
 
-h1,h2,h3,h4,h5,p {
+h1, h2, h3, h4, h5, p {
     margin: 0;
     padding: 0
 }
 
-h1,h2 {
-    color: var(--heading)
+h1, h2, h3, h4, h5 {
+    font-family: var(--header-font);
+    padding-top: 1rem;
+    padding-bottom: .4rem
+}
+
+h1 {
+    font-size: calc(var(--font-size)* 1)
 }
 
 h2 {
-    font-size: 1.5rem;
-    font-weight: 700
+    font-size: calc(var(--font-size)*.98)
+}
+
+h3 {
+    font-size: calc(var(--font-size)*.96)
+}
+
+h4 {
+    font-size: calc(var(--font-size)*.94)
+}
+
+h5 {
+    font-size: calc(var(--font-size)*.92)
+}
+
+blockquote {
+    margin: 0;
+    padding: .5rem;
+
+}
+
+blockquote p {
+    line-height: .5rem;
+
+}
+
+blockquote p:before {
+    content: "“";
+    vertical-align: calc(var(--font-size)*(-0.9));
+    font-size: calc(var(--font-size)*3)
+}
+
+blockquote p:after {
+    content: "„";
+    font-size: calc(var(--font-size)*3)
+}
+
+sup {
+    vertical-align: top;
+    margin-left: .2rem;
+    margin-right: .2rem;
+    font-size: calc(var(--font-size)*0.6rem)
 }
 
 p {
@@ -291,8 +342,9 @@ p {
 
 a {
     text-decoration: none;
-    font-weight: 700;
-    color: var(--link)
+    font-weight: 300;
+    color: var(--link);
+    /* font-size: calc(var(--font-size) * .7) */
 }
 
 a:hover {
@@ -309,7 +361,9 @@ a:hover {
 }
 
 .date {
-    margin: 0
+    margin: 0;
+    padding: 0;
+    font-size: .6rem;
 }
 
 #search-input {
@@ -323,11 +377,11 @@ a:hover {
     font-family: var(--body-font);
     color: var(--heading);
     background-color: var(--bg);
-    box-shadow: inset 5px 5px 10px var(--shadow-dark),inset -5px -5px 10px var(--shadow-light)
+    box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light)
 }
 
 #search-input:focus {
-    box-shadow: inset 7px 7px 14px var(--shadow-dark),inset -7px -7px 14px var(--shadow-light)
+    box-shadow: inset 7px 7px 14px var(--shadow-dark), inset -7px -7px 14px var(--shadow-light)
 }
 
 #search-results {
@@ -337,17 +391,17 @@ a:hover {
     border-radius: 20px;
     background-color: var(--bg);
     display: none;
-    box-shadow: 9px 9px 16px var(--shadow-dark),-9px -9px 16px var(--shadow-light)
+    box-shadow: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light)
 }
 
 #search-results li {
     padding: .8rem;
-    border-bottom: 1px solid rgba(0,0,0,.05)
+    border-bottom: 1px solid rgba(0, 0, 0, .05)
 }
 
 .search-result-snippet strong {
     color: var(--heading);
-    background: rgba(255,255,255,.5);
+    background: rgba(255, 255, 255, .5);
     border-radius: 4px;
     padding: 0 4px
 }
@@ -365,6 +419,8 @@ footer {
 
 .sharebuttons {
     display: flex;
+    flex-wrap: wrap;
+    width: 100%;
     gap: 1rem;
     margin-top: .5rem
 }
@@ -373,15 +429,15 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
     padding: 0;
     line-height: 0;
     border: 0;
     border-radius: 50%;
     background: var(--bg);
     transition: all .2s;
-    box-shadow: 5px 5px 10px var(--shadow-dark),-5px -5px 10px var(--shadow-light)
+    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light)
 }
 
 .sharebuttons a:hover {
@@ -391,41 +447,92 @@ footer {
 
 .sharebuttons a:active {
     transform: translateY(0);
-    box-shadow: inset 3px 3px 6px var(--shadow-dark),inset -3px -3px 6px var(--shadow-light)
+    box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light)
 }
 
 .sharebuttons img {
     width: 1.4rem;
     height: 1.4rem;
-    margin: 0!important;
-    align-self: center!important;
+    margin: 0 !important;
+    align-self: center !important;
     object-fit: contain;
     opacity: .7
 }
 
-@media (max-width:600px) {
-    body {
-        padding: 1rem
-    }
-
-    .detail {
-        padding: 1.5rem;
-        border-radius: 20px
-    }
-
-    .headline {
-        flex-direction: column;
-        align-items: flex-start
-    }
-
-    .info {
-        align-self: flex-start;
-        flex-direction: row;
-        gap: 1rem;
-        margin-top: .5rem
-    }
+li {
+    font-size: var(--font-size)
 }
 
+ul li::marker {
+    content: "· ";
+    color: var(--link)
+}
+
+ul, ul ul {
+    list-style-type: none
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside
+}
+
+ul ul {
+    margin-left: 1rem
+}
+
+ul ul ul, ul ul ul ul {
+    margin-left: 2rem;
+    list-style-type: none
+}
+
+ul ul ul ul {
+    margin-left: 3rem
+}
+
+ol li::marker {
+    color: var(--link)
+}
+
+ol {
+    list-style-type: decimal;
+    list-style-position: inside
+}
+
+ol ol, ol ol ol, ol ol ol ol {
+    margin-left: 1rem;
+    list-style-type: decimal
+}
+
+ol ol ol, ol ol ol ol {
+    margin-left: 2rem
+}
+
+
 mjx-container[display] {
-    text-align: left!important
+    text-align: left !important
+}
+
+/* 1. Reset the outer container so it doesn't force "Garamond" or "1rem" 
+      onto the math block as a starting point. */
+mjx-container, .MathJax, .mjx-chtml {
+    font-family: initial !important;
+    font-size: initial !important;
+    /* Ensure the math isn't forced to be grey/text-color if it has its own ideas, 
+       though usually inheriting text color is desired. */
+}
+
+/* 2. Reset all internal math elements.
+      CRITICAL: Do NOT use !important here for font-family/size.
+      We want to beat your global `*` selector (specificity 0),
+      but we want to LOSE against MathJax's specific classes (specificity 10+). 
+      'unset' achieves this perfectly. */
+mjx-container *, .MathJax *, .mjx-chtml * {
+    font-family: unset;
+    font-size: unset;
+
+    /* 3. Kill transitions. 
+       MathJax needs instant layout; animations cause overlapping numbers. */
+    transition: none !important;
 }
