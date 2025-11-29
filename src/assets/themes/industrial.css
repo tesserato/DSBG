@@ -44,7 +44,7 @@
     box-sizing: border-box;
     font-size: var(--font-size);
     color: var(--text);
-    overflow-wrap: break-word;
+    word-break: break-word;
     /* Critical for mobile responsivity */
     padding: 0;
 
