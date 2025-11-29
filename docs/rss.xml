@@ -25,7 +25,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Sat, 29 Nov 2025 08:51:42 +0000</lastBuildDate>
+		<lastBuildDate>Sat, 29 Nov 2025 15:48:56 +0000</lastBuildDate>
 		<item>
 			<title>HTML post with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</link>
@@ -81,265 +81,6 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 				type="image/jpeg"
 			/>
             <category>example</category>
-		</item>
-		<item>
-			<title>ideal_bar</title>
-			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
-			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
-			<description></description>
-            <content:encoded><![CDATA[<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWLT2BCLJ3"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-VWLT2BCLJ3');
-</script>
-
-<!-- GoatCounter -->
-<script data-goatcounter="https://dsbg.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
-
-<!-- Counter.dev -->
-<script src="https://cdn.counter.dev/script.js" data-id="af32e278-52c0-4ad4-8cf7-496cee1e447f"
-    data-utcoffset="-3"></script>
-
-<!-- Giscus -->
-<script src="https://giscus.app/client.js" data-repo="tesserato/DSBG_comments" data-repo-id="R_kgDON9M2Vw"
-    data-category="Announcements" data-category-id="DIC_kwDON9M2V84CnK7O" data-mapping="pathname" data-strict="0"
-    data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="dark" data-lang="en"
-    crossorigin="anonymous" async>
-    </script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
-    <meta name="keywords" content="strings">
-    <meta name="description" content="">
-    <meta name="author" content="Dead Simple Blog Generator">
-
-    <!-- Open Graph Meta Tags for Social Sharing -->
-    <meta property="og:title" content="ideal_bar" />
-    <meta property="og:description" content="" />
-    <meta property="og:url" content="https://tesserato.github.io/DSBG/strings/idealbar/index.html" />
-    <meta property="og:site_name" content="Dead Simple Blog Generator" />
-    <meta property="og:type" content="article" />
-    
-
-    <!-- Article-specific Open Graph time metadata -->
-    <meta property="article:published_time" content='2025-11-06T20:13:19Z'>
-    <meta property="article:modified_time" content='2025-11-06T20:13:19Z'>
-
-    <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://tesserato.github.io/DSBG/strings/idealbar/index.html"
-  },
-  "headline": "ideal_bar",
-  "description": "",
-  "datePublished": "2025-11-06T20:13:19Z",
-  "dateModified": "2025-11-06T20:13:19Z",
-  "author": {
-    "@type": "Person",
-    "name": "Dead Simple Blog Generator"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Dead Simple Blog Generator"
-  }
-}
-    </script>
-
-    <link rel="canonical" href="https://tesserato.github.io/DSBG/strings/idealbar/index.html">
-    <link rel="stylesheet" href="../../style.css?v=1764406302">
-    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-
-    <title>ideal_bar</title>
-</head>
-
-<body>
-    <header>
-        <div class="articlelinks">
-            <a href="https://tesserato.github.io/DSBG" > ◁ Dead Simple Blog Generator
-            </a>
-            <div class="sharebuttons">
-                <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
-                   onclick="copyMarkdownToClipboard(this)"
-                   data-title="ideal_bar"
-                   data-description=""
-                   data-url="https://tesserato.github.io/DSBG/strings/idealbar/index.html"
-                   data-image-url=""
-                   data-tags="strings">
-                    <img src='../../copy.svg' alt="Copy article Markdown summary">
-                </a>
-                
-                <a href="https://x.com/intent/tweet?text=&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on X" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/x.svg" alt="Share on X">
-                    
-                </a>
-                
-                <a href="https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&text=" target="_blank" rel="noopener noreferrer" title="Share on Telegram" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/telegram.svg" alt="Share on Telegram">
-                    
-                </a>
-                
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on LinkedIn" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/linkedin.svg" alt="Share on LinkedIn">
-                    
-                </a>
-                
-                <a href="https://www.reddit.com/submit?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&title=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share on Reddit" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/reddit.svg" alt="Share on Reddit">
-                    
-                </a>
-                
-                <a href="https://bsky.app/intent/compose?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Bluesky" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/bluesky.svg" alt="Share on Bluesky">
-                    
-                </a>
-                
-                <a href="https://mastodon.social/share?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Mastodon" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/mastodon.svg" alt="Share on Mastodon">
-                    
-                </a>
-                
-                <a href="https://www.threads.net/intent/post?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Threads" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/threads.svg" alt="Share on Threads">
-                    
-                </a>
-                
-                <a href="https://news.ycombinator.com/submitlink?u={TARGET_URL}&t=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share on Hacker News" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/hackernews.svg" alt="Share on Hacker News">
-                    
-                </a>
-                
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Facebook" class="share">
-                    
-                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/facebook.svg" alt="Share on Facebook">
-                    
-                </a>
-                
-            </div>
-        </div>
-        <h1>ideal_bar</h1>
-        <h2></h2>
-    </header>
-
-    <main>
-        <article>
-            <html><head></head><body><h1 id="euler-lagrange-equation-for-beams">Euler-Lagrange equation for beams:</h1>
-<p><span class="math display">\[ \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} 
-\]</span></p>
-<h1 id="finite-difference">Finite difference:</h1>
-<p><span class="math display">\[- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right)
-\]</span></p>
-<h2 id="discretizing-with">Discretizing with:</h2>
-<ul>
-<li><span class="math inline">\(t_{n}=\text{n} {\Delta}t,\)</span> where <span class="math inline">\(\text{n}=0,1,2, ..., N\)</span></li>
-<li><span class="math inline">\(x_{i}=\text{i} {\Delta}x,\)</span> where <span class="math inline">\(\text{i}=0,1,2, ..., M\)</span></li>
-</ul>
-<p><span class="math display">\[# Solving for the next time step we have the finite difference schema:
-$${y}_{\text{i},\text{n} + 1} = \frac{\kappa^{2} {\Delta}t^{2} \left(4 {y}_{\text{i} + 1,\text{n}} - {y}_{\text{i} + 2,\text{n}} + 4 {y}_{\text{i} - 1,\text{n}} - {y}_{\text{i} - 2,\text{n}} - 6 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{4}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$
-## Independent variables:
-- $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar
-- $f_{s} \left(\text{Hz}\right)$: sampling frequency
-- $\text{{L}} \left(\text{m}\right)$: length of the string or bar
-- $d \left(\text{s}\right)$: duration of the simulation
-- **Units**:
-  - $\text{Hz} \left(\text{ hertz }\right)$ 
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-## Dependent variables:
-- $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps
-- $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps
-- ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time
-- ${\Delta}x \left(\text{m}\right)$: Delta length
-- **Units**:
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-### $\kappa$ and ${\Delta}x$ are unknown in terms of the independent variables 
-#### $\kappa$: Since, for the simply supported boundary condition:
-$f_0 = 22.3733 \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
-
-And recalling that:
-
-$\kappa = \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
-
-then:
-
-$f_0 = 22.3733*\kappa$
-
-$\kappa = f_0 / 22.3733$
-
-#### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme for the Euler-Bernoulli beam equation.
-Ansatz: $y_{i,n} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$
-
-Replacing the ansatz in the finite difference schema and simplifying:
-
-$$\text{Y} e^{i \left(\text{i} k {\Delta}x + w {\Delta}t \left(\text{n} + 1\right)\right)} = - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{- 2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$
-
-$$e^{i w {\Delta}t} + e^{- i w {\Delta}t} = - \frac{\kappa^{2} {\Delta}t^{2} e^{2 i k {\Delta}x}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{4}} - \frac{\kappa^{2} {\Delta}t^{2} e^{- 2 i k {\Delta}x}}{{\Delta}x^{4}} + 2$$
-
-$$2 \cos{\left(w {\Delta}t \right)} = - \frac{4 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} + \frac{8 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} - \frac{4 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + 2$$
-
-Solving for $w \in \mathbb{R}$:
-
-$$w = \left[ \frac{- \operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)} + 2 \pi}{{\Delta}t}, \  \frac{\operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)}}{{\Delta}t}\right]$$
-
-Thus:
-
-$$ -1 \le \frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \le 1 $$
-
-$$ - 2 {\Delta}x^{4} \le - 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} \le 0 $$
-
-$$ - \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \le - \cos^{2}{\left(k {\Delta}x \right)} + 2 \cos{\left(k {\Delta}x \right)} - 1 \le 0 $$
-
-$$ \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \ge \left(\cos{\left(k {\Delta}x \right)} - 1\right)^{2} \ge 0 $$
-
-$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge \left|{\cos{\left(k {\Delta}x \right)} - 1}\right| \ge 0 $$
-
-$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge 2 $$
-
-$$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
-
-\]</span></p>
-</body></html>
-        </article>
-    </main>
-
-    <div class="giscus"></div>
-
-    <footer>
-        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
-    </footer>
-
-    <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../../script.js?v=1764406302' async defer></script>
-</body>
-
-</html>]]></content:encoded>
-            <category>strings</category>
 		</item>
 		<item>
 			<title>ideal_string</title>
@@ -417,7 +158,7 @@ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/strings/idealstring/index.html">
-    <link rel="stylesheet" href="../../style.css?v=1764406302">
+    <link rel="stylesheet" href="../../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -616,7 +357,266 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../../script.js?v=1764406302' async defer></script>
+    <script src='../../script.js?v=1764431336' async defer></script>
+</body>
+
+</html>]]></content:encoded>
+            <category>strings</category>
+		</item>
+		<item>
+			<title>ideal_bar</title>
+			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
+			<guid>https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
+			<description></description>
+            <content:encoded><![CDATA[<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWLT2BCLJ3"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-VWLT2BCLJ3');
+</script>
+
+<!-- GoatCounter -->
+<script data-goatcounter="https://dsbg.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
+<!-- Counter.dev -->
+<script src="https://cdn.counter.dev/script.js" data-id="af32e278-52c0-4ad4-8cf7-496cee1e447f"
+    data-utcoffset="-3"></script>
+
+<!-- Giscus -->
+<script src="https://giscus.app/client.js" data-repo="tesserato/DSBG_comments" data-repo-id="R_kgDON9M2Vw"
+    data-category="Announcements" data-category-id="DIC_kwDON9M2V84CnK7O" data-mapping="pathname" data-strict="0"
+    data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="dark" data-lang="en"
+    crossorigin="anonymous" async>
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Dead Simple Blog Generator (dsbg)">
+    <meta name="keywords" content="strings">
+    <meta name="description" content="">
+    <meta name="author" content="Dead Simple Blog Generator">
+
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="ideal_bar" />
+    <meta property="og:description" content="" />
+    <meta property="og:url" content="https://tesserato.github.io/DSBG/strings/idealbar/index.html" />
+    <meta property="og:site_name" content="Dead Simple Blog Generator" />
+    <meta property="og:type" content="article" />
+    
+
+    <!-- Article-specific Open Graph time metadata -->
+    <meta property="article:published_time" content='2025-11-06T20:13:19Z'>
+    <meta property="article:modified_time" content='2025-11-06T20:13:19Z'>
+
+    <!-- JSON-LD Article / BlogPosting / NewsArticle Schema -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://tesserato.github.io/DSBG/strings/idealbar/index.html"
+  },
+  "headline": "ideal_bar",
+  "description": "",
+  "datePublished": "2025-11-06T20:13:19Z",
+  "dateModified": "2025-11-06T20:13:19Z",
+  "author": {
+    "@type": "Person",
+    "name": "Dead Simple Blog Generator"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dead Simple Blog Generator"
+  }
+}
+    </script>
+
+    <link rel="canonical" href="https://tesserato.github.io/DSBG/strings/idealbar/index.html">
+    <link rel="stylesheet" href="../../style.css?v=1764431336">
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <title>ideal_bar</title>
+</head>
+
+<body>
+    <header>
+        <div class="articlelinks">
+            <a href="https://tesserato.github.io/DSBG" > ◁ Dead Simple Blog Generator
+            </a>
+            <div class="sharebuttons">
+                <a href="javascript:void(0);" title="Copy Markdown summary to clipboard"
+                   onclick="copyMarkdownToClipboard(this)"
+                   data-title="ideal_bar"
+                   data-description=""
+                   data-url="https://tesserato.github.io/DSBG/strings/idealbar/index.html"
+                   data-image-url=""
+                   data-tags="strings">
+                    <img src='../../copy.svg' alt="Copy article Markdown summary">
+                </a>
+                
+                <a href="https://x.com/intent/tweet?text=&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on X" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/x.svg" alt="Share on X">
+                    
+                </a>
+                
+                <a href="https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&text=" target="_blank" rel="noopener noreferrer" title="Share on Telegram" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/telegram.svg" alt="Share on Telegram">
+                    
+                </a>
+                
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on LinkedIn" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/linkedin.svg" alt="Share on LinkedIn">
+                    
+                </a>
+                
+                <a href="https://www.reddit.com/submit?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&title=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share on Reddit" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/reddit.svg" alt="Share on Reddit">
+                    
+                </a>
+                
+                <a href="https://bsky.app/intent/compose?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Bluesky" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/bluesky.svg" alt="Share on Bluesky">
+                    
+                </a>
+                
+                <a href="https://mastodon.social/share?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Mastodon" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/mastodon.svg" alt="Share on Mastodon">
+                    
+                </a>
+                
+                <a href="https://www.threads.net/intent/post?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Threads" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/threads.svg" alt="Share on Threads">
+                    
+                </a>
+                
+                <a href="https://news.ycombinator.com/submitlink?u={TARGET_URL}&t=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share on Hacker News" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/hackernews.svg" alt="Share on Hacker News">
+                    
+                </a>
+                
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on Facebook" class="share">
+                    
+                        <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/facebook.svg" alt="Share on Facebook">
+                    
+                </a>
+                
+            </div>
+        </div>
+        <h1>ideal_bar</h1>
+        <h2></h2>
+    </header>
+
+    <main>
+        <article>
+            <html><head></head><body><h1 id="euler-lagrange-equation-for-beams">Euler-Lagrange equation for beams:</h1>
+<p><span class="math display">\[ \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} 
+\]</span></p>
+<h1 id="finite-difference">Finite difference:</h1>
+<p><span class="math display">\[- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right)
+\]</span></p>
+<h2 id="discretizing-with">Discretizing with:</h2>
+<ul>
+<li><span class="math inline">\(t_{n}=\text{n} {\Delta}t,\)</span> where <span class="math inline">\(\text{n}=0,1,2, ..., N\)</span></li>
+<li><span class="math inline">\(x_{i}=\text{i} {\Delta}x,\)</span> where <span class="math inline">\(\text{i}=0,1,2, ..., M\)</span></li>
+</ul>
+<p><span class="math display">\[# Solving for the next time step we have the finite difference schema:
+$${y}_{\text{i},\text{n} + 1} = \frac{\kappa^{2} {\Delta}t^{2} \left(4 {y}_{\text{i} + 1,\text{n}} - {y}_{\text{i} + 2,\text{n}} + 4 {y}_{\text{i} - 1,\text{n}} - {y}_{\text{i} - 2,\text{n}} - 6 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{4}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$
+## Independent variables:
+- $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar
+- $f_{s} \left(\text{Hz}\right)$: sampling frequency
+- $\text{{L}} \left(\text{m}\right)$: length of the string or bar
+- $d \left(\text{s}\right)$: duration of the simulation
+- **Units**:
+  - $\text{Hz} \left(\text{ hertz }\right)$ 
+  - $\text{m} \left(\text{ meter }\right)$ 
+  - $\text{s} \left(\text{ second }\right)$ 
+
+## Dependent variables:
+- $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps
+- $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps
+- ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time
+- ${\Delta}x \left(\text{m}\right)$: Delta length
+- **Units**:
+  - $\text{m} \left(\text{ meter }\right)$ 
+  - $\text{s} \left(\text{ second }\right)$ 
+
+### $\kappa$ and ${\Delta}x$ are unknown in terms of the independent variables 
+#### $\kappa$: Since, for the simply supported boundary condition:
+$f_0 = 22.3733 \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
+
+And recalling that:
+
+$\kappa = \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
+
+then:
+
+$f_0 = 22.3733*\kappa$
+
+$\kappa = f_0 / 22.3733$
+
+#### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme for the Euler-Bernoulli beam equation.
+Ansatz: $y_{i,n} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$
+
+Replacing the ansatz in the finite difference schema and simplifying:
+
+$$\text{Y} e^{i \left(\text{i} k {\Delta}x + w {\Delta}t \left(\text{n} + 1\right)\right)} = - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{- 2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$
+
+$$e^{i w {\Delta}t} + e^{- i w {\Delta}t} = - \frac{\kappa^{2} {\Delta}t^{2} e^{2 i k {\Delta}x}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{4}} - \frac{\kappa^{2} {\Delta}t^{2} e^{- 2 i k {\Delta}x}}{{\Delta}x^{4}} + 2$$
+
+$$2 \cos{\left(w {\Delta}t \right)} = - \frac{4 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} + \frac{8 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} - \frac{4 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + 2$$
+
+Solving for $w \in \mathbb{R}$:
+
+$$w = \left[ \frac{- \operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)} + 2 \pi}{{\Delta}t}, \  \frac{\operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)}}{{\Delta}t}\right]$$
+
+Thus:
+
+$$ -1 \le \frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \le 1 $$
+
+$$ - 2 {\Delta}x^{4} \le - 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} \le 0 $$
+
+$$ - \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \le - \cos^{2}{\left(k {\Delta}x \right)} + 2 \cos{\left(k {\Delta}x \right)} - 1 \le 0 $$
+
+$$ \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \ge \left(\cos{\left(k {\Delta}x \right)} - 1\right)^{2} \ge 0 $$
+
+$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge \left|{\cos{\left(k {\Delta}x \right)} - 1}\right| \ge 0 $$
+
+$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge 2 $$
+
+$$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
+
+\]</span></p>
+</body></html>
+        </article>
+    </main>
+
+    <div class="giscus"></div>
+
+    <footer>
+        <a href="https://tesserato.github.io/DSBG/" target="_blank">Created with Dead Simple Blog Generator</a>
+    </footer>
+
+    <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
+    <script src='../../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -756,7 +756,7 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/07-test-post/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764406302">
+    <link rel="stylesheet" href="../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1220,7 +1220,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764406302' async defer></script>
+    <script src='../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1320,7 +1320,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/06v006/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764406302">
+    <link rel="stylesheet" href="../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1422,7 +1422,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764406302' async defer></script>
+    <script src='../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1510,7 +1510,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/05v005/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764406302">
+    <link rel="stylesheet" href="../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1611,7 +1611,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764406302' async defer></script>
+    <script src='../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1699,7 +1699,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/0320250110pathdates/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764406302">
+    <link rel="stylesheet" href="../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1802,7 +1802,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764406302' async defer></script>
+    <script src='../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -1885,7 +1885,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/markdown-page-example/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764406302">
+    <link rel="stylesheet" href="../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -1985,7 +1985,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764406302' async defer></script>
+    <script src='../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -2072,7 +2072,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/04themes/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764406302">
+    <link rel="stylesheet" href="../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -2176,7 +2176,7 @@ _underscores_<br/>
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764406302' async defer></script>
+    <script src='../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>
@@ -2268,7 +2268,7 @@ _underscores_<br/>
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/01readme/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764406302">
+    <link rel="stylesheet" href="../style.css?v=1764431336">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -2500,7 +2500,7 @@ My first post with DSBG!
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764406302' async defer></script>
+    <script src='../script.js?v=1764431336' async defer></script>
 </body>
 
 </html>]]></content:encoded>

@@ -232,7 +232,7 @@ details summary {
 .table-wrapper {
     background-color: var(--card);
     /* max-width: 100%; */
-    width: fit-content;
+    max-width: fit-content;
     justify-content: left;
     box-shadow: .3rem .3rem .6rem 0 var(--shadow), 0 0 .2rem 0 var(--card);
     border-radius: .4em;
