@@ -22,7 +22,7 @@ html {
     font-size: var(--base-font-size);
     background-color: var(--background);
     color: var(--text);
-    margin: 0 auto
+    margin: auto
 }
 
 html * {
@@ -37,6 +37,7 @@ body {
     padding: .4rem;
     line-height: 1.5;
     overflow-x: auto;
+    margin: auto
 }
 
 hr {
