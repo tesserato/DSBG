@@ -4,9 +4,7 @@
     color-scheme: light;
     --header-font: "Georgia";
     --body-font: "Garamond";
-    --base-font-size: 1rem;
-    --header-font-size: 1rem;
-    --body-font-size: 1rem;
+    --font-size: 1rem;
     --background: #eaeaea;
     --text: #555;
     --card: #ededed;
@@ -20,30 +18,33 @@
 }
 
 * {
-    box-sizing: border-box
-}
-
-html {
     font-family: var(--body-font);
-    font-size: var(--base-font-size);
-    background-color: var(--background);
+    box-sizing: border-box;
+    font-size: var(--font-size);
     color: var(--text);
     word-break: break-word;
-    padding: 0
+    padding: 0;
+    transition: all .1s ease-in-out;
+    /* outline: 1px solid #f00; */
 }
 
-html * {
-    transition: all .1s ease-in-out
+
+
+html {
+    width: 100vw;
+    scroll-behavior: smooth;
 }
 
 body, html {
-    margin: 0 auto
+    background-color: var(--background);
+    margin: auto
 }
 
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    width: 95vw;
+    /* max-width: 900px; */
+    width: 900px;
     padding: .4rem;
     line-height: 1.5;
     overflow-x: auto
@@ -74,7 +75,6 @@ pre {
 
 code, nav {
     padding: 0;
-    font-size: 1rem
 }
 
 code {
@@ -242,9 +242,6 @@ table {
     table-layout: fixed;
     border-collapse: collapse;
     border-spacing: 0;
-    /* width: 100%; */
-    color: var(--text);
-    font-size: calc(var(--body-font-size)*1);
     background-color: #fff;
     margin: 0 auto
 }
@@ -315,7 +312,7 @@ button:hover {
 .off, button {
     color: var(--text);
     background-color: var(--card);
-    font-size: .9rem;
+    font-size: calc(var(--font-size) * 0.9);
     font-family: var(--body-font);
     cursor: pointer;
     border: 0;
@@ -349,11 +346,12 @@ button:hover {
 
 header {
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
     width: 100%;
     margin: 0;
-    padding: 0
+    padding: 0;
+    padding-bottom: 1rem
 }
 
 header a, header h1 {
@@ -362,23 +360,17 @@ header a, header h1 {
 
 header h1, header h2 {
     font-family: var(--header-font);
+    text-align: left;
     margin: 0;
     padding: 0
 }
 
 header h1 {
-    font-size: var(--header-font-size);
     text-transform: uppercase;
-    letter-spacing: .1rem;
-    text-align: center;
-    width: fit-content;
     font-weight: 700
 }
 
 header h2 {
-    font-size: calc(var(--header-font-size)*1);
-    opacity: .7;
-    text-align: justify;
     font-weight: 400
 }
 
@@ -400,7 +392,7 @@ h1, h2, h3 {
 
 p {
     font-family: var(--body-font);
-    font-size: var(--body-font-size);
+    font-size: calc(var(--font-size) * 1.1);
     line-height: 120%
 }
 
@@ -416,24 +408,29 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5 {
-    font-size: calc(var(--header-font-size)*1);
-    font-family: var(--header-font)
+    font-family: var(--header-font);
+    padding-top: 1rem;
+    padding-bottom: .4rem
 }
 
-h2, h3, h4, h5 {
-    font-size: calc(var(--header-font-size)*.95)
+h1 {
+    font-size: calc(var(--font-size)*.95)
 }
 
-h3, h4, h5 {
-    font-size: calc(var(--header-font-size)*.9)
+h2 {
+    font-size: calc(var(--font-size)*.9)
 }
 
-h4, h5 {
-    font-size: calc(var(--header-font-size)*.85)
+h3 {
+    font-size: calc(var(--font-size)*.85)
+}
+
+h4 {
+    font-size: calc(var(--font-size)*.8)
 }
 
 h5 {
-    font-size: calc(var(--header-font-size)*.8)
+    font-size: calc(var(--font-size)*.75)
 }
 
 blockquote {
@@ -443,24 +440,24 @@ blockquote {
 
 blockquote p:before {
     content: "“ ";
-    vertical-align: -.9rem;
-    font-size: 3rem
+    vertical-align: calc(var(--font-size)*(-0.9));
+    font-size: calc(var(--font-size)*3)
 }
 
 blockquote p:after {
     content: " „";
-    font-size: 3rem
+    font-size: calc(var(--font-size)*3)
 }
 
 sup {
     vertical-align: top;
     margin-left: .2rem;
     margin-right: .2rem;
-    font-size: .6em
+    font-size: calc(var(--font-size)*0.6rem)
 }
 
 .info {
-    font-size: calc(var(--body-font-size)*1);
+    font-size: var(--font-size);
     color: var(--text);
     opacity: .8;
     justify-content: space-between;
@@ -476,14 +473,14 @@ sup {
 }
 
 .date {
-    font-size: calc(var(--body-font-size)*.6);
+    font-size: calc(var(--font-size)*.6);
     color: var(--text);
     filter: brightness(80%);
     width: max-content
 }
 
 li {
-    font-size: calc(var(--body-font-size)*1.2)
+    font-size: var(--font-size)
 }
 
 ul li::marker {
@@ -576,7 +573,7 @@ footer {
 
 #search-input {
     width: 100%;
-    font-size: calc(var(--body-font-size)*1);
+    font-size: var(--font-size);
     color: var(--text);
     background-color: var(--card);
     box-shadow: .1rem .1rem .3rem 0 var(--shadow)inset, 0 0 .1rem 0 var(--background)inset;
@@ -610,7 +607,7 @@ footer {
 
 #search-results li a {
     color: var(--link);
-    font-size: calc(var(--body-font-size)*1.2);
+    font-size: var(--font-size);
     margin-bottom: .3rem;
     text-decoration: none;
     display: block
@@ -621,7 +618,7 @@ footer {
 }
 
 .search-result-snippet {
-    font-size: calc(var(--body-font-size)*.9);
+    font-size: calc(var(--font-size)*.9);
     color: var(--text);
     opacity: .8;
     margin-left: 1em
@@ -637,4 +634,27 @@ footer {
 
 mjx-container[display] {
     text-align: left !important
+}
+
+/* 1. Reset the outer container so it doesn't force "Garamond" or "1rem" 
+      onto the math block as a starting point. */
+mjx-container, .MathJax, .mjx-chtml {
+    font-family: initial !important;
+    font-size: initial !important;
+    /* Ensure the math isn't forced to be grey/text-color if it has its own ideas, 
+       though usually inheriting text color is desired. */
+}
+
+/* 2. Reset all internal math elements.
+      CRITICAL: Do NOT use !important here for font-family/size.
+      We want to beat your global `*` selector (specificity 0),
+      but we want to LOSE against MathJax's specific classes (specificity 10+). 
+      'unset' achieves this perfectly. */
+mjx-container *, .MathJax *, .mjx-chtml * {
+    font-family: unset; 
+    font-size: unset;
+    
+    /* 3. Kill transitions. 
+       MathJax needs instant layout; animations cause overlapping numbers. */
+    transition: none !important; 
 }

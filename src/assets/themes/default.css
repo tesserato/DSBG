@@ -636,3 +636,25 @@ mjx-container[display] {
     text-align: left !important
 }
 
+/* 1. Reset the outer container so it doesn't force "Garamond" or "1rem" 
+      onto the math block as a starting point. */
+mjx-container, .MathJax, .mjx-chtml {
+    font-family: initial !important;
+    font-size: initial !important;
+    /* Ensure the math isn't forced to be grey/text-color if it has its own ideas, 
+       though usually inheriting text color is desired. */
+}
+
+/* 2. Reset all internal math elements.
+      CRITICAL: Do NOT use !important here for font-family/size.
+      We want to beat your global `*` selector (specificity 0),
+      but we want to LOSE against MathJax's specific classes (specificity 10+). 
+      'unset' achieves this perfectly. */
+mjx-container *, .MathJax *, .mjx-chtml * {
+    font-family: unset; 
+    font-size: unset;
+    
+    /* 3. Kill transitions. 
+       MathJax needs instant layout; animations cause overlapping numbers. */
+    transition: none !important; 
+}
