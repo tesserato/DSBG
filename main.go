@@ -138,7 +138,7 @@ func main() {
 
 	// --- Injections ---
 	pathToAdditionalElementsTop := flagSet.String("elements-top", "", "Path to an HTML snippet to inject at the top of the <head> tag (e.g., Analytics scripts).")
-	pathToAdditionalElemensBottom := flagSet.String("elements-bottom", "", "Path to an HTML snippet to inject at the bottom of the <body> tag (e.g., Comment widgets).")
+	pathToAdditionalElementsBottom := flagSet.String("elements-bottom", "", "Path to an HTML snippet to inject at the bottom of the <body> tag (e.g., Comment widgets).")
 
 	// --- Behavior Toggles ---
 	sortFlag := flagSet.String("sort", "date-created", "Order of articles on the homepage. Options: date-created, date-updated, title, path (prefix with 'reverse-' to flip).")
@@ -268,12 +268,12 @@ func main() {
 		settings.AdditionalElementsTop = template.HTML(content)
 	}
 
-	if *pathToAdditionalElemensBottom != "" {
-		content, err := os.ReadFile(*pathToAdditionalElemensBottom)
+	if *pathToAdditionalElementsBottom != "" {
+		content, err := os.ReadFile(*pathToAdditionalElementsBottom)
 		if err != nil {
 			log.Fatalf("Error reading additional bottom elements file: %v", err)
 		}
-		settings.AdditionalElemensBottom = template.HTML(content)
+		settings.AdditionalElementsBottom = template.HTML(content)
 	}
 
 	if settings.BaseUrl == "" {

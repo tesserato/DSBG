@@ -35,7 +35,7 @@ type Settings struct {
 	PathToCustomJs            string
 	PathToCustomFavicon       string
 	AdditionalElementsTop     template.HTML
-	AdditionalElemensBottom   template.HTML
+	AdditionalElementsBottom  template.HTML
 	DoNotExtractTagsFromPaths bool
 	DoNotRemoveDateFromPaths  bool
 	DoNotRemoveDateFromTitles bool
