@@ -386,6 +386,19 @@ func startWatcher(settings *parse.Settings, templates parse.SiteTemplates) {
 				return
 			}
 			if event.Has(fsnotify.Write) || event.Has(fsnotify.Create) || event.Has(fsnotify.Remove) || event.Has(fsnotify.Rename) {
+				// Simple debounce to prevent multiple builds for a single file save operation.
+				// We wait 100ms and drain any subsequent events that occurred during that window.
+				time.Sleep(100 * time.Millisecond)
+				var moreEvents = true
+				for moreEvents {
+					select {
+					case <-watcher.Events:
+						// ignore subsequent events in this burst
+					default:
+						moreEvents = false
+					}
+				}
+
 				log.Println("File change detected:", event.Name, "- Rebuilding website...")
 				// Update build version on rebuild so cache busts instantly
 				settings.BuildVersion = fmt.Sprintf("%d", time.Now().Unix())

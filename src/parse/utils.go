@@ -507,14 +507,15 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 
 	tagsString := strings.Join(cleanedTags, " ")
 
-	encodedUrl := encodeComponent(finalUrl)
-	encodedTitle := encodeComponent(article.Title)
-	encodedDesc := encodeComponent(article.Description)
-	encodedText := encodeComponent(article.TextContent)
-	encodedTargetLink := encodeComponent(targetLink)
-	encodedImage := encodeComponent(imageUrl)
-	encodedTags := encodeComponent(tagsString)
-	encodedFirstTag := encodeComponent(cleanedFirstTag)
+	//Ensure all components are trimmed of whitespace before encoding.
+	encodedUrl := encodeComponent(strings.TrimSpace(finalUrl))
+	encodedTitle := encodeComponent(strings.TrimSpace(article.Title))
+	encodedDesc := encodeComponent(strings.TrimSpace(article.Description))
+	encodedText := encodeComponent(strings.TrimSpace(article.TextContent))
+	encodedTargetLink := encodeComponent(strings.TrimSpace(targetLink))
+	encodedImage := encodeComponent(strings.TrimSpace(imageUrl))
+	encodedTags := encodeComponent(strings.TrimSpace(tagsString))
+	encodedFirstTag := encodeComponent(strings.TrimSpace(cleanedFirstTag))
 
 	result := strings.ReplaceAll(urlTemplate, "{URL}", encodedUrl)
 	result = strings.ReplaceAll(result, "{TITLE}", encodedTitle)

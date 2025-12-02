@@ -13,6 +13,7 @@ import (
 	texttemplate "text/template"
 	"time"
 
+	"github.com/k3a/html2text"
 	mathjax "github.com/litao91/goldmark-mathjax"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
@@ -21,6 +22,7 @@ import (
 	rendererhtml "github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/text"
 	"go.abhg.dev/goldmark/frontmatter"
+	"golang.org/x/net/html"
 )
 
 // Markdown is the configured Goldmark Markdown parser with frontmatter support.
@@ -91,6 +93,15 @@ func MarkdownFile(path string, settings Settings) (Article, []string, error) {
 	}
 	rawHtmlContent := buf.String()
 
+	// We parse the HTML we just generated to ensure we catch everything.
+	if htmlNode, err := html.Parse(strings.NewReader(rawHtmlContent)); err == nil {
+		htmlResources := ExtractResources(htmlNode)
+		resources = append(resources, htmlResources...)
+	}
+
+	// Use html2text to generate clean plain text for search and summaries,
+	textContent := html2text.HTML2Text(rawHtmlContent)
+
 	// Wrap tables in divs for potential CSS styling.
 	wrappedHtmlContent, err := wrapTables(rawHtmlContent)
 	if err != nil {
@@ -100,7 +111,7 @@ func MarkdownFile(path string, settings Settings) (Article, []string, error) {
 	// Initialize Article with basic information.
 	article := Article{
 		OriginalPath: path,
-		TextContent:  string(data),
+		TextContent:  textContent,
 		HtmlContent:  wrappedHtmlContent,
 	}
 
