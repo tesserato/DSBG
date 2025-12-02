@@ -29,6 +29,7 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 		"lower":             strings.ToLower,
 		"isImage":           IsImage,
 		"articleSchemaType": ArticleSchemaType,
+		"absURL":            toAbsoluteUrl,
 		"makeLink": func(title string) string {
 			return strings.ReplaceAll(strings.ToLower(title), " ", "-") + "/"
 		},

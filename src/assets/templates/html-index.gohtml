@@ -81,7 +81,7 @@
                data-title="{{.Title}}"
                data-description="{{.Description}}"
                data-url="{{$Settings.BaseUrl}}/{{.LinkToSelf}}"
-               data-image-url="{{if .CoverImage}}{{$Settings.BaseUrl}}/{{.CoverImage}}{{end}}"
+               data-image-url="{{if .CoverImage}}{{ absURL .CoverImage $Settings.BaseUrl }}{{end}}"
                data-tags="{{range $i, $tag := .Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>

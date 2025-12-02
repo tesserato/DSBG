@@ -17,7 +17,7 @@
     <meta property="og:site_name" content="{{ .Settings.PublisherName }}" />
     <meta property="og:type" content="article" />
     {{if .Art.CoverImage}}
-    <meta property="og:image" content="{{ .Settings.BaseUrl }}/{{ .Art.CoverImage }}" />
+    <meta property="og:image" content="{{ absURL .Art.CoverImage .Settings.BaseUrl }}" />
     {{end}}
 
     <!-- Article-specific Open Graph time metadata -->
@@ -37,7 +37,7 @@
   "description": "{{ .Art.Description }}",
   {{- if .Art.CoverImage }}
   "image": [
-    "{{ .Settings.BaseUrl }}/{{ .Art.CoverImage }}"
+    "{{ absURL .Art.CoverImage .Settings.BaseUrl }}"
   ],
   {{- end }}
   "datePublished": "{{ .Art.Created.Format "2006-01-02T15:04:05Z07:00" }}",
@@ -51,7 +51,7 @@
     "name": "{{ .Settings.PublisherName }}"{{if .Settings.PublisherLogoPath}},
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ .Settings.BaseUrl }}/{{ .Settings.PublisherLogoPath }}"
+      "url": "{{ absURL .Settings.PublisherLogoPath .Settings.BaseUrl }}"
     }{{end}}
   }
 }
@@ -79,7 +79,7 @@
                    data-title="{{.Art.Title}}"
                    data-description="{{.Art.Description}}"
                    data-url="{{$.Settings.BaseUrl}}/{{.Art.LinkToSelf}}"
-                   data-image-url="{{if .Art.CoverImage}}{{$.Settings.BaseUrl}}/{{.Art.CoverImage}}{{end}}"
+                   data-image-url="{{if .Art.CoverImage}}{{ absURL .Art.CoverImage $.Settings.BaseUrl }}{{end}}"
                    data-tags="{{range $i, $tag := .Art.Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
                     <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy article Markdown summary">
                 </a>

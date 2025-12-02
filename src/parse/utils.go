@@ -456,13 +456,25 @@ func encodeComponent(s string) string {
 	return strings.ReplaceAll(url.QueryEscape(s), "+", "%20")
 }
 
+// toAbsoluteUrl handles logic to prevent double-concatenation of BaseURL
+// It is used by BuildShareUrl and registered as "absURL" in templates.
+func toAbsoluteUrl(urlStr string, baseUrl string) string {
+	if urlStr == "" {
+		return ""
+	}
+	if strings.HasPrefix(urlStr, "http://") || strings.HasPrefix(urlStr, "https://") {
+		return urlStr
+	}
+	return fmt.Sprintf("%s/%s", strings.TrimSuffix(baseUrl, "/"), strings.TrimPrefix(urlStr, "/"))
+}
+
 // BuildShareUrl replaces placeholders in the urlTemplate with encoded article data,
 // and returns the final URL as a template.URL value.
 func BuildShareUrl(urlTemplate string, article Article, settings Settings) template.URL {
 	// 1. Determine the "Official" URL of the post.
 	finalUrl := article.ExternalLink
 	if finalUrl == "" {
-		finalUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.LinkToSelf, "/"))
+		finalUrl = toAbsoluteUrl(article.LinkToSelf, settings.BaseUrl)
 	}
 
 	// 2. Determine the "Target Link" ({LINK}).
@@ -475,10 +487,7 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	}
 
 	// 3. Determine the Image URL ({IMAGE}).
-	imageUrl := ""
-	if article.CoverImage != "" {
-		imageUrl = fmt.Sprintf("%s/%s", strings.TrimSuffix(settings.BaseUrl, "/"), strings.TrimPrefix(article.CoverImage, "/"))
-	}
+	imageUrl := toAbsoluteUrl(article.CoverImage, settings.BaseUrl)
 
 	// 4. Build Hashtags List ({TAGS}) and First Tag ({TAG})
 	// We strip non-alphanumeric chars (except underscore) to create valid hashtags for most platforms.
