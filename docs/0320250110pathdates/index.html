@@ -68,7 +68,7 @@
     </script>
 
     <link rel="canonical" href="https://tesserato.github.io/DSBG/0320250110pathdates/index.html">
-    <link rel="stylesheet" href="../style.css?v=1764448994">
+    <link rel="stylesheet" href="../style.css?v=1764683868">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
@@ -93,19 +93,15 @@
                    data-tags="dates from paths,example">
                     <img src='../copy.svg' alt="Copy article Markdown summary">
                 </a>
-                <textarea class="dsbg-raw-text" style="display:none;">---
-title: Using Dates from Paths
-description: Demonstrating how DSBG gets dates from the path.
-tags: [dates from paths, example]
----
+                <textarea class="dsbg-raw-text" style="display:none;">This post shows how DSBG can automatically extract the date from the file path, and use this path to also extract the tags for the article.
 
-This post shows how DSBG can automatically extract the date from the file path, and use this path to also extract the tags for the article.
+ If no date is defined in frontmatter or file metadata, DSBG will try to use the date provided in the filename or path for date information. If no date pattern is found anywhere, it will use the file modification time.
 
-If no date is defined in frontmatter or file metadata, DSBG will try to use the date provided in the filename or path for date information. If no date pattern is found anywhere, it will use the file modification time.
+ DSBG will also try to extract tags from the directory name. For example, content/2024-07-10-my-example/my-post.md will automatically include a tag named 2024-07-10-my-example.
 
-DSBG will also try to extract tags from the directory name. For example, `content/2024-07-10-my-example/my-post.md` will automatically include a tag named `2024-07-10-my-example`.
+ This path will also show that when the flag -keep-date-in-paths is set, the dates won’t be removed from the generated paths.
 
-This path will also show that when the flag `-keep-date-in-paths` is set, the dates won't be removed from the generated paths.</textarea>
+ </textarea>
                 
                 <a href="https://x.com/intent/tweet?text=Demonstrating%20how%20DSBG%20gets%20dates%20from%20the%20path.&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F0320250110pathdates%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share on X" class="share">
                     
@@ -184,7 +180,7 @@ This path will also show that when the flag `-keep-date-in-paths` is set, the da
     </footer>
 
     <!-- Ensure article pages have access to tag filters & copy-to-clipboard logic -->
-    <script src='../script.js?v=1764448994' async defer></script>
+    <script src='../script.js?v=1764683868' async defer></script>
 </body>
 
 </html>

@@ -43,13 +43,13 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 ">
     <title>Dead Simple Blog Generator</title>
-    <link rel="stylesheet" href="style.css?v=1764448994">
+    <link rel="stylesheet" href="style.css?v=1764683868">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="canonical" href="https://tesserato.github.io/DSBG/index.html">
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css">
     <script src="https://unpkg.com/lunr/lunr.min.js"></script>
-    <script src="search.js?v=1764448994"></script>
+    <script src="search.js?v=1764683868"></script>
 
     <!-- JSON-LD WebSite Schema -->
     <script type="application/ld+json">
@@ -129,176 +129,155 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
                data-tags="">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: README - Getting Started with DSBG
-description: How to install and use Dead Simple Blog Generator.
-created: 2025 01 03
-cover_image: 01_dsbg_logo.webp
----
+            <textarea class="dsbg-raw-text" style="display:none;">DSBG: Dead Simple Blog Generator
 
-# DSBG: Dead Simple Blog Generator
+ DSBG is a minimalist, single-binary static blog generator written in Go. Point it at a folder of Markdown/HTML files, run one command, and get a clean, modern, fast blog.
 
-![Demo](https://github.com/tesserato/DSBG/blob/main/art/DemoSmall.gif?raw=true)
+ Why DSBG?
 
-DSBG is a **minimalist, single-binary static blog generator** written in Go.
-Point it at a folder of Markdown/HTML files, run one command, and get a clean, modern, fast blog.
+ 
+Zero Setup: No runtime dependencies. Just one binary. 
+Fast by Design: Concurrent processing, instant rebuilds in watch mode. 
+Clean, Modern Output: Responsive layout, dark/light themes, code highlighting, MathJax. 
+Smart Content Handling: Frontmatter, tag extraction, date parsing, automatic resource copying:DSBG only copies resources (images, PDFs, videos) that are explicitly referenced in your Markdown or HTML. Unused files in your content folder are not moved to the output. 
+Full-Text Search: Built-in Lunr-powered search index. 
+Social Sharing Ready: Add your own share buttons with URL templates. 
+RSS Included: Automatic, standards-compliant feed. 
+Pages & Posts: Tag PAGE to add top-level navigation pages. Note: HTML files tagged as PAGE should live in their own dedicated subfolders; DSBG copies the entire parent folder to preserve local scripts and assets. 
+Easy Customization: Themes, custom CSS/JS, custom favicon, publisher metadata, and more. 
+SEO-Ready Out of the Box: Open Graph, JSON-LD schema, canonical/share URL overrides, publisher logo. 
+Smarter Index Page: Tag filters, fuzzy full-text search with snippets, and one-click Copy Markdown sharing. 
+Flexible Input & Dates: Markdown or HTML, auto-extracted tags/metadata, and date parsing from filenames or file mtimes. 
+ 
 
-![Themes](https://github.com/tesserato/DSBG/blob/main/art/ThemesMobile.png?raw=true)
+Quick Start
 
-# Why DSBG?
+ Install
 
-* **Zero Setup**: No runtime dependencies. Just one binary.
-* **Fast by Design**: Concurrent processing, instant rebuilds in watch mode.
-* **Clean, Modern Output**: Responsive layout, dark/light themes, code highlighting, MathJax.
-* **Smart Content Handling**: Frontmatter, tag extraction, date parsing, automatic resource copying:DSBG only copies resources (images, PDFs, videos) that are explicitly referenced in your Markdown or HTML. Unused files in your content folder are not moved to the output.
-* **Full-Text Search**: Built-in Lunr-powered search index.
-* **Social Sharing Ready**: Add your own share buttons with URL templates.
-* **RSS Included**: Automatic, standards-compliant feed.
-* **Pages & Posts**: Tag `PAGE` to add top-level navigation pages. **Note:** HTML files tagged as `PAGE` should live in their own dedicated subfolders; DSBG copies the entire parent folder to preserve local scripts and assets.
-* **Easy Customization**: Themes, custom CSS/JS, custom favicon, publisher metadata, and more.
-* **SEO-Ready Out of the Box**: Open Graph, JSON-LD schema, canonical/share URL overrides, publisher logo.
-* **Smarter Index Page**: Tag filters, fuzzy full-text search with snippets, and one-click `Copy Markdown` sharing.
-* **Flexible Input & Dates**: Markdown or HTML, auto-extracted tags/metadata, and date parsing from filenames or file mtimes.
+ Binary Releases: Download the latest release from GitHub.
 
+ Or via Go:
 
----
+ go install github.com/tesserato/DSBG@latest 
 
-# Quick Start
-
-## Install
-
-**Binary Releases:**
-Download the latest release from GitHub.
-
-**Or via Go:**
-
-```bash
-go install github.com/tesserato/DSBG@latest
-```
 or
 
-```bash
-go install github.com/tesserato/DSBG@v0.1.4
-```
+ go install github.com/tesserato/DSBG@v0.1.4 
 
+Generate a Site
 
-## Generate a Site
+ dsbg -input content/ -output public/ -title "My Blog" -watch 
 
-```bash
-dsbg -input content/ -output public/ -title "My Blog" -watch
-```
+Serves your site at: http://localhost:666
 
-Serves your site at:
-`http://localhost:666`
+ Writing Content
 
----
+ DSBG uses standard Markdown with YAML frontmatter.
 
-## Writing Content
+ To get a quick start template with the current date pre-filled, simply run:
 
-DSBG uses standard Markdown with YAML frontmatter.
+ dsbg -h 
 
-To get a **quick start template** with the current date pre-filled, simply run:
+Copy the output from the TEMPLATE EXAMPLE section into a new .md file.
 
-```bash
-dsbg -h
-```
+ Example structure:
 
-Copy the output from the **TEMPLATE EXAMPLE** section into a new `.md` file.
+ --- title: My New Post description: A short summary of the post. created: 2025 11 22 tags: Technology, Go coverImagePath: image.webp --- # Hello World My first post with DSBG! 
 
-Example structure:
+Configuration & Flags
 
-```yaml
----
-title: My New Post
-description: A short summary of the post.
-created: 2025 11 22
-tags: Technology, Go
-coverImagePath: image.webp
----
+ DSBG exposes many options for themes, sorting, metadata, sharing, custom assets, and more.
 
-# Hello World
+ Run dsbg -h for the full list of commands, available themes, and flags.
 
-My first post with DSBG!
-```
+ Deploying
 
----
+ The generated folder is 100% static: deploy anywhere:
 
-# Configuration & Flags
+ 
+GitHub Pages 
+Netlify 
+Vercel 
+Cloudflare Pages 
+Any static hosting service 
+ 
 
-DSBG exposes many options for themes, sorting, metadata, sharing, custom assets, and more.
+Notes
 
-**Run `dsbg -h` for the full list of commands, available themes, and flags.**
+ 1. URLs & File Structure
 
+ 
+“Clean URL” Transformation: DSBG converts every input file into a directory containing an index.html. 
+Input: content/posts/my-cool-story.md 
+Output: public/posts/my-cool-story/index.html 
+Result: Your URL becomes domain.com/posts/my-cool-story/ (trailing slash). 
+ 
+URL Sanitization: URLs are aggressive sanitized. Non-alphanumeric characters are removed, and spaces/underscores become dashes (e.g., C# for C++/CLI becomes csharp-for-cpluspluscli). 
+Dates in URLs: By default, date patterns (e.g., 2024-11-03-) are stripped from filenames and URLs. Use -keep-date-in-paths to preserve them. 
+ 
 
----
+2. Dates & Sorting
 
-# Deploying
+ 
+Date Hierarchy: The creation date is determined in this priority order: 
+Frontmatter/Meta Tag (created: YYYY-MM-DD). 
+Filename Pattern (2023-10-05-my-post.md). 
+File Modification Time (Warning: This may change if you clone the repo to a new machine). 
+ 
+Date Formats: Dates must be in recognizable numeric formats (e.g., 2024-03-03 10:00) for the parser to detect them. 
+Sorting: The -sort flag is strict and only accepts specific values like date-created, reverse-date-created, title, etc. 
+ 
 
-The generated folder is 100% static: deploy anywhere:
+3. Tags & Organization
 
-* GitHub Pages
-* Netlify
-* Vercel
-* Cloudflare Pages
-* Any static hosting service
+ 
+Folders = Tags: By default, folder names become tags. A file in content/linux/kernel/ gets linux and kernel tags automatically. Disable with -ignore-tags-from-paths. 
+PAGE Tag: Articles tagged with PAGE are removed from the main feed and added to the top navigation bar. 
+HTML PAGE Isolation: If an HTML file is tagged as PAGE, its entire parent folder is copied recursively to the output. Isolate HTML pages in their own subfolders to avoid duplicating unrelated files. 
+ 
 
----
+4. Resource Handling
 
-# Notes
+ 
+Smart Copying: DSBG only copies resources (images, PDFs, videos) explicitly referenced in your content. Unreferenced files are ignored. 
+Relative Paths: Root-relative paths (e.g., /img/logo.png) are treated as relative to the article’s directory, not the site root. 
+Strict Validation: By default, the build fails if a referenced resource is missing. Use -ignore-errors to log warnings instead. 
+ 
 
-## 1. URLs & File Structure
-*   **"Clean URL" Transformation:** DSBG converts every input file into a directory containing an `index.html`.
-    *   *Input:* `content/posts/my-cool-story.md`
-    *   *Output:* `public/posts/my-cool-story/index.html`
-    *   *Result:* Your URL becomes `domain.com/posts/my-cool-story/` (trailing slash).
-*   **URL Sanitization:** URLs are aggressive sanitized. Non-alphanumeric characters are removed, and spaces/underscores become dashes (e.g., `C# for C++/CLI` becomes `csharp-for-cpluspluscli`).
-*   **Dates in URLs:** By default, date patterns (e.g., `2024-11-03-`) are stripped from filenames and URLs. Use `-keep-date-in-paths` to preserve them.
+5. SEO & Social Features
 
-## 2. Dates & Sorting
-*   **Date Hierarchy:** The creation date is determined in this priority order:
-    1.  Frontmatter/Meta Tag (`created: YYYY-MM-DD`).
-    2.  Filename Pattern (`2023-10-05-my-post.md`).
-    3.  File Modification Time (Warning: This may change if you clone the repo to a new machine).
-*   **Date Formats:** Dates must be in recognizable numeric formats (e.g., `2024-03-03 10:00`) for the parser to detect them.
-*   **Sorting:** The `-sort` flag is strict and only accepts specific values like `date-created`, `reverse-date-created`, `title`, etc.
+ 
+Base URL Required: For production builds, you must set -base-url https://yourdomain.com. Without it, RSS feeds, Sitemaps, and Social Sharing preview cards (Open Graph) will point to localhost. 
+Canonical URLs: You can override the auto-generated canonical URL per post using the canonical_url frontmatter field. 
+Share URL: The share_url field overrides the link used by share buttons, useful for “link blogs” where the post title should link to an external site. 
+ 
 
-## 3. Tags & Organization
-*   **Folders = Tags:** By default, folder names become tags. A file in `content/linux/kernel/` gets `linux` and `kernel` tags automatically. Disable with `-ignore-tags-from-paths`.
-*   **`PAGE` Tag:** Articles tagged with `PAGE` are removed from the main feed and added to the top navigation bar.
-*   **HTML `PAGE` Isolation:** If an HTML file is tagged as `PAGE`, its **entire parent folder** is copied recursively to the output. **Isolate HTML pages in their own subfolders** to avoid duplicating unrelated files.
+6. Theming & Customization
 
-## 4. Resource Handling
-*   **Smart Copying:** DSBG only copies resources (images, PDFs, videos) explicitly referenced in your content. Unreferenced files are ignored.
-*   **Relative Paths:** Root-relative paths (e.g., `/img/logo.png`) are treated as relative to the **article's directory**, not the site root.
-*   **Strict Validation:** By default, the build **fails** if a referenced resource is missing. Use `-ignore-errors` to log warnings instead.
+ 
+Highlighting Detection: Syntax highlighting (Light/Dark) is automatically chosen by scanning your theme CSS for color-scheme: dark;. 
+Custom CSS: Providing a -css-path replaces the built-in theme entirely. 
+Custom JS: Providing a -js-path appends your script to the default functionality (search, copy buttons, etc. remain active). 
+Table Styling: All Markdown tables are wrapped in <div class="table-wrapper"> to allow for responsive scrolling and styling. 
+ 
 
-## 5. SEO & Social Features
-*   **Base URL Required:** For production builds, you **must** set `-base-url https://yourdomain.com`. Without it, RSS feeds, Sitemaps, and Social Sharing preview cards (Open Graph) will point to `localhost`.
-*   **Canonical URLs:** You can override the auto-generated canonical URL per post using the `canonical_url` frontmatter field.
-*   **Share URL:** The `share_url` field overrides the link used by share buttons, useful for "link blogs" where the post title should link to an external site.
+7. Watch Mode
 
-## 6. Theming & Customization
-*   **Highlighting Detection:** Syntax highlighting (Light/Dark) is automatically chosen by scanning your theme CSS for `color-scheme: dark;`.
-*   **Custom CSS:** Providing a `-css-path` **replaces** the built-in theme entirely.
-*   **Custom JS:** Providing a `-js-path` **appends** your script to the default functionality (search, copy buttons, etc. remain active).
-*   **Table Styling:** All Markdown tables are wrapped in `<div class="table-wrapper">` to allow for responsive scrolling and styling.
+ 
+Port: Default server port is 666. 
+Live Reload: The browser automatically opens on start. Content, assets, and custom CSS/JS are watched for changes. 
+Cache Busting: A version query string (?v=TIMESTAMP) is appended to assets on every rebuild to ensure you always see the latest changes. 
+ 
 
-## 7. Watch Mode
-*   **Port:** Default server port is `666`.
-*   **Live Reload:** The browser automatically opens on start. Content, assets, and custom CSS/JS are watched for changes.
-*   **Cache Busting:** A version query string (`?v=TIMESTAMP`) is appended to assets on every rebuild to ensure you always see the latest changes.
+Contributing
 
-# Contributing
+ PRs and feature suggestions are welcome!
 
-PRs and feature suggestions are welcome!
+ GitHub: https://github.com/tesserato/DSBG
 
-GitHub: `https://github.com/tesserato/DSBG`
+ Star History
 
-# Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=tesserato/DSBG&type=Date)](https://star-history.com/#tesserato/DSBG&Date)
-
-<a href="https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-dead&#0045;simple&#0045;blog&#0045;generator" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=912370&theme=light&t=1740653394729" alt="Dead&#0032;Simple&#0032;Blog&#0032;Generator - Static&#0032;Site&#0032;Generator&#0032;That&#0032;Fast&#0045;Tracks&#0032;Your&#0032;Digital&#0032;Presence | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a></textarea>
+ https://star-history.com/#tesserato/DSBG&Date https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-dead-simple-blog-generator </textarea>
             
             <a href="https://x.com/intent/tweet?text=How%20to%20install%20and%20use%20Dead%20Simple%20Blog%20Generator.&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F01readme%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -386,24 +365,13 @@ GitHub: `https://github.com/tesserato/DSBG`
                data-tags="themes">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: Themes
-description: Screenshots of the available themes
-created: 2025 01 04
-updated: 2025 01 04
-tags: [themes]
-cover_image: 04_themes.png
----
+            <textarea class="dsbg-raw-text" style="display:none;">Besides the default theme, you can also choose the dark and colorful themes:
 
-Besides the default theme, you can also choose the `dark` and `colorful` themes:
+ Dark:
 
-# Dark:
+ Colorful:
 
-![dark theme style](04_dark.png)
-
-# Colorful:
-
-![colorful theme style](04_colorful.png)</textarea>
+ </textarea>
             
             <a href="https://x.com/intent/tweet?text=Screenshots%20of%20the%20available%20themes&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F04themes%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -491,19 +459,15 @@ Besides the default theme, you can also choose the `dark` and `colorful` themes:
                data-tags="dates from paths,example">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: Using Dates from Paths
-description: Demonstrating how DSBG gets dates from the path.
-tags: [dates from paths, example]
----
+            <textarea class="dsbg-raw-text" style="display:none;">This post shows how DSBG can automatically extract the date from the file path, and use this path to also extract the tags for the article.
 
-This post shows how DSBG can automatically extract the date from the file path, and use this path to also extract the tags for the article.
+ If no date is defined in frontmatter or file metadata, DSBG will try to use the date provided in the filename or path for date information. If no date pattern is found anywhere, it will use the file modification time.
 
-If no date is defined in frontmatter or file metadata, DSBG will try to use the date provided in the filename or path for date information. If no date pattern is found anywhere, it will use the file modification time.
+ DSBG will also try to extract tags from the directory name. For example, content/2024-07-10-my-example/my-post.md will automatically include a tag named 2024-07-10-my-example.
 
-DSBG will also try to extract tags from the directory name. For example, `content/2024-07-10-my-example/my-post.md` will automatically include a tag named `2024-07-10-my-example`.
+ This path will also show that when the flag -keep-date-in-paths is set, the dates won’t be removed from the generated paths.
 
-This path will also show that when the flag `-keep-date-in-paths` is set, the dates won't be removed from the generated paths.</textarea>
+ </textarea>
             
             <a href="https://x.com/intent/tweet?text=Demonstrating%20how%20DSBG%20gets%20dates%20from%20the%20path.&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F0320250110pathdates%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -593,21 +557,11 @@ This path will also show that when the flag `-keep-date-in-paths` is set, the da
                data-tags="release,share buttons">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: Version 0.0.5 - Share Buttons
-description: Version 0.0.5 of DSBG is out with support for share buttons
-created: 2025 02 08
-updated: 2025 02 08
-tags: [release, share buttons]
-cover_image: 05_share_buttons.png
----
+            <textarea class="dsbg-raw-text" style="display:none;">In addition to minor improvements, particularly to the default themes, version 0.0.5 of DSBG introduces support for share buttons. These buttons utilize native intent APIs to facilitate sharing on Bluesky, Mastodon, Threads, and X. We opted to implement this feature from scratch, rather than relying on a third-party library, to ensure the generated pages remain as fast and tracking-free as possible. At their core, these share buttons are simply static links generated during compilation. Each SVG icon is approximately 1 KB, ensuring a negligible impact on performance.
 
-In addition to minor improvements, particularly to the default themes, version 0.0.5 of DSBG introduces support for share buttons. These buttons utilize native intent APIs to facilitate sharing on Bluesky, Mastodon, Threads, and X. We opted to implement this feature from scratch, rather than relying on a third-party library, to ensure the generated pages remain as fast and tracking-free as possible. At their core, these share buttons are simply static links generated during compilation. Each SVG icon is approximately 1 KB, ensuring a negligible impact on performance.
+ Download a https://github.com/tesserato/DSBG/releases or use go install github.com/tesserato/DSBG@v0.0.5
 
-Download a [pre-built binary](https://github.com/tesserato/DSBG/releases) or use `go install github.com/tesserato/DSBG@v0.0.5`
-
-
-</textarea>
+ </textarea>
             
             <a href="https://x.com/intent/tweet?text=Version%200.0.5%20of%20DSBG%20is%20out%20with%20support%20for%20share%20buttons&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F05v005%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -695,20 +649,13 @@ Download a [pre-built binary](https://github.com/tesserato/DSBG/releases) or use
                data-tags="release,sorting">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: Version 0.0.6 - Sorting
-description: Version 0.0.6 of DSBG is out with support for sorting
-created: 2025 02 10
-updated: 2025 02 10
-tags: [release, sorting]
----
+            <textarea class="dsbg-raw-text" style="display:none;">Added support for sorting articles by created date, updated date, title, original path or tag.
 
-Added support for sorting articles by created date, updated date, title, original path or tag.
+ Download a https://github.com/tesserato/DSBG/releases or use go install github.com/tesserato/DSBG@v0.0.6
 
-Download a [pre-built binary](https://github.com/tesserato/DSBG/releases) or use `go install github.com/tesserato/DSBG@v0.0.6`
+ After install run dsbg -h for usage instructions.
 
-After install run `dsbg -h` for usage instructions.
-</textarea>
+ </textarea>
             
             <a href="https://x.com/intent/tweet?text=Version%200.0.6%20of%20DSBG%20is%20out%20with%20support%20for%20sorting&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F06v006%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -804,112 +751,89 @@ Check out https://github.com/tesserato/CodeWeaver for more.
                data-tags="projects,CodeWeaver,launch">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: Launching CodeWeaver
-description: |
-    Continuing to open-source internal tools, I'm releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
-    Check out https://github.com/tesserato/CodeWeaver for more.
-created: 2025 02 12
-cover_image: codeweaver.gif
-tags: projects, CodeWeaver, launch
----
+            <textarea class="dsbg-raw-text" style="display:none;">from https://github.com/tesserato/CodeWeaver:
 
-from https://github.com/tesserato/CodeWeaver:
+ CodeWeaver: Generate a Markdown Document of Your Codebase Structure and Content
 
-# CodeWeaver: Generate a Markdown Document of Your Codebase Structure and Content
+ CodeWeaver is a command-line tool designed to weave your codebase into a single, easy-to-navigate Markdown document. It recursively scans a directory, generating a structured representation of your project’s file hierarchy and embedding the content of each file within code blocks. This tool simplifies codebase sharing, documentation, and integration with AI/ML code analysis tools by providing a consolidated and readable Markdown output. The output for the current repository can be found https://github.com/tesserato/CodeWeaver/blob/main/codebase.md.
 
-CodeWeaver is a command-line tool designed to weave your codebase into a single, easy-to-navigate Markdown document. It recursively scans a directory, generating a structured representation of your project's file hierarchy and embedding the content of each file within code blocks. This tool simplifies codebase sharing, documentation, and integration with AI/ML code analysis tools by providing a consolidated and readable Markdown output.
-The output for the current repository can be found [here](https://github.com/tesserato/CodeWeaver/blob/main/codebase.md).
+ Key Features
 
-# Key Features
+ 
+Comprehensive Codebase Documentation: Generates a Markdown file that meticulously outlines your project’s directory and file structure in a clear, tree-like format. 
+Code Content Inclusion: Embeds the complete content of each file directly within the Markdown document, enclosed in syntax-highlighted code blocks based on file extensions. 
+Flexible Path Filtering: Utilize regular expressions to define ignore patterns, allowing you to exclude specific files and directories from the generated documentation (e.g., .git, build artifacts, specific file types). 
+Optional Path Logging: Choose to save lists of included and excluded file paths to separate files for detailed tracking and debugging of your ignore rules. 
+Simple Command-Line Interface: Offers an intuitive command-line interface with straightforward options for customization. 
+ 
 
-* **Comprehensive Codebase Documentation:** Generates a Markdown file that meticulously outlines your project's directory and file structure in a clear, tree-like format.
-* **Code Content Inclusion:** Embeds the complete content of each file directly within the Markdown document, enclosed in syntax-highlighted code blocks based on file extensions.
-* **Flexible Path Filtering:**  Utilize regular expressions to define ignore patterns, allowing you to exclude specific files and directories from the generated documentation (e.g., `.git`, build artifacts, specific file types).
-* **Optional Path Logging:** Choose to save lists of included and excluded file paths to separate files for detailed tracking and debugging of your ignore rules.
-* **Simple Command-Line Interface:**  Offers an intuitive command-line interface with straightforward options for customization.
+Installation
 
-# Installation
+ If you have Go installed, run go install github.com/tesserato/CodeWeaver@latestto install the latest version of CodeWeaver or go install github.com/tesserato/CodeWeaver@vX.Y.Z to install a specific version.
 
-If you have Go installed, run `go install github.com/tesserato/CodeWeaver@latest`to install the latest version of CodeWeaver or `go install github.com/tesserato/CodeWeaver@vX.Y.Z` to install a specific version.
+ Alternatively, download the appropriate pre built executable from the https://github.com/tesserato/CodeWeaver/releases.
 
-Alternatively, download the appropriate pre built executable from the [releases page](https://github.com/tesserato/CodeWeaver/releases).
+ If necessary, make the codeweaver executable by using the chmod command:
 
-If necessary, make the `codeweaver` executable by using the `chmod` command:
+ chmod +x codeweaver 
 
-```bash
-chmod +x codeweaver
-```
+Usage
 
-# Usage
+ For help, run
 
-## For help, run
-```bash
-codeweaver -h
-```
+ codeweaver -h 
 
-## For actual usage, run
-```bash
-codeweaver [options]
-```
+For actual usage, run
 
-**Options:**
+ codeweaver [options] 
 
-| Option                            | Description                                                               | Default Value           |
-| --------------------------------- | ------------------------------------------------------------------------- | ----------------------- |
-| `-dir <directory>`                | The root directory to scan and document.                                  | Current directory (`.`) |
-| `-output <filename>`              | The name of the output Markdown file.                                     | `codebase.md`           |
-| `-ignore "<regex patterns>"`      | Comma-separated list of regular expression patterns for paths to exclude. | `\.git.*`               |
-| `-included-paths-file <filename>` | File to save the list of paths that were included in the documentation.   | None                    |
-| `-excluded-paths-file <filename>` | File to save the list of paths that were excluded from the documentation. | None                    |
-| `-help`                           | Display this help message and exit.                                       |                         |
+Options:
 
-# Examples
+ Option Description Default Value -dir <directory> The root directory to scan and document. Current directory (.) -output <filename> The name of the output Markdown file. codebase.md -ignore "<regex patterns>" Comma-separated list of regular expression patterns for paths to exclude. \.git.* -included-paths-file <filename> File to save the list of paths that were included in the documentation. None -excluded-paths-file <filename> File to save the list of paths that were excluded from the documentation. None -help Display this help message and exit. 
 
-## **Generate documentation for the current directory:**
+Examples
 
-   ```bash
-   ./codeweaver
-   ```
-   This will create a file named `codebase.md` in the current directory, documenting the structure and content of the current directory and its subdirectories (excluding paths matching the default ignore pattern `\.git.*`).
+ Generate documentation for the current directory:
 
-## **Specify a different input directory and output file:**
+ ./codeweaver 
 
-   ```bash
-   ./codeweaver -dir=my_project -output=project_docs.md
-   ```
-   This command will process the `my_project` directory and save the documentation to `project_docs.md`.
+This will create a file named codebase.md in the current directory, documenting the structure and content of the current directory and its subdirectories (excluding paths matching the default ignore pattern \.git.*).
 
-## **Ignore specific file types and directories:**
+ Specify a different input directory and output file:
 
-   ```bash
-   ./codeweaver -ignore="\.log,temp,build" -output=detailed_docs.md
-   ```
-   This example will generate `detailed_docs.md`, excluding any files or directories with names containing `.log`, `temp`, or `build`. Regular expression patterns are comma-separated.
+ ./codeweaver -dir=my_project -output=project_docs.md 
 
-## **Save lists of included and excluded paths:**
+This command will process the my_project directory and save the documentation to project_docs.md.
 
-   ```bash
-   ./codeweaver -ignore="node_modules" -included-paths-file=included.txt -excluded-paths-file=excluded.txt -output=code_overview.md
-   ```
-   This command will create `code_overview.md` while also saving the list of included paths to `included.txt` and the list of excluded paths (due to the `node_modules` ignore pattern) to `excluded.txt`.
+ Ignore specific file types and directories:
 
-# Contributing
+ ./codeweaver -ignore="\.log,temp,build" -output=detailed_docs.md 
 
-Contributions are welcome! If you encounter any issues, have suggestions for new features, or want to improve CodeWeaver, please feel free to open an issue or submit a pull request on the project's GitHub repository.
+This example will generate detailed_docs.md, excluding any files or directories with names containing .log, temp, or build. Regular expression patterns are comma-separated.
 
-# License
+ Save lists of included and excluded paths:
 
-CodeWeaver is released under the [MIT License](LICENSE). See the `LICENSE` file for complete license details.
-</textarea>
+ ./codeweaver -ignore="node_modules" -included-paths-file=included.txt -excluded-paths-file=excluded.txt -output=code_overview.md 
+
+This command will create code_overview.md while also saving the list of included paths to included.txt and the list of excluded paths (due to the node_modules ignore pattern) to excluded.txt.
+
+ Contributing
+
+ Contributions are welcome! If you encounter any issues, have suggestions for new features, or want to improve CodeWeaver, please feel free to open an issue or submit a pull request on the project’s GitHub repository.
+
+ License
+
+ CodeWeaver is released under the LICENSE. See the LICENSE file for complete license details.
+
+ </textarea>
             
-            <a href="https://x.com/intent/tweet?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
+            <a href="https://x.com/intent/tweet?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
                     <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/x.svg" alt="Share on X">
                 
             </a>
             
-            <a href="https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html&text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A" target="_blank" rel="noopener noreferrer" title="Share this post on Telegram" class="share">
+            <a href="https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html&text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more." target="_blank" rel="noopener noreferrer" title="Share this post on Telegram" class="share">
                 
                     <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/telegram.svg" alt="Share on Telegram">
                 
@@ -927,19 +851,19 @@ CodeWeaver is released under the [MIT License](LICENSE). See the `LICENSE` file 
                 
             </a>
             
-            <a href="https://bsky.app/intent/compose?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Bluesky" class="share">
+            <a href="https://bsky.app/intent/compose?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Bluesky" class="share">
                 
                     <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/bluesky.svg" alt="Share on Bluesky">
                 
             </a>
             
-            <a href="https://mastodon.social/share?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Mastodon" class="share">
+            <a href="https://mastodon.social/share?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Mastodon" class="share">
                 
                     <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/mastodon.svg" alt="Share on Mastodon">
                 
             </a>
             
-            <a href="https://www.threads.net/intent/post?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%0A%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Threads" class="share">
+            <a href="https://www.threads.net/intent/post?text=Continuing%20to%20open-source%20internal%20tools%2C%20I%27m%20releasing%20CodeWeaver%2C%20a%20CLI%20to%20generate%20a%20single%20markdown%20file%20from%20a%20directory%20of%20source%20files.%20The%20idea%20is%20to%20facilitate%20sharing%20and%20feeding%20the%20codebase%20information%20to%20AI%20tools.%0ACheck%20out%20https%3A%2F%2Fgithub.com%2Ftesserato%2FCodeWeaver%20for%20more.%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2F2025-02-12-CodeWeaver-launch%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Threads" class="share">
                 
                     <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/threads.svg" alt="Share on Threads">
                 
@@ -1015,267 +939,217 @@ CodeWeaver is released under the [MIT License](LICENSE). See the `LICENSE` file 
                data-tags="test tag 01,test tag 02,test tag 03,test tag 04,test tag 05,test tag 06,test tag 07,test tag 08,test tag 09,test tag 10,edge case,markdown feature,citation,table">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: "Extended Test Post: Edge Cases and Markdown Features"
-description: "An extended test post to explore more edge cases and Markdown features, including citations, tables (long and short), and more. This post aims to thoroughly test formatting and rendering capabilities. Lets extend this description, for example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-created: 2025 02 16
-cover_image: potato.webp
-tags: [test tag 01, test tag 02, test tag 03, test tag 04, test tag 05, test tag 06, test tag 07, test tag 08, test tag 09, test tag 10, edge case, markdown feature, citation, table]
----
-
-If you are seeing this post through the blog, you can find the source code for this post [here](https://github.com/tesserato/DSBG/blob/main/sample_content/07%20test%20post.md).
-
-# Very long H1 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-## Very long H2 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-### Very long H3 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <textarea class="dsbg-raw-text" style="display:none;">If you are seeing this post through the blog, you can find the source code for this post https://github.com/tesserato/DSBG/blob/main/sample_content/07%20test%20post.md.
 
-#### Very long H4 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+ Very long H1 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-##### Very long H5 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+ Very long H2 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-# Markdown Content Examples
+ Very long H3 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-Here's a mix of common Markdown elements to show you how they look:
+ Very long H4 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-## Math
+ Very long H5 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-Inline math (\$ ... \$): $ E = mc^2 $
+ Markdown Content Examples
 
-Paragraph math 
-(\\\$\\\$
- ... 
-\\\$\\\$):
+ Here’s a mix of common Markdown elements to show you how they look:
 
-$$ 
-\hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi} dx 
-$$
+ Math
 
-## Lists
+ Inline math ($ … $): \(E = mc^2\)
 
-- Unordered list item
-- Another unordered list item
-  - Nested unordered list item
-  - Another nested unordered list item
-    - Doubly nested unordered list item
-    - Another doubly nested unordered list item
-      - Triply nested unordered list item
-      - Another triply nested unordered list item
-      - Yet another triply nested unordered list item
-        - Quadruply nested unordered list item
-        - Another quadruply nested unordered list item
-        - Yet another quadruply nested unordered list item
-- Yet another list item
-- Another list item
+ Paragraph math (\$\$ … \$\$):
 
-1.  Ordered list item
-2.  Another ordered list item
-    1.  Nested ordered list item
-    2.  Another nested ordered list item
-        1.  Doubly nested ordered list item
-        2.  Another doubly nested ordered list item
-            1.  Triply nested ordered list item
-            2.  Another triply nested ordered list item
-            3.  Yet another triply nested ordered list item
-                1.  Quadruply nested ordered list item
-                2.  Another quadruply nested ordered list item
-                3.  Yet another quadruply nested ordered list item
-3.  Yet another ordered list item
-4.  Another ordered list item
+ \[\hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi} dx \]
 
+ Lists
 
-## Code
+ 
+Unordered list item 
+Another unordered list item 
+Nested unordered list item 
+Another nested unordered list item 
+Doubly nested unordered list item 
+Another doubly nested unordered list item 
+Triply nested unordered list item 
+Another triply nested unordered list item 
+Yet another triply nested unordered list item 
+Quadruply nested unordered list item 
+Another quadruply nested unordered list item 
+Yet another quadruply nested unordered list item 
+ 
+ 
+ 
+ 
+Yet another list item 
+Another list item 
+ 
+Ordered list item 
+Another ordered list item 
+Nested ordered list item 
+Another nested ordered list item 
+Doubly nested ordered list item 
+Another doubly nested ordered list item 
+Triply nested ordered list item 
+Another triply nested ordered list item 
+Yet another triply nested ordered list item 
+Quadruply nested ordered list item 
+Another quadruply nested ordered list item 
+Yet another quadruply nested ordered list item 
+ 
+ 
+ 
+ 
+Yet another ordered list item 
+Another ordered list item 
+ 
 
-You can include code blocks with syntax highlighting:
+Code
 
-## Go example:
-```go
-package main
+ You can include code blocks with syntax highlighting:
 
-import "fmt"
+ Go example:
 
-func main() {
-    fmt.Println("Hello, DSBG!")
-}
-```
+ package main import "fmt" func main() { fmt.Println("Hello, DSBG!") } 
 
-## Rust example:
-```rust
-fn main() {
-    println!("Hello, DSBG!");
-}
-```
+Rust example:
 
-## Python example:
-```python
-def main():
-    print("Hello, DSBG!")
+ fn main() { println!("Hello, DSBG!"); } 
 
-if __name__ == "__main__":
-    main()
-```
+Python example:
 
-## JavaScript example:
-```javascript
-function main() {
-  console.log("Hello, DSBG!");
-}
+ def main(): print("Hello, DSBG!") if __name__ == "__main__": main() 
 
-main();
-```
+JavaScript example:
 
-## Images
+ function main() { console.log("Hello, DSBG!"); } main(); 
 
-Images are automatically copied to the output directory:
+Images
 
-![A Butterfly](01_butterfly.webp)
+ Images are automatically copied to the output directory:
 
-## Text Formatting
+ Text Formatting
 
-Here's some **bold** and *italic* text, and some `inline code`.
+ Here’s some bold and italic text, and some inline code.
 
-## Links and Quotes
+ Links and Quotes
 
-Check out this [example link](https://example.com).
+ Check out this https://example.com.
 
-> This is a block quote. Useful for citing resources.
+ This is a block quote. Useful for citing resources.
 
-# More Markdown Features & Edge Cases
+ More Markdown Features & Edge Cases
 
-Let's push the boundaries with more features and edge cases.
+ Let’s push the boundaries with more features and edge cases.
 
-## Horizontal Rules
+ Horizontal Rules
 
-Here are different ways to create horizontal rules:
+ Here are different ways to create horizontal rules:
 
-\-\-\-
+ ---
 
----
+ ***
 
-\*\*\*
+ ___
 
-***
+ Strikethrough
 
-\_\_\_
+ This text is strikethrough.
 
-___
+ Task Lists
 
-## Strikethrough
+ 
+ Completed task 
+ Incomplete task 
+ Nested completed task 
+ Nested incomplete task 
+ 
+ 
 
-~~This text is strikethrough.~~
+Emojis
 
-## Task Lists
+ Let’s see if emojis render correctly: 🎉 👍 🚀 🤔
 
-- [x] Completed task
-- [ ] Incomplete task
-    - [x] Nested completed task
-    - [ ] Nested incomplete task
+ HTML
 
-## Emojis
+ Basic HTML should be ignored or rendered as raw HTML depending on the Markdown processor. Let’s try a simple <br> and <span>.
 
-Let's see if emojis render correctly: 🎉 👍 🚀 🤔
+ 
+This is line 1.<br>This is line 2. 
+ 
 
-## HTML
+This is line 1.
+This is line 2.
 
-Basic HTML should be ignored or rendered as raw HTML depending on the Markdown processor. Let's try a simple `<br>` and `<span>`.
+ 
+This is <span style="color:red;">red text</span>. 
+ 
 
-- `This is line 1.<br>This is line 2.`
+This is red text.
 
-This is line 1.<br>This is line 2.
+ Escaping Characters
 
-- `This is <span style="color:red;">red text</span>.`
+ Characters that have special meaning in Markdown can be escaped with a backslash \.
 
-This is <span style="color:red;">red text</span>.
+ *asterisks* _underscores_ #hash# \backslash\ `backtick` >greater than> <less than< [brackets[ ]brackets] (parentheses( )parentheses)
 
-## Escaping Characters
+ This is an outer blockquote. This is a nested blockquote. And this is even more nested. -- 
 
-Characters that have special meaning in Markdown can be escaped with a backslash `\`.
+Tables
 
-\*asterisks\*
-\_underscores\_
-\#hash\#
-\\backslash\\
-\`backtick\`
-\>greater than\>
-\<less than\<
-\[brackets\[
-\]brackets\]
-\(parentheses\(
-\)parentheses\)
+ Short Table
 
-<!-- ## Nested Blockquotes
+ Header 1 Header 2 Header 3 Cell 1 Cell 2 Cell 3 Cell 4 Cell 5 Cell 6 
 
-> This is an outer blockquote.
->
-> > This is a nested blockquote.
-> >
-> > > And this is even more nested. -->
+Long Table
 
-## Tables
+ This table is designed to be wide and tall to test scrolling and wrapping behaviors.
 
-### Short Table
+ Very Long Header Column 1 Very Long Header Column 2 Very Long Header Column 3 Very Long Header Column 4 Very Long Header Column 5 Very Long Header Column 6 Very Long Header Column 7 Very Long Header Column 8 Very Long Header Column 9 Very Long Header Column 10 Very Long Content Cell 1 Very Long Content Cell 2 Very Long Content Cell 3 Very Long Content Cell 4 Very Long Content Cell 5 Very Long Content Cell 6 Very Long Content Cell 7 Very Long Content Cell 8 Very Long Content Cell 9 Very Long Content Cell 10 Another Long Cell 1 Another Long Cell 2 Another Long Cell 3 Another Long Cell 4 Another Long Cell 5 Another Long Cell 6 Another Long Cell 7 Another Long Cell 8 Another Long Cell 9 Another Long Cell 10 More Content Cell 1 More Content Cell 2 More Content Cell 3 More Content Cell 4 More Content Cell 5 More Content Cell 6 More Content Cell 7 More Content Cell 8 More Content Cell 9 More Content Cell 10 And Even More Content 1 And Even More Content 2 And Even More Content 3 And Even More Content 4 And Even More Content 5 And Even More Content 6 And Even More Content 7 And Even More Content 8 And Even More Content 9 And Even More Content 10 Last Row Long Cell 1 Last Row Long Cell 2 Last Row Long Cell 3 Last Row Long Cell 4 Last Row Long Cell 5 Last Row Long Cell 6 Last Row Long Cell 7 Last Row Long Cell 8 Last Row Long Cell 9 Last Row Long Cell 10 One More Row Cell 1 One More Row Cell 2 One More Row Cell 3 One More Row Cell 4 One More Row Cell 5 One More Row Cell 6 One More Row Cell 7 One More Row Cell 8 One More Row Cell 9 One More Row Cell 10 
 
-| Header 1 | Header 2 | Header 3 |
-| -------- | -------- | -------- |
-| Cell 1   | Cell 2   | Cell 3   |
-| Cell 4   | Cell 5   | Cell 6   |
+Table with Mixed Content
 
-### Long Table
+ Type Description Example Bold Text with strong emphasis **bold text** Italic Text with emphasis *italic text* Code Inline code `inline code` url Hyperlink [example link](https://example.com) 
 
-This table is designed to be wide and tall to test scrolling and wrapping behaviors.
+Citations and Footnotes
 
-| Very Long Header Column 1 | Very Long Header Column 2 | Very Long Header Column 3 | Very Long Header Column 4 | Very Long Header Column 5 | Very Long Header Column 6 | Very Long Header Column 7 | Very Long Header Column 8 | Very Long Header Column 9 | Very Long Header Column 10 |
-| ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | ------------------------- | -------------------------- |
-| Very Long Content Cell 1  | Very Long Content Cell 2  | Very Long Content Cell 3  | Very Long Content Cell 4  | Very Long Content Cell 5  | Very Long Content Cell 6  | Very Long Content Cell 7  | Very Long Content Cell 8  | Very Long Content Cell 9  | Very Long Content Cell 10  |
-| Another Long Cell 1       | Another Long Cell 2       | Another Long Cell 3       | Another Long Cell 4       | Another Long Cell 5       | Another Long Cell 6       | Another Long Cell 7       | Another Long Cell 8       | Another Long Cell 9       | Another Long Cell 10       |
-| More Content Cell 1       | More Content Cell 2       | More Content Cell 3       | More Content Cell 4       | More Content Cell 5       | More Content Cell 6       | More Content Cell 7       | More Content Cell 8       | More Content Cell 9       | More Content Cell 10       |
-| And Even More Content 1   | And Even More Content 2   | And Even More Content 3   | And Even More Content 4   | And Even More Content 5   | And Even More Content 6   | And Even More Content 7   | And Even More Content 8   | And Even More Content 9   | And Even More Content 10   |
-| Last Row Long Cell 1      | Last Row Long Cell 2      | Last Row Long Cell 3      | Last Row Long Cell 4      | Last Row Long Cell 5      | Last Row Long Cell 6      | Last Row Long Cell 7      | Last Row Long Cell 8      | Last Row Long Cell 9      | Last Row Long Cell 10      |
-| One More Row Cell 1       | One More Row Cell 2       | One More Row Cell 3       | One More Row Cell 4       | One More Row Cell 5       | One More Row Cell 6       | One More Row Cell 7       | One More Row Cell 8       | One More Row Cell 9       | One More Row Cell 10       |
+ While Markdown doesn’t have explicit citation syntax, footnotes can be used to create citations or references.#fn:1
 
+ Here is some text that needs a citation.#fn:2 And another sentence that also needs a citation.#fn:3
 
-### Table with Mixed Content
+ Very Long Words and Strings
 
-| Type        | Description               | Example                               |
-| ----------- | ------------------------- | ------------------------------------- |
-| **Bold**    | Text with strong emphasis | `**bold text**`                       |
-| *Italic*    | Text with emphasis        | `*italic text*`                       |
-| `Code`      | Inline code               | `` `inline code` ``                   |
-| [Link](url) | Hyperlink                 | `[example link](https://example.com)` |
+ Let’s test how very long words and strings are handled, especially for layout and wrapping.
 
-## Citations and Footnotes
+ VeryLongWordWithoutSpacesToTestWordBreakingAndOverflow.
 
-While Markdown doesn't have explicit citation syntax, footnotes can be used to create citations or references.[^citation-example]
+ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-Here is some text that needs a citation.[^another-citation]  And another sentence that also needs a citation.[^third-citation]
+ Combinations
 
-[^citation-example]: This is an example citation footnote. You can put your citation details here. For example, Author, *Title*, Publisher, Year.
-[^another-citation]: Another citation footnote, perhaps to a different source.
-[^third-citation]: And yet another footnote to demonstrate multiple citations.
+ Let’s combine some features for fun:
 
-## Very Long Words and Strings
+ 
+A list item with bold text, italic text, and https://example.com. 
+ 
 
-Let's test how very long words and strings are handled, especially for layout and wrapping.
+A blockquote containing inline code and a https://example.com and italic text.
 
-VeryLongWordWithoutSpacesToTestWordBreakingAndOverflow.
+ 
+A table cell with bold text, italic text, inline code, and https://example.com. 
+ Combination Type Example Content List Item 1. A list item with bold text, italic text, and https://example.com. Table Cell A table cell with bold text, italic text, inline code, and https://example.com. 
 
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+This extended test post should cover a wider range of Markdown features and edge cases, providing a more thorough test of rendering and formatting.
 
-## Combinations
+ This is an example citation footnote. You can put your citation details here. For example, Author, Title, Publisher, Year. #fnref:1↩︎
 
-Let's combine some features for fun:
+ Another citation footnote, perhaps to a different source. #fnref:2↩︎
 
-1.  A list item with **bold text**, *italic text*, and [a link](https://example.com).
-2.  > A blockquote containing `inline code` and a [link](https://example.com) and *italic text*.
-3.  A table cell with **bold text**, *italic text*, `inline code`, and [a link](https://example.com).
+ And yet another footnote to demonstrate multiple citations. #fnref:3↩︎
 
-| Combination Type | Example Content                                                                                   |
-| ---------------- | ------------------------------------------------------------------------------------------------- |
-| List Item        | 1. A list item with **bold text**, *italic text*, and [a link](https://example.com).              |
-| Table Cell       | A table cell with **bold text**, *italic text*, `inline code`, and [a link](https://example.com). |
-
-This extended test post should cover a wider range of Markdown features and edge cases, providing a more thorough test of rendering and formatting.</textarea>
+ 
+ </textarea>
             
             <a href="https://x.com/intent/tweet?text=An%20extended%20test%20post%20to%20explore%20more%20edge%20cases%20and%20Markdown%20features%2C%20including%20citations%2C%20tables%20%28long%20and%20short%29%2C%20and%20more.%20This%20post%20aims%20to%20thoroughly%20test%20formatting%20and%20rendering%20capabilities.%20Lets%20extend%20this%20description%2C%20for%20example%3A%20Lorem%20ipsum%20dolor%20sit%20amet%2C%20consectetur%20adipiscing%20elit%2C%20sed%20do%20eiusmod%20tempor%20incididunt%20ut%20labore%20et%20dolore%20magna%20aliqua.&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2F07-test-post%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -1337,176 +1211,6 @@ This extended test post should cover a wider range of Markdown features and edge
     
     <div class="detail">
         <div class="headline">
-            <a href="strings/idealbar/index.html" >
-                <h2>ideal_bar</h2>
-            </a>
-            
-            <button class="on" type="button">strings</button>
-            
-            <div class="info">
-                <h3 class="date">⋆ 2025 11 06</h3>
-                <h3 class="date">♰ 2025 11 06</h3>
-            </div>
-        </div>
-        
-        <p class="description"></p>
-
-        <div class="sharebuttons">
-            <a href="javascript:void(0);" class="share" title="Copy Markdown summary to clipboard"
-               onclick="copyMarkdownToClipboard(this)"
-               data-title="ideal_bar"
-               data-description=""
-               data-url="https://tesserato.github.io/DSBG/strings/idealbar/index.html"
-               data-image-url=""
-               data-tags="strings">
-                <img src="copy.svg" alt="Copy article Markdown summary">
-            </a>
-            <textarea class="dsbg-raw-text" style="display:none;"># Euler-Lagrange equation for beams:
-
-$$
- \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} 
-$$
-
-
-
-# Finite difference:
-
-$$
-- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right)
-$$
-
-## Discretizing with:
-- $t_{n}=\text{n} {\Delta}t,$ where $\text{n}=0,1,2, ..., N$
-- $x_{i}=\text{i} {\Delta}x,$ where $\text{i}=0,1,2, ..., M$
-$$\frac{{y}_{\text{i},\text{n} + 1}}{{\Delta}t^{2}} + \frac{{y}_{\text{i},\text{n} - 1}}{{\Delta}t^{2}} - \frac{2 {y}_{\text{i},\text{n}}}{{\Delta}t^{2}} = - \kappa^{2} \left(- \frac{4 {y}_{\text{i} + 1,\text{n}}}{{\Delta}x^{4}} + \frac{{y}_{\text{i} + 2,\text{n}}}{{\Delta}x^{4}} - \frac{4 {y}_{\text{i} - 1,\text{n}}}{{\Delta}x^{4}} + \frac{{y}_{\text{i} - 2,\text{n}}}{{\Delta}x^{4}} + \frac{6 {y}_{\text{i},\text{n}}}{{\Delta}x^{4}}\right)$$
-# Solving for the next time step we have the finite difference schema:
-$${y}_{\text{i},\text{n} + 1} = \frac{\kappa^{2} {\Delta}t^{2} \left(4 {y}_{\text{i} + 1,\text{n}} - {y}_{\text{i} + 2,\text{n}} + 4 {y}_{\text{i} - 1,\text{n}} - {y}_{\text{i} - 2,\text{n}} - 6 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{4}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$
-## Independent variables:
-- $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar
-- $f_{s} \left(\text{Hz}\right)$: sampling frequency
-- $\text{{L}} \left(\text{m}\right)$: length of the string or bar
-- $d \left(\text{s}\right)$: duration of the simulation
-- **Units**:
-  - $\text{Hz} \left(\text{ hertz }\right)$ 
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-## Dependent variables:
-- $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps
-- $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps
-- ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time
-- ${\Delta}x \left(\text{m}\right)$: Delta length
-- **Units**:
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-### $\kappa$ and ${\Delta}x$ are unknown in terms of the independent variables 
-#### $\kappa$: Since, for the simply supported boundary condition:
-$f_0 = 22.3733 \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
-
-And recalling that:
-
-$\kappa = \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
-
-then:
-
-$f_0 = 22.3733*\kappa$
-
-$\kappa = f_0 / 22.3733$
-
-#### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme for the Euler-Bernoulli beam equation.
-Ansatz: $y_{i,n} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$
-
-Replacing the ansatz in the finite difference schema and simplifying:
-
-$$\text{Y} e^{i \left(\text{i} k {\Delta}x + w {\Delta}t \left(\text{n} + 1\right)\right)} = - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{- 2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$
-
-$$e^{i w {\Delta}t} + e^{- i w {\Delta}t} = - \frac{\kappa^{2} {\Delta}t^{2} e^{2 i k {\Delta}x}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{4}} - \frac{\kappa^{2} {\Delta}t^{2} e^{- 2 i k {\Delta}x}}{{\Delta}x^{4}} + 2$$
-
-$$2 \cos{\left(w {\Delta}t \right)} = - \frac{4 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} + \frac{8 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} - \frac{4 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + 2$$
-
-Solving for $w \in \mathbb{R}$:
-
-$$w = \left[ \frac{- \operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)} + 2 \pi}{{\Delta}t}, \  \frac{\operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)}}{{\Delta}t}\right]$$
-
-Thus:
-
-$$ -1 \le \frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \le 1 $$
-
-$$ - 2 {\Delta}x^{4} \le - 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} \le 0 $$
-
-$$ - \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \le - \cos^{2}{\left(k {\Delta}x \right)} + 2 \cos{\left(k {\Delta}x \right)} - 1 \le 0 $$
-
-$$ \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \ge \left(\cos{\left(k {\Delta}x \right)} - 1\right)^{2} \ge 0 $$
-
-$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge \left|{\cos{\left(k {\Delta}x \right)} - 1}\right| \ge 0 $$
-
-$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge 2 $$
-
-$$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
-
-</textarea>
-            
-            <a href="https://x.com/intent/tweet?text=&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/x.svg" alt="Share on X">
-                
-            </a>
-            
-            <a href="https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&text=" target="_blank" rel="noopener noreferrer" title="Share this post on Telegram" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/telegram.svg" alt="Share on Telegram">
-                
-            </a>
-            
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on LinkedIn" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/linkedin.svg" alt="Share on LinkedIn">
-                
-            </a>
-            
-            <a href="https://www.reddit.com/submit?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&title=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share this post on Reddit" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/reddit.svg" alt="Share on Reddit">
-                
-            </a>
-            
-            <a href="https://bsky.app/intent/compose?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Bluesky" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/bluesky.svg" alt="Share on Bluesky">
-                
-            </a>
-            
-            <a href="https://mastodon.social/share?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Mastodon" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/mastodon.svg" alt="Share on Mastodon">
-                
-            </a>
-            
-            <a href="https://www.threads.net/intent/post?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Threads" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/threads.svg" alt="Share on Threads">
-                
-            </a>
-            
-            <a href="https://news.ycombinator.com/submitlink?u={TARGET_URL}&t=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share this post on Hacker News" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/hackernews.svg" alt="Share on Hacker News">
-                
-            </a>
-            
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Facebook" class="share">
-                
-                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/facebook.svg" alt="Share on Facebook">
-                
-            </a>
-            
-        </div>
-    </div>
-    
-    
-    <div class="detail">
-        <div class="headline">
             <a href="strings/idealstring/index.html" >
                 <h2>ideal_string</h2>
             </a>
@@ -1531,108 +1235,11 @@ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
                data-tags="strings">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;"># Ideal String Equation
+            <textarea class="dsbg-raw-text" style="display:none;">Ideal String Equation
 
-$$\frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = c^{2} \frac{\partial^{2}}{\partial x^{2}} y{\left(x,t \right)}$$
+ \[ Where: - $y{\left(x,t \right)} \left(\text{m}\right)$: vertical displacement - $c \left(\frac{\text{m}}{\text{s}}\right)=\frac{\sqrt{\text{T}_0}}{\sqrt{\mu}}=2 \text{{L}} f_{0}$: speed of the wave in the string - $\text{T}_0 \left(\text{N}\right)$: Tension on the string - $\mu \left(\frac{\text{kg}}{\text{m}}\right)=\rho \text{A}$: linear density of the string - $\rho \left(\frac{\text{kg}}{\text{m}^{3}}\right)$: mass density of the string - $\text{A} \left(\text{m}^{2}\right)$: cross-sectional area of the string - $\text{E} \left(\frac{\text{N}}{\text{m}^{2}}\right)$: Young's modulus of the string - $\text{I} \left(\text{kg} \,.\, \text{m}^{2}\right)$: bar moment of inertia - $\kappa \left(\sqrt{\frac{\text{N}}{\text{m}^{3}}}\right)=\frac{\sqrt{\text{E}} \sqrt{\text{I}}}{\sqrt{\mu} \text{{L}}^{2}}$: bar stiffness - **Units**: - $\text{N} \left(\text{ newton }\right)$ - $\text{kg} \left(\text{ kilogram }\right)$ - $\text{m} \left(\text{ meter }\right)$ - $\text{s} \left(\text{ second }\right)$ ## Difference Equation $$- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = c^{2} \left(- \frac{2 y{\left(x,t \right)}}{{\Delta}x^{2}} + \frac{y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{2}} + \frac{y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{2}}\right)$$ Discretizing with: - $t=\text{n} {\Delta}t,$ where $\text{n}=0,1,2,\cdots,\text{N}-1$ - $x=\text{i} {\Delta}x,$ where $\text{i}=0,1,2,\cdots,\text{M}-1$ We get: $$\frac{{y}_{\text{i},\text{n} + 1}}{{\Delta}t^{2}} + \frac{{y}_{\text{i},\text{n} - 1}}{{\Delta}t^{2}} - \frac{2 {y}_{\text{i},\text{n}}}{{\Delta}t^{2}} = c^{2} \left(\frac{{y}_{\text{i} + 1,\text{n}}}{{\Delta}x^{2}} + \frac{{y}_{\text{i} - 1,\text{n}}}{{\Delta}x^{2}} - \frac{2 {y}_{\text{i},\text{n}}}{{\Delta}x^{2}}\right)$$ Solving for ${y}_{\text{i},\text{n} + 1}$: $${y}_{\text{i},\text{n} + 1} = \frac{c^{2} {\Delta}t^{2} \left({y}_{\text{i} + 1,\text{n}} + {y}_{\text{i} - 1,\text{n}} - 2 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{2}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$ ## Independent Variables - we want to control the simulation specifying the following variables: - $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar - $f_{s} \left(\text{Hz}\right)$: sampling frequency - $\text{{L}} \left(\text{m}\right)$: length of the string or bar - $d \left(\text{s}\right)$: duration of the simulation - **Units**: - $\text{Hz} \left(\text{ hertz }\right)$ - $\text{m} \left(\text{ meter }\right)$ - $\text{s} \left(\text{ second }\right)$ ## Dependent Variables: - $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps - $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps - ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time - ${\Delta}x \left(\text{m}\right)$: Delta length - **Units**: - $\text{m} \left(\text{ meter }\right)$ - $\text{s} \left(\text{ second }\right)$ #### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme. Ansatz: ${y}_{\text{i},\text{n}} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$ After inserting the test solution: $$\text{Y} e^{i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} = \frac{\text{Y} c^{2} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{2}} - \frac{2 \text{Y} c^{2} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{2}} + \frac{\text{Y} c^{2} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{2}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$ Dividing by the common factor $\text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$, rearranging and simplifying gives: $$0 = \frac{c^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{2}} - \frac{2 c^{2} {\Delta}t^{2}}{{\Delta}x^{2}} + \frac{c^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{2}} - e^{i w {\Delta}t} + 2 - e^{- i w {\Delta}t}$$ $$0 = \frac{c^{2} {\Delta}t^{2} \left(\cos{\left(k {\Delta}x \right)} - 1\right)}{{\Delta}x^{2}} - \cos{\left(w {\Delta}t \right)} + 1$$ $$\cos{\left(w {\Delta}t \right)} = \frac{c^{2} {\Delta}t^{2} \left(\cos{\left(k {\Delta}x \right)} - 1\right)}{{\Delta}x^{2}} + 1$$ The two solutions are: $$w = \left[ \frac{- \operatorname{acos}{\left(\frac{c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} + {\Delta}x^{2}}{{\Delta}x^{2}} \right)} + 2 \pi}{{\Delta}t}, \ \frac{\operatorname{acos}{\left(\frac{c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} + {\Delta}x^{2}}{{\Delta}x^{2}} \right)}}{{\Delta}t}\right]$$ Since $w \in \mathbb{R}$: $$-1 \le \frac{c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} + {\Delta}x^{2}}{{\Delta}x^{2}} \le 1$$ $$- 2 {\Delta}x^{2} \le c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} \le 0$$ $$- \frac{2 {\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \le\cos{\left(k {\Delta}x \right)} - 1 \le 0$$ $$- \frac{2 {\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \le -2 $$ $$- \frac{{\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \le -1$$ $$\frac{{\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \ge 1$$ $$\frac{{\Delta}x}{c {\Delta}t} \ge 1$$ $${\Delta}x \ge c {\Delta}t$$ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$ \]
 
-Where:
-
-- $y{\left(x,t \right)} \left(\text{m}\right)$: vertical displacement
-- $c \left(\frac{\text{m}}{\text{s}}\right)=\frac{\sqrt{\text{T}_0}}{\sqrt{\mu}}=2 \text{{L}} f_{0}$: speed of the wave in the string
-- $\text{T}_0 \left(\text{N}\right)$: Tension on the string
-- $\mu \left(\frac{\text{kg}}{\text{m}}\right)=\rho \text{A}$: linear density of the string
-- $\rho \left(\frac{\text{kg}}{\text{m}^{3}}\right)$: mass density of the string
-- $\text{A} \left(\text{m}^{2}\right)$: cross-sectional area of the string
-- $\text{E} \left(\frac{\text{N}}{\text{m}^{2}}\right)$: Young's modulus of the string
-- $\text{I} \left(\text{kg} \,.\, \text{m}^{2}\right)$: bar moment of inertia
-- $\kappa \left(\sqrt{\frac{\text{N}}{\text{m}^{3}}}\right)=\frac{\sqrt{\text{E}} \sqrt{\text{I}}}{\sqrt{\mu} \text{{L}}^{2}}$: bar stiffness
-- **Units**:
-  - $\text{N} \left(\text{ newton }\right)$ 
-  - $\text{kg} \left(\text{ kilogram }\right)$ 
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-
-## Difference Equation
-
-$$- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = c^{2} \left(- \frac{2 y{\left(x,t \right)}}{{\Delta}x^{2}} + \frac{y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{2}} + \frac{y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{2}}\right)$$
-
-Discretizing with:
-
-- $t=\text{n} {\Delta}t,$ where $\text{n}=0,1,2,\cdots,\text{N}-1$
-- $x=\text{i} {\Delta}x,$ where $\text{i}=0,1,2,\cdots,\text{M}-1$
-
-We get:
-
-$$\frac{{y}_{\text{i},\text{n} + 1}}{{\Delta}t^{2}} + \frac{{y}_{\text{i},\text{n} - 1}}{{\Delta}t^{2}} - \frac{2 {y}_{\text{i},\text{n}}}{{\Delta}t^{2}} = c^{2} \left(\frac{{y}_{\text{i} + 1,\text{n}}}{{\Delta}x^{2}} + \frac{{y}_{\text{i} - 1,\text{n}}}{{\Delta}x^{2}} - \frac{2 {y}_{\text{i},\text{n}}}{{\Delta}x^{2}}\right)$$
-
-Solving for ${y}_{\text{i},\text{n} + 1}$:
-
-$${y}_{\text{i},\text{n} + 1} = \frac{c^{2} {\Delta}t^{2} \left({y}_{\text{i} + 1,\text{n}} + {y}_{\text{i} - 1,\text{n}} - 2 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{2}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$
-
-## Independent Variables - we want to control the simulation specifying the following variables:
-
-- $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar
-- $f_{s} \left(\text{Hz}\right)$: sampling frequency
-- $\text{{L}} \left(\text{m}\right)$: length of the string or bar
-- $d \left(\text{s}\right)$: duration of the simulation
-- **Units**:
-  - $\text{Hz} \left(\text{ hertz }\right)$ 
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-
-## Dependent Variables:
-
-- $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps
-- $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps
-- ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time
-- ${\Delta}x \left(\text{m}\right)$: Delta length
-- **Units**:
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-
-#### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme.
-Ansatz: ${y}_{\text{i},\text{n}} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$
-
-After inserting the test solution:
-
-$$\text{Y} e^{i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} = \frac{\text{Y} c^{2} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{2}} - \frac{2 \text{Y} c^{2} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{2}} + \frac{\text{Y} c^{2} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{2}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$
-
-Dividing by the common factor $\text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$, rearranging and simplifying gives:
-
-$$0 = \frac{c^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{2}} - \frac{2 c^{2} {\Delta}t^{2}}{{\Delta}x^{2}} + \frac{c^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{2}} - e^{i w {\Delta}t} + 2 - e^{- i w {\Delta}t}$$
-
-$$0 = \frac{c^{2} {\Delta}t^{2} \left(\cos{\left(k {\Delta}x \right)} - 1\right)}{{\Delta}x^{2}} - \cos{\left(w {\Delta}t \right)} + 1$$
-
-$$\cos{\left(w {\Delta}t \right)} = \frac{c^{2} {\Delta}t^{2} \left(\cos{\left(k {\Delta}x \right)} - 1\right)}{{\Delta}x^{2}} + 1$$
-
-The two solutions are:
-
-$$w = \left[ \frac{- \operatorname{acos}{\left(\frac{c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} + {\Delta}x^{2}}{{\Delta}x^{2}} \right)} + 2 \pi}{{\Delta}t}, \  \frac{\operatorname{acos}{\left(\frac{c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} + {\Delta}x^{2}}{{\Delta}x^{2}} \right)}}{{\Delta}t}\right]$$
-
-Since $w \in \mathbb{R}$:
-
-$$-1 \le \frac{c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} + {\Delta}x^{2}}{{\Delta}x^{2}} \le 1$$
-
-$$- 2 {\Delta}x^{2} \le c^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - c^{2} {\Delta}t^{2} \le 0$$
-
-$$- \frac{2 {\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \le\cos{\left(k {\Delta}x \right)} - 1 \le 0$$
-
-$$- \frac{2 {\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \le -2 $$
-
-$$- \frac{{\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \le -1$$
-
-$$\frac{{\Delta}x^{2}}{c^{2} {\Delta}t^{2}} \ge 1$$
-
-$$\frac{{\Delta}x}{c {\Delta}t} \ge 1$$
-
-$${\Delta}x \ge c {\Delta}t$$
-
-$${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
-
-</textarea>
+ </textarea>
             
             <a href="https://x.com/intent/tweet?text=&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealstring%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -1683,6 +1290,109 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
             </a>
             
             <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealstring%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Facebook" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/facebook.svg" alt="Share on Facebook">
+                
+            </a>
+            
+        </div>
+    </div>
+    
+    
+    <div class="detail">
+        <div class="headline">
+            <a href="strings/idealbar/index.html" >
+                <h2>ideal_bar</h2>
+            </a>
+            
+            <button class="on" type="button">strings</button>
+            
+            <div class="info">
+                <h3 class="date">⋆ 2025 11 06</h3>
+                <h3 class="date">♰ 2025 11 06</h3>
+            </div>
+        </div>
+        
+        <p class="description"></p>
+
+        <div class="sharebuttons">
+            <a href="javascript:void(0);" class="share" title="Copy Markdown summary to clipboard"
+               onclick="copyMarkdownToClipboard(this)"
+               data-title="ideal_bar"
+               data-description=""
+               data-url="https://tesserato.github.io/DSBG/strings/idealbar/index.html"
+               data-image-url=""
+               data-tags="strings">
+                <img src="copy.svg" alt="Copy article Markdown summary">
+            </a>
+            <textarea class="dsbg-raw-text" style="display:none;">Euler-Lagrange equation for beams:
+
+ \[ \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} \]
+
+ Finite difference:
+
+ \[- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right) \]
+
+ Discretizing with:
+
+ 
+\(t_{n}=\text{n} {\Delta}t,\) where \(\text{n}=0,1,2, ..., N\) 
+\(x_{i}=\text{i} {\Delta}x,\) where \(\text{i}=0,1,2, ..., M\) 
+ 
+
+\[# Solving for the next time step we have the finite difference schema: $${y}_{\text{i},\text{n} + 1} = \frac{\kappa^{2} {\Delta}t^{2} \left(4 {y}_{\text{i} + 1,\text{n}} - {y}_{\text{i} + 2,\text{n}} + 4 {y}_{\text{i} - 1,\text{n}} - {y}_{\text{i} - 2,\text{n}} - 6 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{4}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$ ## Independent variables: - $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar - $f_{s} \left(\text{Hz}\right)$: sampling frequency - $\text{{L}} \left(\text{m}\right)$: length of the string or bar - $d \left(\text{s}\right)$: duration of the simulation - **Units**: - $\text{Hz} \left(\text{ hertz }\right)$ - $\text{m} \left(\text{ meter }\right)$ - $\text{s} \left(\text{ second }\right)$ ## Dependent variables: - $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps - $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps - ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time - ${\Delta}x \left(\text{m}\right)$: Delta length - **Units**: - $\text{m} \left(\text{ meter }\right)$ - $\text{s} \left(\text{ second }\right)$ ### $\kappa$ and ${\Delta}x$ are unknown in terms of the independent variables #### $\kappa$: Since, for the simply supported boundary condition: $f_0 = 22.3733 \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$ And recalling that: $\kappa = \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$ then: $f_0 = 22.3733*\kappa$ $\kappa = f_0 / 22.3733$ #### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme for the Euler-Bernoulli beam equation. Ansatz: $y_{i,n} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$ Replacing the ansatz in the finite difference schema and simplifying: $$\text{Y} e^{i \left(\text{i} k {\Delta}x + w {\Delta}t \left(\text{n} + 1\right)\right)} = - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{- 2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$ $$e^{i w {\Delta}t} + e^{- i w {\Delta}t} = - \frac{\kappa^{2} {\Delta}t^{2} e^{2 i k {\Delta}x}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{4}} - \frac{\kappa^{2} {\Delta}t^{2} e^{- 2 i k {\Delta}x}}{{\Delta}x^{4}} + 2$$ $$2 \cos{\left(w {\Delta}t \right)} = - \frac{4 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} + \frac{8 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} - \frac{4 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + 2$$ Solving for $w \in \mathbb{R}$: $$w = \left[ \frac{- \operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)} + 2 \pi}{{\Delta}t}, \ \frac{\operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)}}{{\Delta}t}\right]$$ Thus: $$ -1 \le \frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \le 1 $$ $$ - 2 {\Delta}x^{4} \le - 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} \le 0 $$ $$ - \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \le - \cos^{2}{\left(k {\Delta}x \right)} + 2 \cos{\left(k {\Delta}x \right)} - 1 \le 0 $$ $$ \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \ge \left(\cos{\left(k {\Delta}x \right)} - 1\right)^{2} \ge 0 $$ $$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge \left|{\cos{\left(k {\Delta}x \right)} - 1}\right| \ge 0 $$ $$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge 2 $$ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$ \]
+
+ </textarea>
+            
+            <a href="https://x.com/intent/tweet?text=&url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/x.svg" alt="Share on X">
+                
+            </a>
+            
+            <a href="https://t.me/share/url?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&text=" target="_blank" rel="noopener noreferrer" title="Share this post on Telegram" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/telegram.svg" alt="Share on Telegram">
+                
+            </a>
+            
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on LinkedIn" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/linkedin.svg" alt="Share on LinkedIn">
+                
+            </a>
+            
+            <a href="https://www.reddit.com/submit?url=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html&title=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share this post on Reddit" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/reddit.svg" alt="Share on Reddit">
+                
+            </a>
+            
+            <a href="https://bsky.app/intent/compose?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Bluesky" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/bluesky.svg" alt="Share on Bluesky">
+                
+            </a>
+            
+            <a href="https://mastodon.social/share?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Mastodon" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/mastodon.svg" alt="Share on Mastodon">
+                
+            </a>
+            
+            <a href="https://www.threads.net/intent/post?text=%20https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Threads" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/threads.svg" alt="Share on Threads">
+                
+            </a>
+            
+            <a href="https://news.ycombinator.com/submitlink?u={TARGET_URL}&t=ideal_bar" target="_blank" rel="noopener noreferrer" title="Share this post on Hacker News" class="share">
+                
+                    <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/hackernews.svg" alt="Share on Hacker News">
+                
+            </a>
+            
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftesserato.github.io%2FDSBG%2Fstrings%2Fidealbar%2Findex.html" target="_blank" rel="noopener noreferrer" title="Share this post on Facebook" class="share">
                 
                     <img src="https://raw.githubusercontent.com/tesserato/DSBG/refs/heads/main/sample_assets/facebook.svg" alt="Share on Facebook">
                 
@@ -1818,20 +1528,13 @@ This is an example post that uses its own stylesheet
                data-title="DSBG v0.1.5 brings mobile friendly themes"
                data-description="DSBG v0.1.5 brings 7 mobile friendly themes and the new template variables TAG, TAGS and IMAGE."
                data-url="https://tesserato.github.io/DSBG/DSBG-v0.1.5-mobile-friendly-themes/index.html"
-               data-image-url="https://tesserato.github.io/DSBG/https://raw.githubusercontent.com/tesserato/DSBG/main/art/ThemesMobile.png"
+               data-image-url="https://raw.githubusercontent.com/tesserato/DSBG/main/art/ThemesMobile.png"
                data-tags="projects,DSBG">
                 <img src="copy.svg" alt="Copy article Markdown summary">
             </a>
-            <textarea class="dsbg-raw-text" style="display:none;">---
-title: DSBG v0.1.5 brings mobile friendly themes
-description: DSBG v0.1.5 brings 7 mobile friendly themes and the new template variables TAG, TAGS and IMAGE.
-cover_image: https://raw.githubusercontent.com/tesserato/DSBG/main/art/ThemesMobile.png
-link: https://github.com/tesserato/DSBG
-tags: projects, DSBG
----
+            <textarea class="dsbg-raw-text" style="display:none;">Contribute with new themes, eventual bugfixes, requests, ideas or just spreading the word!
 
-Contribute with new themes, eventual bugfixes, requests, ideas or just spreading the word!
-</textarea>
+ </textarea>
             
             <a href="https://x.com/intent/tweet?text=DSBG%20v0.1.5%20brings%207%20mobile%20friendly%20themes%20and%20the%20new%20template%20variables%20TAG%2C%20TAGS%20and%20IMAGE.&url=https%3A%2F%2Fgithub.com%2Ftesserato%2FDSBG" target="_blank" rel="noopener noreferrer" title="Share this post on X" class="share">
                 
@@ -1891,7 +1594,7 @@ Contribute with new themes, eventual bugfixes, requests, ideas or just spreading
     </div>
     
     </main>
-    <script src="script.js?v=1764448994" async defer></script>
+    <script src="script.js?v=1764683868" async defer></script>
     <div class="giscus"></div>
 
     <footer>
