@@ -24,40 +24,63 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 
 [![License](https://img.shields.io/github/license/tesserato/DSBG)](https://github.com/tesserato/DSBG/blob/main/LICENSE)
 </description>
+        <language>en</language>
+        <ttl>60</ttl>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Sun, 07 Dec 2025 16:08:55 +0000</lastBuildDate>
+		<lastBuildDate>Sun, 07 Dec 2025 20:54:30 +0000</lastBuildDate>
 		<item>
-			<title>DSBG v0.1.5 brings mobile friendly themes</title>
-			<link>https://tesserato.github.io/DSBG/DSBG-v0.1.5-mobile-friendly-themes/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/DSBG-v0.1.5-mobile-friendly-themes/index.html</guid>
-			<pubDate>Sat, 29 Nov 2025 18:08:22 +0000</pubDate>
-			<description>DSBG v0.1.5 brings 7 mobile friendly themes and the new template variables TAG, TAGS and IMAGE.</description>
-            <content:encoded><![CDATA[<p>Contribute with new themes, eventual bugfixes, requests, ideas or just spreading the word!</p>
+			<title>HTML page with custom CSS example</title>
+			<link>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</link>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</guid>
+			<pubDate>Sun, 07 Dec 2025 20:35:17 +0000</pubDate>
+			<description>An example html page with custom CSS</description>
+            <content:encoded><![CDATA[<header>
+        <h1>Welcome to My Custom Page</h1>
+        <nav>
+            <a href="https://tesserato.github.io/DSBG/htmlpageexample/customcss">Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>This is an example page that uses its own stylesheet</h2>
+            <p>
+                This page shows a custom HTML page with its own css file.
+                All the contents of the folder will be copied to the destination folder.
+            </p>
+            <p>
+                Check the code and the generated page to see how it works.
+            </p>
+        </section>
+        <aside>
+            <img src="https://tesserato.github.io/DSBG/htmlpageexample/customcss/mascot.webp" alt="sample image"/>
+        </aside>
+    </main>
+    <footer>
+        <p> © My Custom Page, 2024 </p>
+    </footer>
+
+
+
 ]]></content:encoded>
-			<media:content
-				url="https://raw.githubusercontent.com/tesserato/DSBG/main/art/ThemesMobile.png"
-				medium="image"
-				type="image/jpeg"
-			/>
-            <category>projects</category>
-            <category>DSBG</category>
+            <category>PAGE</category>
+            <category>html_page_example</category>
 		</item>
 		<item>
 			<title>HTML post with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/02htmlpostexample/index.html</guid>
-			<pubDate>Sat, 22 Nov 2025 13:07:18 +0000</pubDate>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/02htmlpostexample/index.html</guid>
+			<pubDate>Sun, 07 Dec 2025 20:33:13 +0000</pubDate>
 			<description>An example html page with custom CSS</description>
             <content:encoded><![CDATA[<header>
         <h1>Welcome to My Custom Post</h1>
         <nav>
             <a href="https://tesserato.github.io/DSBG/02htmlpostexample">Home</a>
-            <!-- <a href="../about/about.html">About</a> -->
         </nav>
     </header>
 
     <main>
-        <section class="content">
+        <section>
             <h2>This is an example post that uses its own stylesheet</h2>
             <p>
                 This post shows a custom HTML page with its own css file.
@@ -66,13 +89,12 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
                 Check the code and the generated page to see how it works.
             </p>
         </section>
-        <img src="https://tesserato.github.io/DSBG/02htmlpostexample/02_post_image.webp" alt="sample image" style="max-width:100%;"/>
+        <img src="https://tesserato.github.io/DSBG/02htmlpostexample/02_post_image.webp" alt="sample image"/>
     </main>
     <footer>
         <p> © My Custom Post, 2024 </p>
     </footer>
 
-    <!-- <script src="script.js"></script> -->
 
 
 ]]></content:encoded>
@@ -84,23 +106,39 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
             <category>example</category>
 		</item>
 		<item>
+			<title>DSBG v0.1.5 brings mobile friendly themes</title>
+			<link>https://tesserato.github.io/DSBG/DSBG-v0.1.5-mobile-friendly-themes/index.html</link>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/DSBG-v0.1.5-mobile-friendly-themes/index.html</guid>
+			<pubDate>Sat, 29 Nov 2025 18:08:22 +0000</pubDate>
+			<description>DSBG v0.1.5 brings 7 mobile friendly themes and the new template variables TAG, TAGS and IMAGE.</description>
+            <content:encoded><![CDATA[<p>Contribute with new themes, eventual bugfixes, requests, ideas or just spreading the word!</p>
+]]></content:encoded>
+			<media:content
+				url="https://raw.githubusercontent.com/tesserato/DSBG/main/art/ThemesMobile.png"
+				medium="image"
+				type="image/png"
+			/>
+            <category>projects</category>
+            <category>DSBG</category>
+		</item>
+		<item>
 			<title>ideal_bar</title>
 			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
 			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
 			<description></description>
-            <content:encoded><![CDATA[<h1 id="euler-lagrange-equation-for-beams">Euler-Lagrange equation for beams:</h1>
-<p><span class="math display">\[ \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} 
+            <content:encoded><![CDATA[<h1>Euler-Lagrange equation for beams:</h1>
+<p><span>\[ \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} 
 \]</span></p>
-<h1 id="finite-difference">Finite difference:</h1>
-<p><span class="math display">\[- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right)
+<h1>Finite difference:</h1>
+<p><span>\[- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right)
 \]</span></p>
-<h2 id="discretizing-with">Discretizing with:</h2>
+<h2>Discretizing with:</h2>
 <ul>
-<li><span class="math inline">\(t_{n}=\text{n} {\Delta}t,\)</span> where <span class="math inline">\(\text{n}=0,1,2, ..., N\)</span></li>
-<li><span class="math inline">\(x_{i}=\text{i} {\Delta}x,\)</span> where <span class="math inline">\(\text{i}=0,1,2, ..., M\)</span></li>
+<li><span>\(t_{n}=\text{n} {\Delta}t,\)</span> where <span>\(\text{n}=0,1,2, ..., N\)</span></li>
+<li><span>\(x_{i}=\text{i} {\Delta}x,\)</span> where <span>\(\text{i}=0,1,2, ..., M\)</span></li>
 </ul>
-<p><span class="math display">\[# Solving for the next time step we have the finite difference schema:
+<p><span>\[# Solving for the next time step we have the finite difference schema:
 $${y}_{\text{i},\text{n} + 1} = \frac{\kappa^{2} {\Delta}t^{2} \left(4 {y}_{\text{i} + 1,\text{n}} - {y}_{\text{i} + 2,\text{n}} + 4 {y}_{\text{i} - 1,\text{n}} - {y}_{\text{i} - 2,\text{n}} - 6 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{4}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$
 ## Independent variables:
 - $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar
@@ -173,11 +211,11 @@ $$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
 		<item>
 			<title>ideal_string</title>
 			<link>https://tesserato.github.io/DSBG/strings/idealstring/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/strings/idealstring/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/strings/idealstring/index.html</guid>
 			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
 			<description></description>
-            <content:encoded><![CDATA[<h1 id="ideal-string-equation">Ideal String Equation</h1>
-<p><span class="math display">\[
+            <content:encoded><![CDATA[<h1>Ideal String Equation</h1>
+<p><span>\[
 Where:
 
 - $y{\left(x,t \right)} \left(\text{m}\right)$: vertical displacement
@@ -280,68 +318,28 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
             <category>strings</category>
 		</item>
 		<item>
-			<title>HTML page with custom CSS example</title>
-			<link>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</guid>
-			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
-			<description>An example html page with custom CSS</description>
-            <content:encoded><![CDATA[<header>
-        <h1>Welcome to My Custom Page</h1>
-        <nav>
-            <a href="https://tesserato.github.io/DSBG/htmlpageexample/customcss">Home</a>
-            <!-- <a href="../about/about.html">About</a> -->
-        </nav>
-    </header>
-
-    <main>
-        <section class="content">
-            <h2>This is an example page that uses its own stylesheet</h2>
-            <p>
-                This page shows a custom HTML page with its own css file.
-                All the contents of the folder will be copied to the destination folder.
-            </p>
-            <p>
-                Check the code and the generated page to see how it works.
-            </p>
-        </section>
-        <aside>
-            <img src="https://tesserato.github.io/DSBG/htmlpageexample/customcss/mascot.webp" alt="sample image" style="max-width:100%;"/>
-        </aside>
-    </main>
-    <footer>
-        <p> © My Custom Page, 2024 </p>
-    </footer>
-
-    <!-- <script src="script.js"></script> -->
-
-
-]]></content:encoded>
-            <category>PAGE</category>
-            <category>html_page_example</category>
-		</item>
-		<item>
 			<title>Extended Test Post: Edge Cases and Markdown Features</title>
 			<link>https://tesserato.github.io/DSBG/07-test-post/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/07-test-post/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/07-test-post/index.html</guid>
 			<pubDate>Sun, 16 Feb 2025 00:00:00 +0000</pubDate>
 			<description>An extended test post to explore more edge cases and Markdown features, including citations, tables (long and short), and more. This post aims to thoroughly test formatting and rendering capabilities. Lets extend this description, for example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</description>
             <content:encoded><![CDATA[<p>If you are seeing this post through the blog, you can find the source code for this post <a href="https://github.com/tesserato/DSBG/blob/main/sample_content/07%2520test%2520post.md">here</a>.</p>
-<h1 id="very-long-h1-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H1 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h1>
-<h2 id="very-long-h2-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H2 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h2>
-<h3 id="very-long-h3-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H3 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
-<h4 id="very-long-h4-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H4 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h4>
-<h5 id="very-long-h5-heading-lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-sed-do-eiusmod-tempor-incididunt-ut-labore-et-dolore-magna-aliqua">Very long H5 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h5>
-<h1 id="markdown-content-examples">Markdown Content Examples</h1>
+<h1>Very long H1 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h1>
+<h2>Very long H2 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h2>
+<h3>Very long H3 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h3>
+<h4>Very long H4 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h4>
+<h5>Very long H5 heading: lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h5>
+<h1>Markdown Content Examples</h1>
 <p>Here’s a mix of common Markdown elements to show you how they look:</p>
-<h2 id="math">Math</h2>
-<p>Inline math ($ … $): <span class="math inline">\(E = mc^2\)</span></p>
+<h2>Math</h2>
+<p>Inline math ($ … $): <span>\(E = mc^2\)</span></p>
 <p>Paragraph math<br/>
 (\$\$<br/>
 …<br/>
 \$\$):</p>
-<p><span class="math display">\[\hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi} dx 
+<p><span>\[\hat{f} (\xi)=\int_{-\infty}^{\infty}f(x)e^{-2\pi ix\xi} dx 
 \]</span></p>
-<h2 id="lists">Lists</h2>
+<h2>Lists</h2>
 <ul>
 <li>Unordered list item</li>
 <li>Another unordered list item
@@ -398,10 +396,10 @@ $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
 <li>Yet another ordered list item</li>
 <li>Another ordered list item</li>
 </ol>
-<h2 id="code">Code</h2>
+<h2>Code</h2>
 <p>You can include code blocks with syntax highlighting:</p>
-<h2 id="go-example">Go example:</h2>
-<pre><code class="language-go">package main
+<h2>Go example:</h2>
+<pre><code>package main
 
 import &#34;fmt&#34;
 
@@ -409,38 +407,38 @@ func main() {
     fmt.Println(&#34;Hello, DSBG!&#34;)
 }
 </code></pre>
-<h2 id="rust-example">Rust example:</h2>
-<pre><code class="language-rust">fn main() {
+<h2>Rust example:</h2>
+<pre><code>fn main() {
     println!(&#34;Hello, DSBG!&#34;);
 }
 </code></pre>
-<h2 id="python-example">Python example:</h2>
-<pre><code class="language-python">def main():
+<h2>Python example:</h2>
+<pre><code>def main():
     print(&#34;Hello, DSBG!&#34;)
 
 if __name__ == &#34;__main__&#34;:
     main()
 </code></pre>
-<h2 id="javascript-example">JavaScript example:</h2>
-<pre><code class="language-javascript">function main() {
+<h2>JavaScript example:</h2>
+<pre><code>function main() {
   console.log(&#34;Hello, DSBG!&#34;);
 }
 
 main();
 </code></pre>
-<h2 id="images">Images</h2>
+<h2>Images</h2>
 <p>Images are automatically copied to the output directory:</p>
 <p><img src="https://tesserato.github.io/DSBG/07-test-post/01_butterfly.webp" alt="A Butterfly"/></p>
-<h2 id="text-formatting">Text Formatting</h2>
+<h2>Text Formatting</h2>
 <p>Here’s some <strong>bold</strong> and <em>italic</em> text, and some <code>inline code</code>.</p>
-<h2 id="links-and-quotes">Links and Quotes</h2>
+<h2>Links and Quotes</h2>
 <p>Check out this <a href="https://example.com">example link</a>.</p>
 <blockquote>
 <p>This is a block quote. Useful for citing resources.</p>
 </blockquote>
-<h1 id="more-markdown-features--edge-cases">More Markdown Features &amp; Edge Cases</h1>
+<h1>More Markdown Features &amp; Edge Cases</h1>
 <p>Let’s push the boundaries with more features and edge cases.</p>
-<h2 id="horizontal-rules">Horizontal Rules</h2>
+<h2>Horizontal Rules</h2>
 <p>Here are different ways to create horizontal rules:</p>
 <p>---</p>
 <hr/>
@@ -448,21 +446,21 @@ main();
 <hr/>
 <p>___</p>
 <hr/>
-<h2 id="strikethrough">Strikethrough</h2>
+<h2>Strikethrough</h2>
 <p><del>This text is strikethrough.</del></p>
-<h2 id="task-lists">Task Lists</h2>
+<h2>Task Lists</h2>
 <ul>
-<li><input checked="" disabled="" type="checkbox"/> Completed task</li>
-<li><input disabled="" type="checkbox"/> Incomplete task
+<li> Completed task</li>
+<li> Incomplete task
 <ul>
-<li><input checked="" disabled="" type="checkbox"/> Nested completed task</li>
-<li><input disabled="" type="checkbox"/> Nested incomplete task</li>
+<li> Nested completed task</li>
+<li> Nested incomplete task</li>
 </ul>
 </li>
 </ul>
-<h2 id="emojis">Emojis</h2>
+<h2>Emojis</h2>
 <p>Let’s see if emojis render correctly: 🎉 👍 🚀 🤔</p>
-<h2 id="html">HTML</h2>
+<h2>HTML</h2>
 <p>Basic HTML should be ignored or rendered as raw HTML depending on the Markdown processor. Let’s try a simple <code>&lt;br&gt;</code> and <code>&lt;span&gt;</code>.</p>
 <ul>
 <li><code>This is line 1.&lt;br&gt;This is line 2.</code></li>
@@ -471,8 +469,8 @@ main();
 <ul>
 <li><code>This is &lt;span style=&#34;color:red;&#34;&gt;red text&lt;/span&gt;.</code></li>
 </ul>
-<p>This is <span style="color:red;">red text</span>.</p>
-<h2 id="escaping-characters">Escaping Characters</h2>
+<p>This is <span>red text</span>.</p>
+<h2>Escaping Characters</h2>
 <p>Characters that have special meaning in Markdown can be escaped with a backslash <code>\</code>.</p>
 <p>*asterisks*<br/>
 _underscores_<br/>
@@ -492,9 +490,9 @@ _underscores_<br/>
 > > This is a nested blockquote.
 > >
 > > > And this is even more nested. -->
-<h2 id="tables">Tables</h2>
-<h3 id="short-table">Short Table</h3>
-<div class="table-wrapper"><table>
+<h2>Tables</h2>
+<h3>Short Table</h3>
+<div><table>
 <thead>
 <tr>
 <th>Header 1</th>
@@ -515,9 +513,9 @@ _underscores_<br/>
 </tr>
 </tbody>
 </table></div>
-<h3 id="long-table">Long Table</h3>
+<h3>Long Table</h3>
 <p>This table is designed to be wide and tall to test scrolling and wrapping behaviors.</p>
-<div class="table-wrapper"><table>
+<div><table>
 <thead>
 <tr>
 <th>Very Long Header Column 1</th>
@@ -607,8 +605,8 @@ _underscores_<br/>
 </tr>
 </tbody>
 </table></div>
-<h3 id="table-with-mixed-content">Table with Mixed Content</h3>
-<div class="table-wrapper"><table>
+<h3>Table with Mixed Content</h3>
+<div><table>
 <thead>
 <tr>
 <th>Type</th>
@@ -639,14 +637,14 @@ _underscores_<br/>
 </tr>
 </tbody>
 </table></div>
-<h2 id="citations-and-footnotes">Citations and Footnotes</h2>
-<p>While Markdown doesn’t have explicit citation syntax, footnotes can be used to create citations or references.<sup id="fnref:1"><a href="https://tesserato.github.io/DSBG/07-test-post/#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
-<p>Here is some text that needs a citation.<sup id="fnref:2"><a href="https://tesserato.github.io/DSBG/07-test-post/#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>  And another sentence that also needs a citation.<sup id="fnref:3"><a href="https://tesserato.github.io/DSBG/07-test-post/#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></p>
-<h2 id="very-long-words-and-strings">Very Long Words and Strings</h2>
+<h2>Citations and Footnotes</h2>
+<p>While Markdown doesn’t have explicit citation syntax, footnotes can be used to create citations or references.<sup><a href="https://tesserato.github.io/DSBG/07-test-post/#fn:1" role="doc-noteref">1</a></sup></p>
+<p>Here is some text that needs a citation.<sup><a href="https://tesserato.github.io/DSBG/07-test-post/#fn:2" role="doc-noteref">2</a></sup>  And another sentence that also needs a citation.<sup><a href="https://tesserato.github.io/DSBG/07-test-post/#fn:3" role="doc-noteref">3</a></sup></p>
+<h2>Very Long Words and Strings</h2>
 <p>Let’s test how very long words and strings are handled, especially for layout and wrapping.</p>
 <p>VeryLongWordWithoutSpacesToTestWordBreakingAndOverflow.</p>
 <p>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
-<h2 id="combinations">Combinations</h2>
+<h2>Combinations</h2>
 <p>Let’s combine some features for fun:</p>
 <ol>
 <li>A list item with <strong>bold text</strong>, <em>italic text</em>, and <a href="https://example.com">a link</a>.</li>
@@ -657,7 +655,7 @@ _underscores_<br/>
 </li>
 <li>A table cell with <strong>bold text</strong>, <em>italic text</em>, <code>inline code</code>, and <a href="https://example.com">a link</a>.</li>
 </ol>
-<div class="table-wrapper"><table>
+<div><table>
 <thead>
 <tr>
 <th>Combination Type</th>
@@ -676,17 +674,17 @@ _underscores_<br/>
 </tbody>
 </table></div>
 <p>This extended test post should cover a wider range of Markdown features and edge cases, providing a more thorough test of rendering and formatting.</p>
-<div class="footnotes" role="doc-endnotes">
+<div role="doc-endnotes">
 <hr/>
 <ol>
-<li id="fn:1">
-<p>This is an example citation footnote. You can put your citation details here. For example, Author, <em>Title</em>, Publisher, Year. <a href="https://tesserato.github.io/DSBG/07-test-post/#fnref:1" class="footnote-backref" role="doc-backlink">↩︎</a></p>
+<li>
+<p>This is an example citation footnote. You can put your citation details here. For example, Author, <em>Title</em>, Publisher, Year. <a href="https://tesserato.github.io/DSBG/07-test-post/#fnref:1" role="doc-backlink">↩︎</a></p>
 </li>
-<li id="fn:2">
-<p>Another citation footnote, perhaps to a different source. <a href="https://tesserato.github.io/DSBG/07-test-post/#fnref:2" class="footnote-backref" role="doc-backlink">↩︎</a></p>
+<li>
+<p>Another citation footnote, perhaps to a different source. <a href="https://tesserato.github.io/DSBG/07-test-post/#fnref:2" role="doc-backlink">↩︎</a></p>
 </li>
-<li id="fn:3">
-<p>And yet another footnote to demonstrate multiple citations. <a href="https://tesserato.github.io/DSBG/07-test-post/#fnref:3" class="footnote-backref" role="doc-backlink">↩︎</a></p>
+<li>
+<p>And yet another footnote to demonstrate multiple citations. <a href="https://tesserato.github.io/DSBG/07-test-post/#fnref:3" role="doc-backlink">↩︎</a></p>
 </li>
 </ol>
 </div>
@@ -694,7 +692,7 @@ _underscores_<br/>
 			<media:content
 				url="https://tesserato.github.io/DSBG/07-test-post/potato.webp"
 				medium="image"
-				type="image/jpeg"
+				type="image/webp"
 			/>
             <category>test tag 01</category>
             <category>test tag 02</category>
@@ -714,16 +712,16 @@ _underscores_<br/>
 		<item>
 			<title>Launching CodeWeaver</title>
 			<link>https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/index.html</guid>
 			<pubDate>Wed, 12 Feb 2025 00:00:00 +0000</pubDate>
 			<description>Continuing to open-source internal tools, I&#39;m releasing CodeWeaver, a CLI to generate a single markdown file from a directory of source files. The idea is to facilitate sharing and feeding the codebase information to AI tools.
 Check out https://github.com/tesserato/CodeWeaver for more.
 </description>
             <content:encoded><![CDATA[<p>from <a href="https://github.com/tesserato/CodeWeaver">https://github.com/tesserato/CodeWeaver</a>:</p>
-<h1 id="codeweaver-generate-a-markdown-document-of-your-codebase-structure-and-content">CodeWeaver: Generate a Markdown Document of Your Codebase Structure and Content</h1>
+<h1>CodeWeaver: Generate a Markdown Document of Your Codebase Structure and Content</h1>
 <p>CodeWeaver is a command-line tool designed to weave your codebase into a single, easy-to-navigate Markdown document. It recursively scans a directory, generating a structured representation of your project’s file hierarchy and embedding the content of each file within code blocks. This tool simplifies codebase sharing, documentation, and integration with AI/ML code analysis tools by providing a consolidated and readable Markdown output.<br/>
 The output for the current repository can be found <a href="https://github.com/tesserato/CodeWeaver/blob/main/codebase.md">here</a>.</p>
-<h1 id="key-features">Key Features</h1>
+<h1>Key Features</h1>
 <ul>
 <li><strong>Comprehensive Codebase Documentation:</strong> Generates a Markdown file that meticulously outlines your project’s directory and file structure in a clear, tree-like format.</li>
 <li><strong>Code Content Inclusion:</strong> Embeds the complete content of each file directly within the Markdown document, enclosed in syntax-highlighted code blocks based on file extensions.</li>
@@ -731,21 +729,21 @@ The output for the current repository can be found <a href="https://github.com/t
 <li><strong>Optional Path Logging:</strong> Choose to save lists of included and excluded file paths to separate files for detailed tracking and debugging of your ignore rules.</li>
 <li><strong>Simple Command-Line Interface:</strong>  Offers an intuitive command-line interface with straightforward options for customization.</li>
 </ul>
-<h1 id="installation">Installation</h1>
+<h1>Installation</h1>
 <p>If you have Go installed, run <code>go install github.com/tesserato/CodeWeaver@latest</code>to install the latest version of CodeWeaver or <code>go install github.com/tesserato/CodeWeaver@vX.Y.Z</code> to install a specific version.</p>
 <p>Alternatively, download the appropriate pre built executable from the <a href="https://github.com/tesserato/CodeWeaver/releases">releases page</a>.</p>
 <p>If necessary, make the <code>codeweaver</code> executable by using the <code>chmod</code> command:</p>
-<pre><code class="language-bash">chmod +x codeweaver
+<pre><code>chmod +x codeweaver
 </code></pre>
-<h1 id="usage">Usage</h1>
-<h2 id="for-help-run">For help, run</h2>
-<pre><code class="language-bash">codeweaver -h
+<h1>Usage</h1>
+<h2>For help, run</h2>
+<pre><code>codeweaver -h
 </code></pre>
-<h2 id="for-actual-usage-run">For actual usage, run</h2>
-<pre><code class="language-bash">codeweaver [options]
+<h2>For actual usage, run</h2>
+<pre><code>codeweaver [options]
 </code></pre>
 <p><strong>Options:</strong></p>
-<div class="table-wrapper"><table>
+<div><table>
 <thead>
 <tr>
 <th>Option</th>
@@ -786,32 +784,32 @@ The output for the current repository can be found <a href="https://github.com/t
 </tr>
 </tbody>
 </table></div>
-<h1 id="examples">Examples</h1>
-<h2 id="generate-documentation-for-the-current-directory"><strong>Generate documentation for the current directory:</strong></h2>
-<pre><code class="language-bash">./codeweaver
+<h1>Examples</h1>
+<h2><strong>Generate documentation for the current directory:</strong></h2>
+<pre><code>./codeweaver
 </code></pre>
 <p>This will create a file named <code>codebase.md</code> in the current directory, documenting the structure and content of the current directory and its subdirectories (excluding paths matching the default ignore pattern <code>\.git.*</code>).</p>
-<h2 id="specify-a-different-input-directory-and-output-file"><strong>Specify a different input directory and output file:</strong></h2>
-<pre><code class="language-bash">./codeweaver -dir=my_project -output=project_docs.md
+<h2><strong>Specify a different input directory and output file:</strong></h2>
+<pre><code>./codeweaver -dir=my_project -output=project_docs.md
 </code></pre>
 <p>This command will process the <code>my_project</code> directory and save the documentation to <code>project_docs.md</code>.</p>
-<h2 id="ignore-specific-file-types-and-directories"><strong>Ignore specific file types and directories:</strong></h2>
-<pre><code class="language-bash">./codeweaver -ignore=&#34;\.log,temp,build&#34; -output=detailed_docs.md
+<h2><strong>Ignore specific file types and directories:</strong></h2>
+<pre><code>./codeweaver -ignore=&#34;\.log,temp,build&#34; -output=detailed_docs.md
 </code></pre>
 <p>This example will generate <code>detailed_docs.md</code>, excluding any files or directories with names containing <code>.log</code>, <code>temp</code>, or <code>build</code>. Regular expression patterns are comma-separated.</p>
-<h2 id="save-lists-of-included-and-excluded-paths"><strong>Save lists of included and excluded paths:</strong></h2>
-<pre><code class="language-bash">./codeweaver -ignore=&#34;node_modules&#34; -included-paths-file=included.txt -excluded-paths-file=excluded.txt -output=code_overview.md
+<h2><strong>Save lists of included and excluded paths:</strong></h2>
+<pre><code>./codeweaver -ignore=&#34;node_modules&#34; -included-paths-file=included.txt -excluded-paths-file=excluded.txt -output=code_overview.md
 </code></pre>
 <p>This command will create <code>code_overview.md</code> while also saving the list of included paths to <code>included.txt</code> and the list of excluded paths (due to the <code>node_modules</code> ignore pattern) to <code>excluded.txt</code>.</p>
-<h1 id="contributing">Contributing</h1>
+<h1>Contributing</h1>
 <p>Contributions are welcome! If you encounter any issues, have suggestions for new features, or want to improve CodeWeaver, please feel free to open an issue or submit a pull request on the project’s GitHub repository.</p>
-<h1 id="license">License</h1>
+<h1>License</h1>
 <p>CodeWeaver is released under the <a href="https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/LICENSE">MIT License</a>. See the <code>LICENSE</code> file for complete license details.</p>
 ]]></content:encoded>
 			<media:content
 				url="https://tesserato.github.io/DSBG/2025-02-12-CodeWeaver-launch/codeweaver.gif"
 				medium="image"
-				type="image/jpeg"
+				type="image/gif"
 			/>
             <category>projects</category>
             <category>CodeWeaver</category>
@@ -820,7 +818,7 @@ The output for the current repository can be found <a href="https://github.com/t
 		<item>
 			<title>Version 0.0.6 - Sorting</title>
 			<link>https://tesserato.github.io/DSBG/06v006/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/06v006/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/06v006/index.html</guid>
 			<pubDate>Mon, 10 Feb 2025 00:00:00 +0000</pubDate>
 			<description>Version 0.0.6 of DSBG is out with support for sorting</description>
             <content:encoded><![CDATA[<p>Added support for sorting articles by created date, updated date, title, original path or tag.</p>
@@ -833,7 +831,7 @@ The output for the current repository can be found <a href="https://github.com/t
 		<item>
 			<title>Version 0.0.5 - Share Buttons</title>
 			<link>https://tesserato.github.io/DSBG/05v005/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/05v005/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/05v005/index.html</guid>
 			<pubDate>Sat, 08 Feb 2025 00:00:00 +0000</pubDate>
 			<description>Version 0.0.5 of DSBG is out with support for share buttons</description>
             <content:encoded><![CDATA[<p>In addition to minor improvements, particularly to the default themes, version 0.0.5 of DSBG introduces support for share buttons. These buttons utilize native intent APIs to facilitate sharing on Bluesky, Mastodon, Threads, and X. We opted to implement this feature from scratch, rather than relying on a third-party library, to ensure the generated pages remain as fast and tracking-free as possible. At their core, these share buttons are simply static links generated during compilation. Each SVG icon is approximately 1 KB, ensuring a negligible impact on performance.</p>
@@ -842,7 +840,7 @@ The output for the current repository can be found <a href="https://github.com/t
 			<media:content
 				url="https://tesserato.github.io/DSBG/05v005/05_share_buttons.png"
 				medium="image"
-				type="image/jpeg"
+				type="image/png"
 			/>
             <category>release</category>
             <category>share buttons</category>
@@ -850,7 +848,7 @@ The output for the current repository can be found <a href="https://github.com/t
 		<item>
 			<title>Using Dates from Paths</title>
 			<link>https://tesserato.github.io/DSBG/0320250110pathdates/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/0320250110pathdates/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/0320250110pathdates/index.html</guid>
 			<pubDate>Fri, 10 Jan 2025 00:00:00 +0000</pubDate>
 			<description>Demonstrating how DSBG gets dates from the path.</description>
             <content:encoded><![CDATA[<p>This post shows how DSBG can automatically extract the date from the file path, and use this path to also extract the tags for the article.</p>
@@ -864,26 +862,26 @@ The output for the current repository can be found <a href="https://github.com/t
 		<item>
 			<title>Themes</title>
 			<link>https://tesserato.github.io/DSBG/04themes/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/04themes/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/04themes/index.html</guid>
 			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
 			<description>Screenshots of the available themes</description>
             <content:encoded><![CDATA[<p>Besides the default theme, you can also choose the <code>dark</code> and <code>colorful</code> themes:</p>
-<h1 id="dark">Dark:</h1>
+<h1>Dark:</h1>
 <p><img src="https://tesserato.github.io/DSBG/04themes/04_dark.png" alt="dark theme style"/></p>
-<h1 id="colorful">Colorful:</h1>
+<h1>Colorful:</h1>
 <p><img src="https://tesserato.github.io/DSBG/04themes/04_colorful.png" alt="colorful theme style"/></p>
 ]]></content:encoded>
 			<media:content
 				url="https://tesserato.github.io/DSBG/04themes/04_themes.png"
 				medium="image"
-				type="image/jpeg"
+				type="image/png"
 			/>
             <category>themes</category>
 		</item>
 		<item>
 			<title>Markdown page example</title>
 			<link>https://tesserato.github.io/DSBG/markdown-page-example/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/markdown-page-example/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/markdown-page-example/index.html</guid>
 			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
 			<description>This is a markdown page example</description>
             <content:encoded><![CDATA[<p>Page created from a markdown file</p>
@@ -893,15 +891,15 @@ The output for the current repository can be found <a href="https://github.com/t
 		<item>
 			<title>README - Getting Started with DSBG</title>
 			<link>https://tesserato.github.io/DSBG/01readme/index.html</link>
-			<guid>https://tesserato.github.io/DSBG/01readme/index.html</guid>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/01readme/index.html</guid>
 			<pubDate>Fri, 03 Jan 2025 00:00:00 +0000</pubDate>
 			<description>How to install and use Dead Simple Blog Generator.</description>
-            <content:encoded><![CDATA[<h1 id="dsbg-dead-simple-blog-generator">DSBG: Dead Simple Blog Generator</h1>
+            <content:encoded><![CDATA[<h1>DSBG: Dead Simple Blog Generator</h1>
 <p><img src="https://github.com/tesserato/DSBG/blob/main/art/DemoSmall.gif?raw=true" alt="Demo"/></p>
 <p>DSBG is a <strong>minimalist, single-binary static blog generator</strong> written in Go.<br/>
 Point it at a folder of Markdown/HTML files, run one command, and get a clean, modern, fast blog.</p>
 <p><img src="https://github.com/tesserato/DSBG/blob/main/art/ThemesMobile.png?raw=true" alt="Themes"/></p>
-<h1 id="why-dsbg">Why DSBG?</h1>
+<h1>Why DSBG?</h1>
 <ul>
 <li><strong>Zero Setup</strong>: No runtime dependencies. Just one binary.</li>
 <li><strong>Fast by Design</strong>: Concurrent processing, instant rebuilds in watch mode.</li>
@@ -917,30 +915,30 @@ Point it at a folder of Markdown/HTML files, run one command, and get a clean, m
 <li><strong>Flexible Input &amp; Dates</strong>: Markdown or HTML, auto-extracted tags/metadata, and date parsing from filenames or file mtimes.</li>
 </ul>
 <hr/>
-<h1 id="quick-start">Quick Start</h1>
-<h2 id="install">Install</h2>
+<h1>Quick Start</h1>
+<h2>Install</h2>
 <p><strong>Binary Releases:</strong><br/>
 Download the latest release from GitHub.</p>
 <p><strong>Or via Go:</strong></p>
-<pre><code class="language-bash">go install github.com/tesserato/DSBG@latest
+<pre><code>go install github.com/tesserato/DSBG@latest
 </code></pre>
 <p>or</p>
-<pre><code class="language-bash">go install github.com/tesserato/DSBG@v0.1.4
+<pre><code>go install github.com/tesserato/DSBG@v0.1.4
 </code></pre>
-<h2 id="generate-a-site">Generate a Site</h2>
-<pre><code class="language-bash">dsbg -input content/ -output public/ -title &#34;My Blog&#34; -watch
+<h2>Generate a Site</h2>
+<pre><code>dsbg -input content/ -output public/ -title &#34;My Blog&#34; -watch
 </code></pre>
 <p>Serves your site at:<br/>
 <code>http://localhost:666</code></p>
 <hr/>
-<h2 id="writing-content">Writing Content</h2>
+<h2>Writing Content</h2>
 <p>DSBG uses standard Markdown with YAML frontmatter.</p>
 <p>To get a <strong>quick start template</strong> with the current date pre-filled, simply run:</p>
-<pre><code class="language-bash">dsbg -h
+<pre><code>dsbg -h
 </code></pre>
 <p>Copy the output from the <strong>TEMPLATE EXAMPLE</strong> section into a new <code>.md</code> file.</p>
 <p>Example structure:</p>
-<pre><code class="language-yaml">---
+<pre><code>---
 title: My New Post
 description: A short summary of the post.
 created: 2025 11 22
@@ -953,11 +951,11 @@ coverImagePath: image.webp
 My first post with DSBG!
 </code></pre>
 <hr/>
-<h1 id="configuration--flags">Configuration &amp; Flags</h1>
+<h1>Configuration &amp; Flags</h1>
 <p>DSBG exposes many options for themes, sorting, metadata, sharing, custom assets, and more.</p>
 <p><strong>Run <code>dsbg -h</code> for the full list of commands, available themes, and flags.</strong></p>
 <hr/>
-<h1 id="deploying">Deploying</h1>
+<h1>Deploying</h1>
 <p>The generated folder is 100% static: deploy anywhere:</p>
 <ul>
 <li>GitHub Pages</li>
@@ -967,8 +965,8 @@ My first post with DSBG!
 <li>Any static hosting service</li>
 </ul>
 <hr/>
-<h1 id="notes">Notes</h1>
-<h2 id="1-urls--file-structure">1. URLs &amp; File Structure</h2>
+<h1>Notes</h1>
+<h2>1. URLs &amp; File Structure</h2>
 <ul>
 <li><strong>“Clean URL” Transformation:</strong> DSBG converts every input file into a directory containing an <code>index.html</code>.
 <ul>
@@ -980,7 +978,7 @@ My first post with DSBG!
 <li><strong>URL Sanitization:</strong> URLs are aggressive sanitized. Non-alphanumeric characters are removed, and spaces/underscores become dashes (e.g., <code>C# for C++/CLI</code> becomes <code>csharp-for-cpluspluscli</code>).</li>
 <li><strong>Dates in URLs:</strong> By default, date patterns (e.g., <code>2024-11-03-</code>) are stripped from filenames and URLs. Use <code>-keep-date-in-paths</code> to preserve them.</li>
 </ul>
-<h2 id="2-dates--sorting">2. Dates &amp; Sorting</h2>
+<h2>2. Dates &amp; Sorting</h2>
 <ul>
 <li><strong>Date Hierarchy:</strong> The creation date is determined in this priority order:
 <ol>
@@ -992,48 +990,48 @@ My first post with DSBG!
 <li><strong>Date Formats:</strong> Dates must be in recognizable numeric formats (e.g., <code>2024-03-03 10:00</code>) for the parser to detect them.</li>
 <li><strong>Sorting:</strong> The <code>-sort</code> flag is strict and only accepts specific values like <code>date-created</code>, <code>reverse-date-created</code>, <code>title</code>, etc.</li>
 </ul>
-<h2 id="3-tags--organization">3. Tags &amp; Organization</h2>
+<h2>3. Tags &amp; Organization</h2>
 <ul>
 <li><strong>Folders = Tags:</strong> By default, folder names become tags. A file in <code>content/linux/kernel/</code> gets <code>linux</code> and <code>kernel</code> tags automatically. Disable with <code>-ignore-tags-from-paths</code>.</li>
 <li><strong><code>PAGE</code> Tag:</strong> Articles tagged with <code>PAGE</code> are removed from the main feed and added to the top navigation bar.</li>
 <li><strong>HTML <code>PAGE</code> Isolation:</strong> If an HTML file is tagged as <code>PAGE</code>, its <strong>entire parent folder</strong> is copied recursively to the output. <strong>Isolate HTML pages in their own subfolders</strong> to avoid duplicating unrelated files.</li>
 </ul>
-<h2 id="4-resource-handling">4. Resource Handling</h2>
+<h2>4. Resource Handling</h2>
 <ul>
 <li><strong>Smart Copying:</strong> DSBG only copies resources (images, PDFs, videos) explicitly referenced in your content. Unreferenced files are ignored.</li>
 <li><strong>Relative Paths:</strong> Root-relative paths (e.g., <code>/img/logo.png</code>) are treated as relative to the <strong>article’s directory</strong>, not the site root.</li>
 <li><strong>Strict Validation:</strong> By default, the build <strong>fails</strong> if a referenced resource is missing. Use <code>-ignore-errors</code> to log warnings instead.</li>
 </ul>
-<h2 id="5-seo--social-features">5. SEO &amp; Social Features</h2>
+<h2>5. SEO &amp; Social Features</h2>
 <ul>
 <li><strong>Base URL Required:</strong> For production builds, you <strong>must</strong> set <code>-base-url https://yourdomain.com</code>. Without it, RSS feeds, Sitemaps, and Social Sharing preview cards (Open Graph) will point to <code>localhost</code>.</li>
 <li><strong>Canonical URLs:</strong> You can override the auto-generated canonical URL per post using the <code>canonical_url</code> frontmatter field.</li>
 <li><strong>Share URL:</strong> The <code>share_url</code> field overrides the link used by share buttons, useful for “link blogs” where the post title should link to an external site.</li>
 </ul>
-<h2 id="6-theming--customization">6. Theming &amp; Customization</h2>
+<h2>6. Theming &amp; Customization</h2>
 <ul>
 <li><strong>Highlighting Detection:</strong> Syntax highlighting (Light/Dark) is automatically chosen by scanning your theme CSS for <code>color-scheme: dark;</code>.</li>
 <li><strong>Custom CSS:</strong> Providing a <code>-css-path</code> <strong>replaces</strong> the built-in theme entirely.</li>
 <li><strong>Custom JS:</strong> Providing a <code>-js-path</code> <strong>appends</strong> your script to the default functionality (search, copy buttons, etc. remain active).</li>
 <li><strong>Table Styling:</strong> All Markdown tables are wrapped in <code>&lt;div class=&#34;table-wrapper&#34;&gt;</code> to allow for responsive scrolling and styling.</li>
 </ul>
-<h2 id="7-watch-mode">7. Watch Mode</h2>
+<h2>7. Watch Mode</h2>
 <ul>
 <li><strong>Port:</strong> Default server port is <code>666</code>.</li>
 <li><strong>Live Reload:</strong> The browser automatically opens on start. Content, assets, and custom CSS/JS are watched for changes.</li>
 <li><strong>Cache Busting:</strong> A version query string (<code>?v=TIMESTAMP</code>) is appended to assets on every rebuild to ensure you always see the latest changes.</li>
 </ul>
-<h1 id="contributing">Contributing</h1>
+<h1>Contributing</h1>
 <p>PRs and feature suggestions are welcome!</p>
 <p>GitHub: <code>https://github.com/tesserato/DSBG</code></p>
-<h1 id="star-history">Star History</h1>
+<h1>Star History</h1>
 <p><a href="https://star-history.com/#tesserato/DSBG&amp;Date"><img src="https://api.star-history.com/svg?repos=tesserato/DSBG&amp;type=Date" alt="Star History Chart"/></a></p>
-<p><a href="https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_source=badge-dead-simple-blog-generator" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=912370&amp;theme=light&amp;t=1740653394729" alt="Dead Simple Blog Generator - Static Site Generator That Fast-Tracks Your Digital Presence | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54"/></a></p>
+<p><a href="https://www.producthunt.com/posts/dead-simple-blog-generator?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_source=badge-dead-simple-blog-generator" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=912370&amp;theme=light&amp;t=1740653394729" alt="Dead Simple Blog Generator - Static Site Generator That Fast-Tracks Your Digital Presence | Product Hunt" width="250" height="54"/></a></p>
 ]]></content:encoded>
 			<media:content
 				url="https://tesserato.github.io/DSBG/01readme/01_dsbg_logo.webp"
 				medium="image"
-				type="image/jpeg"
+				type="image/webp"
 			/>
 		</item>
 	</channel>
