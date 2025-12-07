@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
+	"net/url"
 	"path/filepath"
 	"strings"
 	texttemplate "text/template"
@@ -39,6 +40,7 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 		},
 		"urlPathEscape": EncodePathSegments,
 		// RSS-specific helpers.
+		"rssUrl": safeRSSUrl,
 		"htmlEscape": func(s string) string {
 			buf := &strings.Builder{}
 			template.HTMLEscape(buf, []byte(s))
@@ -75,19 +77,27 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 						for i, attr := range n.Attr {
 							if attr.Key == attrName {
 								val := strings.TrimSpace(attr.Val)
-								if val == "" || strings.HasPrefix(val, "http") || strings.HasPrefix(val, "//") || strings.HasPrefix(val, "mailto:") {
+								if val == "" || strings.HasPrefix(val, "mailto:") {
 									continue
 								}
-								// Build absolute path
-								// LinkToSelf e.g. "posts/my-post/index.html" -> Dir "posts/my-post"
-								baseDir := filepath.Dir(a.LinkToSelf)
-								// Clean path join
-								fullPath := filepath.Join(baseDir, val)
-								// Encode path segments (e.g. spaces)
-								encodedPath := EncodePathSegments(fullPath)
-								// Prepend base URL
-								absoluteUrl := fmt.Sprintf("%s/%s", strings.TrimSuffix(s.BaseUrl, "/"), encodedPath)
-								n.Attr[i].Val = absoluteUrl
+
+								// If absolute, just escape/clean it.
+								// If relative, make absolute based on article path.
+								var finalUrl string
+								if strings.HasPrefix(val, "http://") || strings.HasPrefix(val, "https://") || strings.HasPrefix(val, "//") {
+									finalUrl = safeRSSUrl(val, "") // No base needed for absolute
+								} else {
+									// LinkToSelf e.g. "posts/my-post/index.html" -> Dir "posts/my-post"
+									baseDir := filepath.Dir(a.LinkToSelf)
+									// Clean path join
+									fullPath := filepath.Join(baseDir, val)
+									// Make sure it uses forward slashes for URL consistency
+									fullPath = filepath.ToSlash(fullPath)
+
+									finalUrl = safeRSSUrl(fullPath, s.BaseUrl)
+								}
+
+								n.Attr[i].Val = finalUrl
 							}
 						}
 					}
@@ -144,4 +154,35 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 	}
 
 	return t, nil
+}
+
+// safeRSSUrl takes a URL (relative or absolute) and a base URL.
+// It resolves the URL to be absolute and ensures path segments are properly escaped (e.g. spaces -> %20).
+func safeRSSUrl(urlStr, baseUrl string) string {
+	if urlStr == "" {
+		return ""
+	}
+
+	// 1. Resolve to absolute URL if needed
+	targetUrl := urlStr
+	if !strings.HasPrefix(urlStr, "http://") && !strings.HasPrefix(urlStr, "https://") && !strings.HasPrefix(urlStr, "//") {
+		// Clean and join
+		cleanBase := strings.TrimSuffix(baseUrl, "/")
+		cleanPath := strings.TrimPrefix(urlStr, "/")
+		targetUrl = fmt.Sprintf("%s/%s", cleanBase, cleanPath)
+	}
+
+	// 2. Parse the URL to handle escaping correctly
+	u, err := url.Parse(targetUrl)
+	if err != nil {
+		// Fallback: simple escape if parse fails, though rare for valid input
+		return EncodePathSegments(targetUrl)
+	}
+
+	// 3. Re-encode the path to ensure spaces and special chars are valid for XML/RSS
+	// url.Parse decodes %20 back to space in u.Path, so we re-encode it safely.
+	// EncodePathSegments splits by / and escapes each segment.
+	u.Path = EncodePathSegments(u.Path)
+
+	return u.String()
 }
