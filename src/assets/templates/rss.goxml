@@ -9,13 +9,15 @@
 		<link>{{ .Settings.BaseUrl }}</link>
         <atom:link href="{{ .Settings.BaseUrl }}/rss.xml" rel="self" type="application/rss+xml" />
 		<description>{{ htmlEscape .Settings.DescriptionMarkdown }}</description>
+        <language>{{ .Settings.Lang }}</language>
+        <ttl>60</ttl>
 		<generator>Dead Simple Blog Generator</generator>
 		<lastBuildDate>{{ .BuildDate }}</lastBuildDate>
 		{{- range .Articles }}
 		<item>
 			<title>{{ .Title | htmlEscape }}</title>
 			<link>{{ buildArticleURL . $.Settings  }}</link>
-			<guid>{{ buildArticleURL . $.Settings  }}</guid>
+			<guid isPermaLink="true">{{ buildArticleURL . $.Settings  }}</guid>
 			<pubDate>{{ .Created | formatPubDate }}</pubDate>
 			<description>{{ .Description | htmlEscape }}</description>
             <content:encoded><![CDATA[{{ fixRSSContent .BodyContent . $.Settings }}]]></content:encoded>

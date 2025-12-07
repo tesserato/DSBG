@@ -62,8 +62,37 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 			}
 			var f func(*html.Node)
 			f = func(n *html.Node) {
+				// 1. Tag Removal Logic: Remove scripts, styles, iframes, and UI elements.
 				if n.Type == html.ElementNode {
+					switch n.Data {
+					// Remove dangerous or heavy tags
+					case "script", "style", "iframe", "form", "object", "embed", "input", "button":
+						if n.Parent != nil {
+							n.Parent.RemoveChild(n)
+						}
+						return // Stop processing this node
+
+					// Remove UI icons (copy.svg, rss.svg)
+					case "img":
+						for _, attr := range n.Attr {
+							if attr.Key == "src" {
+								if strings.Contains(attr.Val, "copy.svg") || strings.Contains(attr.Val, "rss.svg") {
+									if n.Parent != nil {
+										n.Parent.RemoveChild(n)
+									}
+									return
+								}
+							}
+						}
+					}
+				}
+
+				// 2. Attribute Cleaning & URL Fixing Logic
+				if n.Type == html.ElementNode {
+					var newAttrs []html.Attribute
 					var attrName string
+
+					// Determine which attribute contains a URL for this tag
 					switch n.Data {
 					case "img", "audio", "video", "source", "track":
 						attrName = "src"
@@ -73,43 +102,45 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 						attrName = "data"
 					}
 
-					if attrName != "" {
-						for i, attr := range n.Attr {
-							if attr.Key == attrName {
-								val := strings.TrimSpace(attr.Val)
-								if val == "" || strings.HasPrefix(val, "mailto:") {
-									continue
-								}
+					for _, attr := range n.Attr {
+						key := strings.ToLower(attr.Key)
 
-								// If absolute, just escape/clean it.
-								// If relative, make absolute based on article path.
-								var finalUrl string
+						// 2a. Remove dirty attributes (style, class, id, events)
+						if key == "style" || key == "class" || key == "id" || strings.HasPrefix(key, "on") {
+							continue
+						}
+
+						// 2b. Fix URL attributes (make absolute)
+						if attr.Key == attrName {
+							val := strings.TrimSpace(attr.Val)
+							if val != "" && !strings.HasPrefix(val, "mailto:") {
 								if strings.HasPrefix(val, "http://") || strings.HasPrefix(val, "https://") || strings.HasPrefix(val, "//") {
-									finalUrl = safeRSSUrl(val, "") // No base needed for absolute
+									attr.Val = safeRSSUrl(val, "")
 								} else {
-									// LinkToSelf e.g. "posts/my-post/index.html" -> Dir "posts/my-post"
+									// Make absolute based on article path
 									baseDir := filepath.Dir(a.LinkToSelf)
-									// Clean path join
 									fullPath := filepath.Join(baseDir, val)
-									// Make sure it uses forward slashes for URL consistency
 									fullPath = filepath.ToSlash(fullPath)
-
-									finalUrl = safeRSSUrl(fullPath, s.BaseUrl)
+									attr.Val = safeRSSUrl(fullPath, s.BaseUrl)
 								}
-
-								n.Attr[i].Val = finalUrl
 							}
 						}
+
+						newAttrs = append(newAttrs, attr)
 					}
+					n.Attr = newAttrs
 				}
-				for c := n.FirstChild; c != nil; c = c.NextSibling {
+
+				// 3. Recurse safely
+				for c := n.FirstChild; c != nil; {
+					next := c.NextSibling
 					f(c)
+					c = next
 				}
 			}
 			f(doc)
 
 			// Render just the nodes (body is implicit in parse if not present, but parse adds html/head/body wrappers)
-			// We want to render the content inside the body if it was added.
 			bodyNode := findFirstElement(doc, "body")
 			target := doc
 			if bodyNode != nil {
@@ -117,7 +148,6 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 			}
 
 			var buf bytes.Buffer
-			// If we found a body, render its children.
 			if bodyNode != nil {
 				for c := target.FirstChild; c != nil; c = c.NextSibling {
 					if err := html.Render(&buf, c); err != nil {
@@ -125,7 +155,6 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 					}
 				}
 			} else {
-				// Fallback
 				if err := html.Render(&buf, doc); err != nil {
 					return body
 				}
