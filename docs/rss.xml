@@ -27,7 +27,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
         <language>en</language>
         <ttl>60</ttl>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Sun, 07 Dec 2025 20:54:30 +0000</lastBuildDate>
+		<lastBuildDate>Sun, 07 Dec 2025 22:04:50 +0000</lastBuildDate>
 		<item>
 			<title>HTML page with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</link>
@@ -120,93 +120,6 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
 			/>
             <category>projects</category>
             <category>DSBG</category>
-		</item>
-		<item>
-			<title>ideal_bar</title>
-			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
-			<guid isPermaLink="true">https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
-			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
-			<description></description>
-            <content:encoded><![CDATA[<h1>Euler-Lagrange equation for beams:</h1>
-<p><span>\[ \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} 
-\]</span></p>
-<h1>Finite difference:</h1>
-<p><span>\[- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right)
-\]</span></p>
-<h2>Discretizing with:</h2>
-<ul>
-<li><span>\(t_{n}=\text{n} {\Delta}t,\)</span> where <span>\(\text{n}=0,1,2, ..., N\)</span></li>
-<li><span>\(x_{i}=\text{i} {\Delta}x,\)</span> where <span>\(\text{i}=0,1,2, ..., M\)</span></li>
-</ul>
-<p><span>\[# Solving for the next time step we have the finite difference schema:
-$${y}_{\text{i},\text{n} + 1} = \frac{\kappa^{2} {\Delta}t^{2} \left(4 {y}_{\text{i} + 1,\text{n}} - {y}_{\text{i} + 2,\text{n}} + 4 {y}_{\text{i} - 1,\text{n}} - {y}_{\text{i} - 2,\text{n}} - 6 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{4}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$
-## Independent variables:
-- $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar
-- $f_{s} \left(\text{Hz}\right)$: sampling frequency
-- $\text{{L}} \left(\text{m}\right)$: length of the string or bar
-- $d \left(\text{s}\right)$: duration of the simulation
-- **Units**:
-  - $\text{Hz} \left(\text{ hertz }\right)$ 
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-## Dependent variables:
-- $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps
-- $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps
-- ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time
-- ${\Delta}x \left(\text{m}\right)$: Delta length
-- **Units**:
-  - $\text{m} \left(\text{ meter }\right)$ 
-  - $\text{s} \left(\text{ second }\right)$ 
-
-### $\kappa$ and ${\Delta}x$ are unknown in terms of the independent variables 
-#### $\kappa$: Since, for the simply supported boundary condition:
-$f_0 = 22.3733 \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
-
-And recalling that:
-
-$\kappa = \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
-
-then:
-
-$f_0 = 22.3733*\kappa$
-
-$\kappa = f_0 / 22.3733$
-
-#### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme for the Euler-Bernoulli beam equation.
-Ansatz: $y_{i,n} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$
-
-Replacing the ansatz in the finite difference schema and simplifying:
-
-$$\text{Y} e^{i \left(\text{i} k {\Delta}x + w {\Delta}t \left(\text{n} + 1\right)\right)} = - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{- 2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$
-
-$$e^{i w {\Delta}t} + e^{- i w {\Delta}t} = - \frac{\kappa^{2} {\Delta}t^{2} e^{2 i k {\Delta}x}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{4}} - \frac{\kappa^{2} {\Delta}t^{2} e^{- 2 i k {\Delta}x}}{{\Delta}x^{4}} + 2$$
-
-$$2 \cos{\left(w {\Delta}t \right)} = - \frac{4 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} + \frac{8 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} - \frac{4 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + 2$$
-
-Solving for $w \in \mathbb{R}$:
-
-$$w = \left[ \frac{- \operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)} + 2 \pi}{{\Delta}t}, \  \frac{\operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)}}{{\Delta}t}\right]$$
-
-Thus:
-
-$$ -1 \le \frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \le 1 $$
-
-$$ - 2 {\Delta}x^{4} \le - 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} \le 0 $$
-
-$$ - \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \le - \cos^{2}{\left(k {\Delta}x \right)} + 2 \cos{\left(k {\Delta}x \right)} - 1 \le 0 $$
-
-$$ \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \ge \left(\cos{\left(k {\Delta}x \right)} - 1\right)^{2} \ge 0 $$
-
-$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge \left|{\cos{\left(k {\Delta}x \right)} - 1}\right| \ge 0 $$
-
-$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge 2 $$
-
-$$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
-
-\]</span></p>
-]]></content:encoded>
-            <category>strings</category>
 		</item>
 		<item>
 			<title>ideal_string</title>
@@ -312,6 +225,93 @@ $$\frac{{\Delta}x}{c {\Delta}t} \ge 1$$
 $${\Delta}x \ge c {\Delta}t$$
 
 $${\Delta}x \ge 2 \text{{L}} f_{0} {\Delta}t$$
+
+\]</span></p>
+]]></content:encoded>
+            <category>strings</category>
+		</item>
+		<item>
+			<title>ideal_bar</title>
+			<link>https://tesserato.github.io/DSBG/strings/idealbar/index.html</link>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/strings/idealbar/index.html</guid>
+			<pubDate>Thu, 06 Nov 2025 20:13:19 +0000</pubDate>
+			<description></description>
+            <content:encoded><![CDATA[<h1>Euler-Lagrange equation for beams:</h1>
+<p><span>\[ \frac{\partial^{2}}{\partial t^{2}} y{\left(x,t \right)} = - \kappa^{2} \frac{\partial^{4}}{\partial x^{4}} y{\left(x,t \right)} 
+\]</span></p>
+<h1>Finite difference:</h1>
+<p><span>\[- \frac{2 y{\left(x,t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t - {\Delta}t \right)}}{{\Delta}t^{2}} + \frac{y{\left(x,t + {\Delta}t \right)}}{{\Delta}t^{2}} = - \kappa^{2} \left(\frac{6 y{\left(x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x - 2 {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x - {\Delta}x,t \right)}}{{\Delta}x^{4}} - \frac{4 y{\left(x + {\Delta}x,t \right)}}{{\Delta}x^{4}} + \frac{y{\left(x + 2 {\Delta}x,t \right)}}{{\Delta}x^{4}}\right)
+\]</span></p>
+<h2>Discretizing with:</h2>
+<ul>
+<li><span>\(t_{n}=\text{n} {\Delta}t,\)</span> where <span>\(\text{n}=0,1,2, ..., N\)</span></li>
+<li><span>\(x_{i}=\text{i} {\Delta}x,\)</span> where <span>\(\text{i}=0,1,2, ..., M\)</span></li>
+</ul>
+<p><span>\[# Solving for the next time step we have the finite difference schema:
+$${y}_{\text{i},\text{n} + 1} = \frac{\kappa^{2} {\Delta}t^{2} \left(4 {y}_{\text{i} + 1,\text{n}} - {y}_{\text{i} + 2,\text{n}} + 4 {y}_{\text{i} - 1,\text{n}} - {y}_{\text{i} - 2,\text{n}} - 6 {y}_{\text{i},\text{n}}\right)}{{\Delta}x^{4}} - {y}_{\text{i},\text{n} - 1} + 2 {y}_{\text{i},\text{n}}$$
+## Independent variables:
+- $f_{0} \left(\text{Hz}\right)$: natural frequency of the string or bar
+- $f_{s} \left(\text{Hz}\right)$: sampling frequency
+- $\text{{L}} \left(\text{m}\right)$: length of the string or bar
+- $d \left(\text{s}\right)$: duration of the simulation
+- **Units**:
+  - $\text{Hz} \left(\text{ hertz }\right)$ 
+  - $\text{m} \left(\text{ meter }\right)$ 
+  - $\text{s} \left(\text{ second }\right)$ 
+
+## Dependent variables:
+- $\text{N} \left(\text{{unitless}}\right) =\left\lfloor{d f_{s}}\right\rfloor$: number of time steps
+- $\text{M} \left(\text{{unitless}}\right) =\left\lfloor{\frac{\text{{L}}}{{\Delta}x}}\right\rfloor$: number of space steps
+- ${\Delta}t \left(\text{s}\right)=\frac{d}{\left\lfloor{d f_{s}}\right\rfloor}=\frac{d}{\text{N}}$: Delta time
+- ${\Delta}x \left(\text{m}\right)$: Delta length
+- **Units**:
+  - $\text{m} \left(\text{ meter }\right)$ 
+  - $\text{s} \left(\text{ second }\right)$ 
+
+### $\kappa$ and ${\Delta}x$ are unknown in terms of the independent variables 
+#### $\kappa$: Since, for the simply supported boundary condition:
+$f_0 = 22.3733 \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
+
+And recalling that:
+
+$\kappa = \sqrt{\frac{\text{E} \text{I}}{\mu \text{{L}}^{4}}}$
+
+then:
+
+$f_0 = 22.3733*\kappa$
+
+$\kappa = f_0 / 22.3733$
+
+#### ${\Delta}x$: Von Neumann stability analysis on the finite difference scheme for the Euler-Bernoulli beam equation.
+Ansatz: $y_{i,n} = \text{Y} e^{i \left(\text{i} k {\Delta}x + \text{n} w {\Delta}t\right)}$
+
+Replacing the ansatz in the finite difference schema and simplifying:
+
+$$\text{Y} e^{i \left(\text{i} k {\Delta}x + w {\Delta}t \left(\text{n} + 1\right)\right)} = - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} \text{Y} {\Delta}t^{2} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} \text{Y} {\Delta}t^{2} e^{- i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} - \frac{\kappa^{2} \text{Y} {\Delta}t^{2} e^{- 2 i k {\Delta}x} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}}{{\Delta}x^{4}} + 2 \text{Y} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t} - \text{Y} e^{- i w {\Delta}t} e^{i \text{i} k {\Delta}x} e^{i \text{n} w {\Delta}t}$$
+
+$$e^{i w {\Delta}t} + e^{- i w {\Delta}t} = - \frac{\kappa^{2} {\Delta}t^{2} e^{2 i k {\Delta}x}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{i k {\Delta}x}}{{\Delta}x^{4}} - \frac{6 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + \frac{4 \kappa^{2} {\Delta}t^{2} e^{- i k {\Delta}x}}{{\Delta}x^{4}} - \frac{\kappa^{2} {\Delta}t^{2} e^{- 2 i k {\Delta}x}}{{\Delta}x^{4}} + 2$$
+
+$$2 \cos{\left(w {\Delta}t \right)} = - \frac{4 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} + \frac{8 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)}}{{\Delta}x^{4}} - \frac{4 \kappa^{2} {\Delta}t^{2}}{{\Delta}x^{4}} + 2$$
+
+Solving for $w \in \mathbb{R}$:
+
+$$w = \left[ \frac{- \operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)} + 2 \pi}{{\Delta}t}, \  \frac{\operatorname{acos}{\left(\frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \right)}}{{\Delta}t}\right]$$
+
+Thus:
+
+$$ -1 \le \frac{- 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} + {\Delta}x^{4}}{{\Delta}x^{4}} \le 1 $$
+
+$$ - 2 {\Delta}x^{4} \le - 2 \kappa^{2} {\Delta}t^{2} \cos^{2}{\left(k {\Delta}x \right)} + 4 \kappa^{2} {\Delta}t^{2} \cos{\left(k {\Delta}x \right)} - 2 \kappa^{2} {\Delta}t^{2} \le 0 $$
+
+$$ - \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \le - \cos^{2}{\left(k {\Delta}x \right)} + 2 \cos{\left(k {\Delta}x \right)} - 1 \le 0 $$
+
+$$ \frac{{\Delta}x^{4}}{\kappa^{2} {\Delta}t^{2}} \ge \left(\cos{\left(k {\Delta}x \right)} - 1\right)^{2} \ge 0 $$
+
+$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge \left|{\cos{\left(k {\Delta}x \right)} - 1}\right| \ge 0 $$
+
+$$ \frac{{\Delta}x^{2}}{\kappa {\Delta}t} \ge 2 $$
+
+$$ {\Delta}x \ge \sqrt{2 \kappa {\Delta}t} $$
 
 \]</span></p>
 ]]></content:encoded>
@@ -860,6 +860,16 @@ The output for the current repository can be found <a href="https://github.com/t
             <category>example</category>
 		</item>
 		<item>
+			<title>Markdown page example</title>
+			<link>https://tesserato.github.io/DSBG/markdown-page-example/index.html</link>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/markdown-page-example/index.html</guid>
+			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
+			<description>This is a markdown page example</description>
+            <content:encoded><![CDATA[<p>Page created from a markdown file</p>
+]]></content:encoded>
+            <category>PAGE</category>
+		</item>
+		<item>
 			<title>Themes</title>
 			<link>https://tesserato.github.io/DSBG/04themes/index.html</link>
 			<guid isPermaLink="true">https://tesserato.github.io/DSBG/04themes/index.html</guid>
@@ -877,16 +887,6 @@ The output for the current repository can be found <a href="https://github.com/t
 				type="image/png"
 			/>
             <category>themes</category>
-		</item>
-		<item>
-			<title>Markdown page example</title>
-			<link>https://tesserato.github.io/DSBG/markdown-page-example/index.html</link>
-			<guid isPermaLink="true">https://tesserato.github.io/DSBG/markdown-page-example/index.html</guid>
-			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
-			<description>This is a markdown page example</description>
-            <content:encoded><![CDATA[<p>Page created from a markdown file</p>
-]]></content:encoded>
-            <category>PAGE</category>
 		</item>
 		<item>
 			<title>README - Getting Started with DSBG</title>
