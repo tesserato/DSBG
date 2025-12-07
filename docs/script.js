@@ -154,14 +154,14 @@ initializeTagFilters();
  */
 function copyMarkdownToClipboard(element) {
     // 1. Read all the data from the element's data attributes.
-    const title = element.dataset.title;
-    const description = element.dataset.description;
-    const articleUrl = element.dataset.url;
-    const imageUrl = element.dataset.imageUrl;
+    const title = element.dataset.title || "";
+    const description = element.dataset.description || "";
+    const articleUrl = element.dataset.url || "";
+    const imageUrl = element.dataset.imageUrl || "";
     const tags = element.dataset.tags ? element.dataset.tags.split(',') : [];
 
     // Check if the full raw markdown content is available via a sibling hidden textarea
-    let rawText = null;
+    let rawText = "";
     try {
         // Look for the textarea specifically to use its .value property
         const rawTextEl = element.parentNode.querySelector('textarea.dsbg-raw-text');
@@ -172,30 +172,52 @@ function copyMarkdownToClipboard(element) {
         console.warn("Could not retrieve raw markdown text", e);
     }
 
-    let markdownString = "";
+    // Build the Markdown string with the requested structure:
+    // # TITLE
+    // DESCRIPTION
+    // [IMAGE]
+    // TEXT (Markdown)
+    // TAGS
+    // LINK
+
+    let parts = [];
+
+    if (title) {
+        parts.push(`# ${title}`);
+    }
+
+    if (description) {
+        parts.push(description);
+    }
+
+    if (imageUrl) {
+        parts.push(`![${title}](${imageUrl})`);
+    }
 
     if (rawText) {
-        // Use the raw markdown content if available
-        markdownString = rawText;
-    } else {
-        // Fallback: Build the Markdown string in the summary format.
-        markdownString = `# ${title}\n\n`;
+        parts.push(rawText);
+    }
 
-        if (description) {
-            markdownString += `${description}\n\n`;
-        }
+    if (tags.length > 0) {
+        const hashtags = tags
+            .map(tag => {
+                const cleanTag = tag.trim().replace(/\s+/g, '');
+                return cleanTag ? `#${cleanTag}` : '';
+            })
+            .filter(t => t)
+            .join(' ');
 
-        if (imageUrl) {
-            markdownString += `![${title}](${imageUrl})\n\n`;
-        }
-
-        markdownString += `${articleUrl}\n\n`;
-
-        if (tags.length > 0) {
-            const hashtags = tags.map(tag => `#${tag.trim().replace(/ /g, '')}`).join(' ');
-            markdownString += `${hashtags}`;
+        if (hashtags) {
+            parts.push(hashtags);
         }
     }
+
+    if (articleUrl) {
+        parts.push(articleUrl);
+    }
+
+    // Join with double newlines for clear separation
+    const markdownString = parts.join('\n\n');
 
     // 3. Use the modern Navigator API to copy to the clipboard.
     // We do not modify the DOM/UI on success.
