@@ -74,7 +74,8 @@ type Article struct {
 	Updated      time.Time
 	Tags         []string
 	TextContent  string
-	HtmlContent  string
+	HtmlContent  string // Full HTML page content (with head, body, etc.)
+	BodyContent  string // Inner HTML body content (for RSS)
 	OriginalPath string
 	LinkToSelf   string
 	LinkToSave   string

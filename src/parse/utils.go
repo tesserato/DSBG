@@ -456,6 +456,17 @@ func encodeComponent(s string) string {
 	return strings.ReplaceAll(url.QueryEscape(s), "+", "%20")
 }
 
+// EncodePathSegments splits a path by slashes and URL-encodes each segment,
+// preserving the structure for valid URIs (e.g. "foo bar/baz.jpg" -> "foo%20bar/baz.jpg").
+func EncodePathSegments(path string) string {
+	parts := strings.Split(path, "/")
+	for i, part := range parts {
+		// PathEscape converts space to %20 (correct for path components)
+		parts[i] = url.PathEscape(part)
+	}
+	return strings.Join(parts, "/")
+}
+
 // toAbsoluteUrl handles logic to prevent double-concatenation of BaseURL
 // It is used by BuildShareUrl and registered as "absURL" in templates.
 func toAbsoluteUrl(urlStr string, baseUrl string) string {

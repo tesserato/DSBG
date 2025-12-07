@@ -112,7 +112,8 @@ func MarkdownFile(path string, settings Settings) (Article, []string, error) {
 	article := Article{
 		OriginalPath: path,
 		TextContent:  textContent,
-		HtmlContent:  wrappedHtmlContent,
+		HtmlContent:  wrappedHtmlContent, // Initial HTML content (fragment)
+		BodyContent:  wrappedHtmlContent, // Save the fragment as BodyContent for RSS
 	}
 
 	// Decode frontmatter into the Article.

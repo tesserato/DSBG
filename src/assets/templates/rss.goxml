@@ -18,10 +18,10 @@
 			<guid>{{ buildArticleURL . $.Settings  }}</guid>
 			<pubDate>{{ .Created | formatPubDate }}</pubDate>
 			<description>{{ .Description | htmlEscape }}</description>
-            <content:encoded><![CDATA[{{ .HtmlContent }}]]></content:encoded>
+            <content:encoded><![CDATA[{{ fixRSSContent .BodyContent . $.Settings }}]]></content:encoded>
 			{{- if .CoverImage }}
 			<media:content
-				url="{{ $.Settings.BaseUrl}}/{{ .CoverImage }}"
+				url="{{ $.Settings.BaseUrl}}/{{ .CoverImage | urlPathEscape }}"
 				medium="image"
 				type="image/jpeg"
 			/>

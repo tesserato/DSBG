@@ -40,6 +40,15 @@ func HTMLFile(path string, settings Settings) (Article, []string, error) {
 	// Extract resources using the HTML tree.
 	resources := ExtractResources(htmlTree)
 
+	// Extract just the body content for RSS (excludes head/scripts/styles usually).
+	bodyContent, err := getBodyContent(htmlTree)
+	if err == nil {
+		article.BodyContent = bodyContent
+	} else {
+		// Fallback to full content if extraction fails
+		article.BodyContent = htmlContent
+	}
+
 	// Extract <title>.
 	titleNode := findFirstElement(htmlTree, "title")
 	if titleNode != nil && titleNode.FirstChild != nil {
@@ -217,6 +226,28 @@ func wrapTables(htmlContent string) (string, error) {
 	var buf bytes.Buffer
 	if err := html.Render(&buf, doc); err != nil {
 		return "", fmt.Errorf("failed to render updated HTML content: %w", err)
+	}
+	return buf.String(), nil
+}
+
+// getBodyContent extracts the inner HTML of the <body> tag.
+// If no body tag is found, it renders the entire document.
+func getBodyContent(doc *html.Node) (string, error) {
+	body := findFirstElement(doc, "body")
+	if body == nil {
+		// No body tag, maybe it's a fragment. Render everything.
+		var buf bytes.Buffer
+		if err := html.Render(&buf, doc); err != nil {
+			return "", err
+		}
+		return buf.String(), nil
+	}
+	// Render all children of body
+	var buf bytes.Buffer
+	for c := body.FirstChild; c != nil; c = c.NextSibling {
+		if err := html.Render(&buf, c); err != nil {
+			return "", err
+		}
 	}
 	return buf.String(), nil
 }
