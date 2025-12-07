@@ -7,7 +7,7 @@
 	<channel>
 		<title>{{ .Settings.Title }}</title>
 		<link>{{ .Settings.BaseUrl }}</link>
-        <atom:link href="{{ .Settings.BaseUrl }}/rss.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="{{ rssUrl "rss.xml" .Settings.BaseUrl }}" rel="self" type="application/rss+xml" />
 		<description>{{ htmlEscape .Settings.DescriptionMarkdown }}</description>
         <language>{{ .Settings.Lang }}</language>
         <ttl>60</ttl>

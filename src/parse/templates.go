@@ -111,17 +111,29 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 						}
 
 						// 2b. Fix URL attributes (make absolute)
-						if attr.Key == attrName {
+						// Ensure we compare using the lowercased key to match attrName (which is lowercase)
+						if key == attrName {
 							val := strings.TrimSpace(attr.Val)
 							if val != "" && !strings.HasPrefix(val, "mailto:") {
 								if strings.HasPrefix(val, "http://") || strings.HasPrefix(val, "https://") || strings.HasPrefix(val, "//") {
 									attr.Val = safeRSSUrl(val, "")
 								} else {
-									// Make absolute based on article path
+									// Resolve relative paths to absolute URLs.
+									// "Root-anchored" resolution: Treat baseDir as absolute (start with /)
+									// to force filepath.Join to resolve ".." without going above root.
 									baseDir := filepath.Dir(a.LinkToSelf)
-									fullPath := filepath.Join(baseDir, val)
+
+									// 1. Join with leading slash to anchor at imaginary root
+									fullPath := filepath.Join("/", baseDir, val)
+
+									// 2. Normalize to slashes (Windows fix)
 									fullPath = filepath.ToSlash(fullPath)
-									attr.Val = safeRSSUrl(fullPath, s.BaseUrl)
+
+									// 3. Remove the leading slash to get cleaner relative-to-root path
+									// (safeRSSUrl will prepend BaseUrl)
+									cleanRelPath := strings.TrimPrefix(fullPath, "/")
+
+									attr.Val = safeRSSUrl(cleanRelPath, s.BaseUrl)
 								}
 							}
 						}
