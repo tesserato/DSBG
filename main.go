@@ -179,9 +179,14 @@ func main() {
 		printGroup("LOCAL DEVELOPMENT", "watch", "port")
 
 		fmt.Fprintf(os.Stderr, "%sFRONTMATTER METADATA:%s\n", cBold+cYellow, cReset)
-		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "link", "Override the URL shared by buttons (good for link-blogging).")
-		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "canonical_url", "Overrides the auto-generated canonical URL (useful when cross-posting).")
-		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "cover_image", "Path to an image to display on the index and in social cards.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "title", "Article title. Defaults to filename if omitted.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "description", "Short summary used for SEO, index page, and RSS.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "created", "Creation date (YYYY-MM-DD). Overrides filename/mtime.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "updated", "Last modified date. Defaults to file mtime if omitted.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "tags", "Comma-separated keywords (e.g. \"Tech, Go\").")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "cover_image", "Path to an image (relative) for index/social cards.")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "link", "External URL for link-blogging (redirects title link).")
+		fmt.Fprintf(os.Stderr, "  %-15s %s\n", "canonical_url", "Override the canonical URL for SEO/cross-posting.")
 		fmt.Fprintln(os.Stderr)
 
 		fmt.Fprintf(os.Stderr, "%sSHARE TEMPLATE VARIABLES:%s\n", cBold+cYellow, cReset)
