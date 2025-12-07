@@ -78,7 +78,7 @@
                    onclick="copyMarkdownToClipboard(this)"
                    data-title="{{.Art.Title}}"
                    data-description="{{.Art.Description}}"
-                   data-url="{{$.Settings.BaseUrl}}/{{.Art.LinkToSelf}}"
+                   data-url="{{if .Art.ExternalLink}}{{.Art.ExternalLink}}{{else}}{{$.Settings.BaseUrl}}/{{.Art.LinkToSelf}}{{end}}"
                    data-image-url="{{if .Art.CoverImage}}{{ absURL .Art.CoverImage $.Settings.BaseUrl }}{{end}}"
                    data-tags="{{range $i, $tag := .Art.Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
                     <img src='{{genRelativeLink .Art.LinkToSelf "copy.svg"}}' alt="Copy article Markdown summary">
@@ -102,6 +102,9 @@
     <main>
         <article>
             {{.Ctt}}
+            {{if .Art.ExternalLink}}
+            <p><a href="{{.Art.ExternalLink}}">Link</a></p>
+            {{end}}
         </article>
     </main>
 

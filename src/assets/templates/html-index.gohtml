@@ -80,7 +80,7 @@
                onclick="copyMarkdownToClipboard(this)"
                data-title="{{.Title}}"
                data-description="{{.Description}}"
-               data-url="{{$Settings.BaseUrl}}/{{.LinkToSelf}}"
+               data-url="{{if .ExternalLink}}{{.ExternalLink}}{{else}}{{$Settings.BaseUrl}}/{{.LinkToSelf}}{{end}}"
                data-image-url="{{if .CoverImage}}{{ absURL .CoverImage $Settings.BaseUrl }}{{end}}"
                data-tags="{{range $i, $tag := .Tags}}{{if $i}},{{end}}{{$tag}}{{end}}">
                 <img src="copy.svg" alt="Copy article Markdown summary">
