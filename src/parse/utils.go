@@ -34,6 +34,47 @@ var regexColorScheme = regexp.MustCompile(`(?i)color-scheme\s*:\s*([^;]+);`)
 // Used to sanitize tags for hashtag generation (e.g. "C++" -> "C", "Go Lang" -> "GoLang").
 var regexHashtagCleanup = regexp.MustCompile(`[^\p{L}\p{N}_]+`)
 
+// IsImage reports whether a filename has a common image extension.
+// It is exported so it can be used by main and templates.
+func IsImage(s string) bool {
+	s = strings.ToLower(s)
+	exts := []string{".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff"}
+	for _, e := range exts {
+		if strings.HasSuffix(s, e) {
+			return true
+		}
+	}
+	return false
+}
+
+// MimeTypeFromFilename returns a best-effort MIME type for a given filename or path.
+// It falls back to "image/jpeg" to preserve backwards-compatible behavior for unknown types.
+func MimeTypeFromFilename(s string) string {
+	s = strings.ToLower(s)
+
+	switch {
+	case strings.HasSuffix(s, ".jpg"), strings.HasSuffix(s, ".jpeg"):
+		return "image/jpeg"
+	case strings.HasSuffix(s, ".png"):
+		return "image/png"
+	case strings.HasSuffix(s, ".gif"):
+		return "image/gif"
+	case strings.HasSuffix(s, ".webp"):
+		return "image/webp"
+	case strings.HasSuffix(s, ".svg"):
+		return "image/svg+xml"
+	case strings.HasSuffix(s, ".ico"):
+		return "image/x-icon"
+	case strings.HasSuffix(s, ".bmp"):
+		return "image/bmp"
+	case strings.HasSuffix(s, ".tif"), strings.HasSuffix(s, ".tiff"):
+		return "image/tiff"
+	default:
+		// Sensible default that matches the previous hard-coded behavior.
+		return "image/jpeg"
+	}
+}
+
 // RemoveDateFromPath attempts to remove date patterns from a given string.
 func RemoveDateFromPath(stringWithDate string) string {
 	for _, regexPattern := range regexPatterns {
@@ -541,19 +582,6 @@ func BuildShareUrl(urlTemplate string, article Article, settings Settings) templ
 	result = strings.ReplaceAll(result, "{TAG}", encodedFirstTag)
 
 	return template.URL(result)
-}
-
-// IsImage reports whether a filename has a common image extension.
-// It is exported so it can be used by main and templates.
-func IsImage(s string) bool {
-	s = strings.ToLower(s)
-	exts := []string{".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff"}
-	for _, e := range exts {
-		if strings.HasSuffix(s, e) {
-			return true
-		}
-	}
-	return false
 }
 
 // SaveThemeCSS copies the selected theme CSS file from embedded assets to style.css in the output directory.

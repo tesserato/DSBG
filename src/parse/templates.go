@@ -28,6 +28,7 @@ func LoadTemplates(assets fs.FS) (SiteTemplates, error) {
 	var err error
 
 	funcMap := template.FuncMap{
+		"mimeType":          MimeTypeFromFilename,
 		"genRelativeLink":   genRelativeLink,
 		"stringsJoin":       strings.Join,
 		"buildShareUrl":     BuildShareUrl,

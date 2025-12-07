@@ -25,7 +25,7 @@
 			<media:content
 				url="{{ rssUrl .CoverImage $.Settings.BaseUrl }}"
 				medium="image"
-				type="image/jpeg"
+				type="{{ mimeType .CoverImage }}"
 			/>
 			{{- end }}
             {{- range .Tags }}
