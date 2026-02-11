@@ -223,11 +223,13 @@ func wrapTables(htmlContent string) (string, error) {
 	for _, table := range tables {
 		wrapNodeIfTable(table)
 	}
-	var buf bytes.Buffer
-	if err := html.Render(&buf, doc); err != nil {
+	// Return only the body inner HTML so Markdown article rendering keeps
+	// fragment content and does not inject a nested <html><head><body> tree.
+	bodyContent, err := getBodyContent(doc)
+	if err != nil {
 		return "", fmt.Errorf("failed to render updated HTML content: %w", err)
 	}
-	return buf.String(), nil
+	return bodyContent, nil
 }
 
 // getBodyContent extracts the inner HTML of the <body> tag.
