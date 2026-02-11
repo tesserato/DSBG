@@ -8,6 +8,14 @@ if (Get-Command winget -ErrorAction SilentlyContinue) {
     Write-Warning "winget not found. Skipping Go upgrade attempt."
 }
 
+$root = Get-Location
+$cov = Join-Path $root "coverage.out"
+$html = Join-Path $root "coverage.html"
+
+go test ./src/parse -coverprofile="$cov"
+go tool cover -func="$cov"
+go tool cover -html="$cov" -o "$html"
+
 go get -u
 go get -u ./...
 go mod tidy

@@ -1,0 +1,1578 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>parse: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/tesserato/DSBG/src/parse/html.go (56.1%)</option>
+				
+				<option value="file1">github.com/tesserato/DSBG/src/parse/markdown.go (44.0%)</option>
+				
+				<option value="file2">github.com/tesserato/DSBG/src/parse/rss.go (0.0%)</option>
+				
+				<option value="file3">github.com/tesserato/DSBG/src/parse/templates.go (0.0%)</option>
+				
+				<option value="file4">github.com/tesserato/DSBG/src/parse/utils.go (5.2%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package parse
+
+import (
+        "bytes"
+        "fmt"
+        "io/fs"
+        "log"
+        "os"
+        "path/filepath"
+        "slices"
+        "strings"
+        texttemplate "text/template"
+
+        "github.com/k3a/html2text"
+        "golang.org/x/net/html"
+)
+
+// HTMLFile parses an HTML file, extracts metadata, and populates an Article.
+// It returns the Article and a list of extracted resources.
+func HTMLFile(path string, settings Settings) (Article, []string, error) <span class="cov8" title="1">{
+        data, err := os.ReadFile(path)
+        if err != nil </span><span class="cov0" title="0">{
+                return Article{}, nil, fmt.Errorf("failed to read HTML file '%s': %w", path, err)
+        }</span>
+        <span class="cov8" title="1">htmlContent := string(data)
+        textContent := html2text.HTML2Text(htmlContent)
+
+        article := Article{
+                OriginalPath: path,
+                HtmlContent:  htmlContent,
+                TextContent:  textContent,
+        }
+
+        // Parse the HTML content into a node tree.
+        htmlTree, err := html.Parse(strings.NewReader(htmlContent))
+        if err != nil </span><span class="cov0" title="0">{
+                return Article{}, nil, fmt.Errorf("failed to parse HTML content of '%s': %w", path, err)
+        }</span>
+
+        // Extract resources using the HTML tree.
+        <span class="cov8" title="1">resources := ExtractResources(htmlTree)
+
+        // Extract just the body content for RSS (excludes head/scripts/styles usually).
+        bodyContent, err := getBodyContent(htmlTree)
+        if err == nil </span><span class="cov8" title="1">{
+                article.BodyContent = bodyContent
+        }</span> else<span class="cov0" title="0"> {
+                // Fallback to full content if extraction fails
+                article.BodyContent = htmlContent
+        }</span>
+
+        // Extract &lt;title&gt;.
+        <span class="cov8" title="1">titleNode := findFirstElement(htmlTree, "title")
+        if titleNode != nil &amp;&amp; titleNode.FirstChild != nil </span><span class="cov8" title="1">{
+                article.Title = titleNode.FirstChild.Data
+        }</span>
+
+        <span class="cov8" title="1">if article.Title == "" </span><span class="cov0" title="0">{
+                article.Title = strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
+        }</span>
+
+        // Extract relevant &lt;meta&gt; tags.
+        <span class="cov8" title="1">for _, metaTag := range findAllElements(htmlTree, "meta") </span><span class="cov8" title="1">{
+                key := ""
+                val := ""
+                for _, attr := range metaTag.Attr </span><span class="cov8" title="1">{
+                        switch strings.Trim(strings.ToLower(attr.Key), " ") </span>{
+                        case "name":<span class="cov8" title="1">
+                                key = strings.Trim(strings.ToLower(attr.Val), " ")</span>
+                        case "content":<span class="cov8" title="1">
+                                val = strings.Trim(attr.Val, " ")</span>
+                        }
+                }
+                <span class="cov8" title="1">if key == "" || val == "" </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+
+                <span class="cov8" title="1">switch key </span>{
+                case "description":<span class="cov8" title="1">
+                        article.Description = val</span>
+                case "keywords":<span class="cov0" title="0">
+                        tags := strings.ReplaceAll(val, ";", ",")
+                        tagsArray := strings.Split(tags, ",")
+                        for i, tag := range tagsArray </span><span class="cov0" title="0">{
+                                tagsArray[i] = strings.TrimSpace(tag)
+                        }</span>
+                        <span class="cov0" title="0">article.Tags = tagsArray</span>
+                case "created":<span class="cov0" title="0">
+                        createdTime, err := DateTimeFromString(val)
+                        if err != nil </span><span class="cov0" title="0">{
+                                if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                        return Article{}, nil, fmt.Errorf("failed to parse 'created' date in '%s': %w", path, err)
+                                }</span>
+                                <span class="cov0" title="0">log.Printf("Warning: Failed to parse 'created' date from meta tag in '%s': %v\n", path, err)</span>
+                        } else<span class="cov0" title="0"> {
+                                article.Created = createdTime
+                        }</span>
+                case "updated":<span class="cov0" title="0">
+                        updatedTime, err := DateTimeFromString(val)
+                        if err != nil </span><span class="cov0" title="0">{
+                                if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                        return Article{}, nil, fmt.Errorf("failed to parse 'updated' date in '%s': %w", path, err)
+                                }</span>
+                                <span class="cov0" title="0">log.Printf("Warning: Failed to parse 'updated' date from meta tag in '%s': %v\n", path, err)</span>
+                        } else<span class="cov0" title="0"> {
+                                article.Updated = updatedTime
+                        }</span>
+                case "cover_image":<span class="cov0" title="0">
+                        article.CoverImage = val</span>
+                case "link":<span class="cov0" title="0">
+                        article.ExternalLink = val</span>
+                case "canonical_url":<span class="cov0" title="0">
+                        article.CanonicalUrl = val</span>
+                }
+        }
+
+        // Set Created and Updated to file dates if not provided in meta tags.
+        <span class="cov8" title="1">fileInfo, err := os.Stat(path)
+        if err != nil </span><span class="cov0" title="0">{
+                return Article{}, nil, fmt.Errorf("failed to get file info for '%s': %w", path, err)
+        }</span>
+        <span class="cov8" title="1">if article.Created.IsZero() </span><span class="cov8" title="1">{
+                if createdFromFile, err := DateTimeFromString(path); err == nil </span><span class="cov0" title="0">{
+                        article.Created = createdFromFile
+                }</span> else<span class="cov8" title="1"> {
+                        article.Created = fileInfo.ModTime()
+                }</span>
+        }
+        <span class="cov8" title="1">if article.Updated.IsZero() </span><span class="cov8" title="1">{
+                article.Updated = fileInfo.ModTime()
+        }</span>
+
+        <span class="cov8" title="1">return article, resources, nil</span>
+}
+
+// GenerateHtmlIndex creates an HTML index page listing all processed articles
+// using the provided template and settings.
+func GenerateHtmlIndex(articles []Article, settings Settings, tmpl *texttemplate.Template, assets fs.FS) error <span class="cov0" title="0">{
+        var allTags []string
+        var pageList []Article
+        var articleList []Article
+
+        for _, article := range articles </span><span class="cov0" title="0">{
+                if slices.Contains(article.Tags, "PAGE") </span><span class="cov0" title="0">{
+                        pageList = append(pageList, article)
+                }</span> else<span class="cov0" title="0"> {
+                        allTags = append(allTags, article.Tags...)
+                        articleList = append(articleList, article)
+                }</span>
+        }
+
+        <span class="cov0" title="0">var tp bytes.Buffer
+        err := tmpl.Execute(&amp;tp, struct {
+                AllTags     []string
+                PageList    []Article
+                ArticleList []Article
+                Settings    Settings
+        }{
+                AllTags:     allTags,
+                PageList:    pageList,
+                ArticleList: articleList,
+                Settings:    settings,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error executing HTML index template: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">filePath := filepath.Join(settings.OutputPath, settings.IndexName)
+        if err := os.WriteFile(filePath, tp.Bytes(), 0644); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error writing HTML index file to '%s': %w", filePath, err)
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// findFirstElement recursively searches for the first HTML element with the given tag name.
+func findFirstElement(n *html.Node, tag string) *html.Node <span class="cov8" title="1">{
+        if n.Type == html.ElementNode &amp;&amp; n.Data == tag </span><span class="cov8" title="1">{
+                return n
+        }</span>
+        <span class="cov8" title="1">for c := n.FirstChild; c != nil; c = c.NextSibling </span><span class="cov8" title="1">{
+                if found := findFirstElement(c, tag); found != nil </span><span class="cov8" title="1">{
+                        return found
+                }</span>
+        }
+        <span class="cov8" title="1">return nil</span>
+}
+
+// findAllElements recursively searches for all HTML elements with the given tag name.
+func findAllElements(n *html.Node, tag string) []*html.Node <span class="cov8" title="1">{
+        var elements []*html.Node
+        if n.Type == html.ElementNode &amp;&amp; n.Data == tag </span><span class="cov8" title="1">{
+                elements = append(elements, n)
+        }</span>
+        <span class="cov8" title="1">for c := n.FirstChild; c != nil; c = c.NextSibling </span><span class="cov8" title="1">{
+                elements = append(elements, findAllElements(c, tag)...)
+        }</span>
+        <span class="cov8" title="1">return elements</span>
+}
+
+// wrapNodeIfTable wraps the provided table node in a div.table-wrapper for styling.
+func wrapNodeIfTable(n *html.Node) <span class="cov8" title="1">{
+        if n.Type == html.ElementNode &amp;&amp; n.Data == "table" </span><span class="cov8" title="1">{
+                div := &amp;html.Node{
+                        Type: html.ElementNode,
+                        Data: "div",
+                        Attr: []html.Attribute{
+                                {Key: "class", Val: "table-wrapper"},
+                        },
+                }
+                n.Parent.InsertBefore(div, n)
+                n.Parent.RemoveChild(n)
+                div.AppendChild(n)
+        }</span>
+}
+
+// wrapTables wraps all &lt;table&gt; elements in div.table-wrapper and returns the updated HTML.
+func wrapTables(htmlContent string) (string, error) <span class="cov8" title="1">{
+        doc, err := html.Parse(strings.NewReader(htmlContent))
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("failed to parse HTML content: %w", err)
+        }</span>
+        <span class="cov8" title="1">tables := findAllElements(doc, "table")
+        for _, table := range tables </span><span class="cov8" title="1">{
+                wrapNodeIfTable(table)
+        }</span>
+        // Return only the body inner HTML so Markdown article rendering keeps
+        // fragment content and does not inject a nested &lt;html&gt;&lt;head&gt;&lt;body&gt; tree.
+        <span class="cov8" title="1">bodyContent, err := getBodyContent(doc)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("failed to render updated HTML content: %w", err)
+        }</span>
+        <span class="cov8" title="1">return bodyContent, nil</span>
+}
+
+// getBodyContent extracts the inner HTML of the &lt;body&gt; tag.
+// If no body tag is found, it renders the entire document.
+func getBodyContent(doc *html.Node) (string, error) <span class="cov8" title="1">{
+        body := findFirstElement(doc, "body")
+        if body == nil </span><span class="cov0" title="0">{
+                // No body tag, maybe it's a fragment. Render everything.
+                var buf bytes.Buffer
+                if err := html.Render(&amp;buf, doc); err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov0" title="0">return buf.String(), nil</span>
+        }
+        // Render all children of body
+        <span class="cov8" title="1">var buf bytes.Buffer
+        for c := body.FirstChild; c != nil; c = c.NextSibling </span><span class="cov8" title="1">{
+                if err := html.Render(&amp;buf, c); err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+        }
+        <span class="cov8" title="1">return buf.String(), nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package parse
+
+import (
+        "bytes"
+        "fmt"
+        "html/template"
+        "io/fs"
+        "log"
+        "os"
+        "path/filepath"
+        "reflect"
+        "strings"
+        texttemplate "text/template"
+        "time"
+
+        "github.com/k3a/html2text"
+        mathjax "github.com/litao91/goldmark-mathjax"
+        "github.com/yuin/goldmark"
+        "github.com/yuin/goldmark/ast"
+        "github.com/yuin/goldmark/extension"
+        "github.com/yuin/goldmark/parser"
+        rendererhtml "github.com/yuin/goldmark/renderer/html"
+        "github.com/yuin/goldmark/text"
+        "go.abhg.dev/goldmark/frontmatter"
+        "golang.org/x/net/html"
+)
+
+// Markdown is the configured Goldmark Markdown parser with frontmatter support.
+var Markdown = goldmark.New(
+        goldmark.WithRendererOptions(
+                rendererhtml.WithUnsafe(),
+                rendererhtml.WithHardWraps(),
+                rendererhtml.WithXHTML(),
+        ),
+        goldmark.WithParserOptions(
+                parser.WithAttribute(),
+                parser.WithAutoHeadingID(),
+        ),
+        goldmark.WithExtensions(
+                &amp;frontmatter.Extender{},
+                mathjax.MathJax,
+                extension.Table,
+                extension.Strikethrough,
+                extension.Linkify,
+                extension.TaskList,
+                extension.Footnote,
+                extension.Typographer,
+        ),
+)
+
+// MarkdownFile parses a Markdown file, extracts frontmatter, and populates an Article.
+// It returns the Article and a list of extracted resource paths (e.g., images).
+func MarkdownFile(path string, settings Settings) (Article, []string, error) <span class="cov8" title="1">{
+        data, err := os.ReadFile(path)
+        if err != nil </span><span class="cov0" title="0">{
+                return Article{}, nil, fmt.Errorf("failed to read Markdown file '%s': %w", path, err)
+        }</span>
+
+        // Create a context to store frontmatter.
+        <span class="cov8" title="1">context := parser.NewContext()
+
+        // Parse the Markdown content into an AST.
+        p := Markdown.Parser()
+        reader := text.NewReader(data)
+        doc := p.Parse(reader, parser.WithContext(context))
+
+        // Extract resources from the AST (images and links).
+        var resources []string
+        _ = ast.Walk(doc, func(n ast.Node, entering bool) (ast.WalkStatus, error) </span><span class="cov8" title="1">{
+                if !entering </span><span class="cov8" title="1">{
+                        return ast.WalkContinue, nil
+                }</span>
+                // Extract images
+                <span class="cov8" title="1">if n.Kind() == ast.KindImage </span><span class="cov0" title="0">{
+                        if img, ok := n.(*ast.Image); ok </span><span class="cov0" title="0">{
+                                resources = append(resources, string(img.Destination))
+                        }</span>
+                }
+                // Extract generic links (useful for linked PDFs, videos, zip files, etc.)
+                <span class="cov8" title="1">if n.Kind() == ast.KindLink </span><span class="cov0" title="0">{
+                        if link, ok := n.(*ast.Link); ok </span><span class="cov0" title="0">{
+                                resources = append(resources, string(link.Destination))
+                        }</span>
+                }
+                <span class="cov8" title="1">return ast.WalkContinue, nil</span>
+        })
+
+        // Render to HTML.
+        <span class="cov8" title="1">var buf bytes.Buffer
+        r := Markdown.Renderer()
+        if err := r.Render(&amp;buf, data, doc); err != nil </span><span class="cov0" title="0">{
+                return Article{}, nil, fmt.Errorf("failed to render Markdown to HTML for '%s': %w", path, err)
+        }</span>
+        <span class="cov8" title="1">rawHtmlContent := buf.String()
+
+        // We parse the HTML we just generated to ensure we catch everything.
+        if htmlNode, err := html.Parse(strings.NewReader(rawHtmlContent)); err == nil </span><span class="cov8" title="1">{
+                htmlResources := ExtractResources(htmlNode)
+                resources = append(resources, htmlResources...)
+        }</span>
+
+        // Use html2text to generate clean plain text for search and summaries,
+        <span class="cov8" title="1">textContent := html2text.HTML2Text(rawHtmlContent)
+
+        // Wrap tables in divs for potential CSS styling.
+        wrappedHtmlContent, err := wrapTables(rawHtmlContent)
+        if err != nil </span><span class="cov0" title="0">{
+                return Article{}, nil, fmt.Errorf("failed to wrap tables for '%s': %w", path, err)
+        }</span>
+
+        // Initialize Article with basic information.
+        <span class="cov8" title="1">article := Article{
+                OriginalPath: path,
+                TextContent:  textContent,
+                HtmlContent:  wrappedHtmlContent, // Initial HTML content (fragment)
+                BodyContent:  wrappedHtmlContent, // Save the fragment as BodyContent for RSS
+        }
+
+        // Decode frontmatter into the Article.
+        if fm := frontmatter.Get(context); fm != nil </span><span class="cov0" title="0">{
+                var d map[string]any
+                if err := fm.Decode(&amp;d); err != nil </span><span class="cov0" title="0">{
+                        return Article{}, nil, fmt.Errorf("failed to decode frontmatter in '%s': %w", path, err)
+                }</span>
+                <span class="cov0" title="0">for name, value := range d </span><span class="cov0" title="0">{
+                        name = strings.ToLower(strings.TrimSpace(name))
+                        if value == nil </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+                        <span class="cov0" title="0">switch name </span>{
+                        case "title":<span class="cov0" title="0">
+                                article.Title = value.(string)</span>
+                        case "description":<span class="cov0" title="0">
+                                article.Description = value.(string)</span>
+                        case "created":<span class="cov0" title="0">
+                                switch reflect.TypeOf(value).Kind() </span>{
+                                case reflect.String:<span class="cov0" title="0">
+                                        createdTime, err := DateTimeFromString(value.(string))
+                                        if err != nil </span><span class="cov0" title="0">{
+                                                if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                                        return Article{}, nil, fmt.Errorf("failed to parse 'created' date in '%s': %w", path, err)
+                                                }</span>
+                                                <span class="cov0" title="0">log.Printf("Warning: Failed to parse 'created' date in '%s': %v\n", path, err)</span>
+                                        } else<span class="cov0" title="0"> {
+                                                article.Created = createdTime
+                                        }</span>
+                                default:<span class="cov0" title="0">
+                                        if t, ok := value.(time.Time); ok </span><span class="cov0" title="0">{
+                                                article.Created = t
+                                        }</span>
+                                }
+                        case "updated":<span class="cov0" title="0">
+                                switch reflect.TypeOf(value).Kind() </span>{
+                                case reflect.String:<span class="cov0" title="0">
+                                        updatedTime, err := DateTimeFromString(value.(string))
+                                        if err != nil </span><span class="cov0" title="0">{
+                                                if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                                        return Article{}, nil, fmt.Errorf("failed to parse 'updated' date in '%s': %w", path, err)
+                                                }</span>
+                                                <span class="cov0" title="0">log.Printf("Warning: Failed to parse 'updated' date in '%s': %v\n", path, err)</span>
+                                        } else<span class="cov0" title="0"> {
+                                                article.Updated = updatedTime
+                                        }</span>
+                                default:<span class="cov0" title="0">
+                                        if t, ok := value.(time.Time); ok </span><span class="cov0" title="0">{
+                                                article.Updated = t
+                                        }</span>
+                                }
+                        case "cover_image":<span class="cov0" title="0">
+                                article.CoverImage = value.(string)</span>
+                        case "link":<span class="cov0" title="0">
+                                article.ExternalLink = value.(string)</span>
+                        case "canonical_url":<span class="cov0" title="0">
+                                article.CanonicalUrl = value.(string)</span>
+                        case "tags":<span class="cov0" title="0">
+                                switch reflect.TypeOf(value).Kind() </span>{
+                                case reflect.Slice:<span class="cov0" title="0">
+                                        tags := value.([]any)
+                                        for _, tag := range tags </span><span class="cov0" title="0">{
+                                                tagString := strings.TrimSpace(tag.(string))
+                                                article.Tags = append(article.Tags, tagString)
+                                        }</span>
+                                case reflect.String:<span class="cov0" title="0">
+                                        tags := strings.ReplaceAll(value.(string), ";", ",")
+                                        tagsArray := strings.Split(tags, ",")
+                                        for i, tag := range tagsArray </span><span class="cov0" title="0">{
+                                                tagsArray[i] = strings.TrimSpace(tag)
+                                        }</span>
+                                        <span class="cov0" title="0">article.Tags = tagsArray</span>
+                                }
+                        }
+                }
+        }
+
+        // Set Created and Updated to file dates if not provided in frontmatter.
+        <span class="cov8" title="1">fileInfo, err := os.Stat(path)
+        if err != nil </span><span class="cov0" title="0">{
+                return Article{}, nil, fmt.Errorf("failed to get file info for '%s': %w", path, err)
+        }</span>
+        <span class="cov8" title="1">if article.Created.IsZero() </span><span class="cov8" title="1">{
+                if createdFromFile, err := DateTimeFromString(path); err == nil </span><span class="cov0" title="0">{
+                        article.Created = createdFromFile
+                }</span> else<span class="cov8" title="1"> {
+                        article.Created = fileInfo.ModTime()
+                }</span>
+        }
+        <span class="cov8" title="1">if article.Updated.IsZero() </span><span class="cov8" title="1">{
+                article.Updated = fileInfo.ModTime()
+        }</span>
+
+        // Default title to filename if not provided.
+        <span class="cov8" title="1">if article.Title == "" </span><span class="cov8" title="1">{
+                article.Title = strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
+        }</span>
+
+        <span class="cov8" title="1">return article, resources, nil</span>
+}
+
+// FormatMarkdown applies an HTML template to the Markdown content of an article.
+// It injects article and settings into the provided template and updates HtmlContent.
+func FormatMarkdown(article *Article, settings Settings, tmpl *texttemplate.Template, assets fs.FS) error <span class="cov8" title="1">{
+        var tp bytes.Buffer
+        err := tmpl.Execute(&amp;tp, struct {
+                Art      Article
+                Ctt      template.HTML
+                Text     string
+                Settings Settings
+        }{
+                Art:      *article,
+                Ctt:      template.HTML(article.HtmlContent),
+                Text:     article.TextContent,
+                Settings: settings,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error executing markdown article template: %w", err)
+        }</span>
+        <span class="cov8" title="1">article.HtmlContent = tp.String()
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package parse
+
+import (
+        "bytes"
+        "fmt"
+        "io/fs"
+        "os"
+        "path/filepath"
+        "slices"
+        texttemplate "text/template"
+        "time"
+)
+
+// GenerateRSS creates an RSS feed XML file from the processed articles.
+// It sorts articles by creation date in descending order and writes rss.xml
+// into the output directory.
+func GenerateRSS(articles []Article, settings Settings, tmpl *texttemplate.Template, assets fs.FS) error <span class="cov0" title="0">{
+        // Sort articles by creation date in descending order for the RSS feed.
+        slices.SortFunc(articles, func(a, b Article) int </span><span class="cov0" title="0">{
+                return b.Created.Compare(a.Created)
+        }</span>)
+
+        <span class="cov0" title="0">var tp bytes.Buffer
+        err := tmpl.Execute(&amp;tp, struct {
+                Articles  []Article
+                Settings  Settings
+                BuildDate string
+        }{
+                Articles:  articles,
+                Settings:  settings,
+                BuildDate: time.Now().Format(time.RFC1123Z),
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error executing RSS template: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">filePath := filepath.Join(settings.OutputPath, "rss.xml")
+        if err := os.WriteFile(filePath, tp.Bytes(), 0644); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error writing RSS file to '%s': %w", filePath, err)
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package parse
+
+import (
+        "bytes"
+        "fmt"
+        "html/template"
+        "io/fs"
+        "net/url"
+        "path/filepath"
+        "strings"
+        texttemplate "text/template"
+        "time"
+
+        "golang.org/x/net/html"
+)
+
+// SiteTemplates holds the pre-parsed templates for articles, index, and RSS.
+type SiteTemplates struct {
+        Article *texttemplate.Template
+        Index   *texttemplate.Template
+        RSS     *texttemplate.Template
+}
+
+// LoadTemplates parses all necessary templates from the embedded assets once at startup.
+// It returns a SiteTemplates struct with initialized template pointers.
+func LoadTemplates(assets fs.FS) (SiteTemplates, error) <span class="cov0" title="0">{
+        var t SiteTemplates
+        var err error
+
+        funcMap := template.FuncMap{
+                "mimeType":          MimeTypeFromFilename,
+                "genRelativeLink":   genRelativeLink,
+                "stringsJoin":       strings.Join,
+                "buildShareUrl":     BuildShareUrl,
+                "lower":             strings.ToLower,
+                "isImage":           IsImage,
+                "articleSchemaType": ArticleSchemaType,
+                "absURL":            toAbsoluteUrl,
+                "makeLink": func(title string) string </span><span class="cov0" title="0">{
+                        return strings.ReplaceAll(strings.ToLower(title), " ", "-") + "/"
+                }</span>,
+                "urlPathEscape": EncodePathSegments,
+                // RSS-specific helpers.
+                "rssUrl": safeRSSUrl,
+                "htmlEscape": func(s string) string <span class="cov0" title="0">{
+                        buf := &amp;strings.Builder{}
+                        template.HTMLEscape(buf, []byte(s))
+                        return buf.String()
+                }</span>,
+                "formatPubDate": func(timeObj interface{}) string <span class="cov0" title="0">{
+                        if tt, ok := timeObj.(time.Time); ok </span><span class="cov0" title="0">{
+                                return tt.Format(time.RFC1123Z)
+                        }</span>
+                        <span class="cov0" title="0">return ""</span>
+                },
+                "buildArticleURL": func(a Article, s Settings) string <span class="cov0" title="0">{
+                        return fmt.Sprintf("%s/%s", strings.TrimSuffix(s.BaseUrl, "/"), strings.TrimPrefix(a.LinkToSelf, "/"))
+                }</span>,
+                "fixRSSContent": func(body string, a Article, s Settings) string <span class="cov0" title="0">{
+                        doc, err := html.Parse(strings.NewReader(body))
+                        if err != nil </span><span class="cov0" title="0">{
+                                return body
+                        }</span>
+                        <span class="cov0" title="0">var f func(*html.Node)
+                        f = func(n *html.Node) </span><span class="cov0" title="0">{
+                                // 1. Tag Removal Logic: Remove scripts, styles, iframes, and UI elements.
+                                if n.Type == html.ElementNode </span><span class="cov0" title="0">{
+                                        switch n.Data </span>{
+                                        // Remove dangerous or heavy tags
+                                        case "script", "style", "iframe", "form", "object", "embed", "input", "button":<span class="cov0" title="0">
+                                                if n.Parent != nil </span><span class="cov0" title="0">{
+                                                        n.Parent.RemoveChild(n)
+                                                }</span>
+                                                <span class="cov0" title="0">return</span> // Stop processing this node
+
+                                        // Remove UI icons (copy.svg, rss.svg)
+                                        case "img":<span class="cov0" title="0">
+                                                for _, attr := range n.Attr </span><span class="cov0" title="0">{
+                                                        if attr.Key == "src" </span><span class="cov0" title="0">{
+                                                                if strings.Contains(attr.Val, "copy.svg") || strings.Contains(attr.Val, "rss.svg") </span><span class="cov0" title="0">{
+                                                                        if n.Parent != nil </span><span class="cov0" title="0">{
+                                                                                n.Parent.RemoveChild(n)
+                                                                        }</span>
+                                                                        <span class="cov0" title="0">return</span>
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+
+                                // 2. Attribute Cleaning &amp; URL Fixing Logic
+                                <span class="cov0" title="0">if n.Type == html.ElementNode </span><span class="cov0" title="0">{
+                                        var newAttrs []html.Attribute
+                                        var attrName string
+
+                                        // Determine which attribute contains a URL for this tag
+                                        switch n.Data </span>{
+                                        case "img", "audio", "video", "source", "track":<span class="cov0" title="0">
+                                                attrName = "src"</span>
+                                        case "a", "link":<span class="cov0" title="0">
+                                                attrName = "href"</span>
+                                        case "object":<span class="cov0" title="0">
+                                                attrName = "data"</span>
+                                        }
+
+                                        <span class="cov0" title="0">for _, attr := range n.Attr </span><span class="cov0" title="0">{
+                                                key := strings.ToLower(attr.Key)
+
+                                                // 2a. Remove dirty attributes (style, class, id, events)
+                                                if key == "style" || key == "class" || key == "id" || strings.HasPrefix(key, "on") </span><span class="cov0" title="0">{
+                                                        continue</span>
+                                                }
+
+                                                // 2b. Fix URL attributes (make absolute)
+                                                // Ensure we compare using the lowercased key to match attrName (which is lowercase)
+                                                <span class="cov0" title="0">if key == attrName </span><span class="cov0" title="0">{
+                                                        val := strings.TrimSpace(attr.Val)
+                                                        if val != "" &amp;&amp; !strings.HasPrefix(val, "mailto:") </span><span class="cov0" title="0">{
+                                                                if strings.HasPrefix(val, "http://") || strings.HasPrefix(val, "https://") || strings.HasPrefix(val, "//") </span><span class="cov0" title="0">{
+                                                                        attr.Val = safeRSSUrl(val, "")
+                                                                }</span> else<span class="cov0" title="0"> {
+                                                                        // Resolve relative paths to absolute URLs.
+                                                                        // "Root-anchored" resolution: Treat baseDir as absolute (start with /)
+                                                                        // to force filepath.Join to resolve ".." without going above root.
+                                                                        baseDir := filepath.Dir(a.LinkToSelf)
+
+                                                                        // 1. Join with leading slash to anchor at imaginary root
+                                                                        fullPath := filepath.Join("/", baseDir, val)
+
+                                                                        // 2. Normalize to slashes (Windows fix)
+                                                                        fullPath = filepath.ToSlash(fullPath)
+
+                                                                        // 3. Remove the leading slash to get cleaner relative-to-root path
+                                                                        // (safeRSSUrl will prepend BaseUrl)
+                                                                        cleanRelPath := strings.TrimPrefix(fullPath, "/")
+
+                                                                        attr.Val = safeRSSUrl(cleanRelPath, s.BaseUrl)
+                                                                }</span>
+                                                        }
+                                                }
+
+                                                <span class="cov0" title="0">newAttrs = append(newAttrs, attr)</span>
+                                        }
+                                        <span class="cov0" title="0">n.Attr = newAttrs</span>
+                                }
+
+                                // 3. Recurse safely
+                                <span class="cov0" title="0">for c := n.FirstChild; c != nil; </span><span class="cov0" title="0">{
+                                        next := c.NextSibling
+                                        f(c)
+                                        c = next
+                                }</span>
+                        }
+                        <span class="cov0" title="0">f(doc)
+
+                        // Render just the nodes (body is implicit in parse if not present, but parse adds html/head/body wrappers)
+                        bodyNode := findFirstElement(doc, "body")
+                        target := doc
+                        if bodyNode != nil </span><span class="cov0" title="0">{
+                                target = bodyNode
+                        }</span>
+
+                        <span class="cov0" title="0">var buf bytes.Buffer
+                        if bodyNode != nil </span><span class="cov0" title="0">{
+                                for c := target.FirstChild; c != nil; c = c.NextSibling </span><span class="cov0" title="0">{
+                                        if err := html.Render(&amp;buf, c); err != nil </span><span class="cov0" title="0">{
+                                                return body
+                                        }</span>
+                                }
+                        } else<span class="cov0" title="0"> {
+                                if err := html.Render(&amp;buf, doc); err != nil </span><span class="cov0" title="0">{
+                                        return body
+                                }</span>
+                        }
+
+                        <span class="cov0" title="0">return buf.String()</span>
+                },
+        }
+
+        // Parse article template.
+        <span class="cov0" title="0">t.Article, err = texttemplate.New("html-article.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-article.gohtml")
+        if err != nil </span><span class="cov0" title="0">{
+                return t, fmt.Errorf("error parsing article template: %w", err)
+        }</span>
+
+        // Parse index template.
+        <span class="cov0" title="0">t.Index, err = texttemplate.New("html-index.gohtml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/html-index.gohtml")
+        if err != nil </span><span class="cov0" title="0">{
+                return t, fmt.Errorf("error parsing index template: %w", err)
+        }</span>
+
+        // Parse RSS template.
+        <span class="cov0" title="0">t.RSS, err = texttemplate.New("rss.goxml").Funcs(funcMap).ParseFS(assets, "src/assets/templates/rss.goxml")
+        if err != nil </span><span class="cov0" title="0">{
+                return t, fmt.Errorf("error parsing RSS template: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return t, nil</span>
+}
+
+// safeRSSUrl takes a URL (relative or absolute) and a base URL.
+// It resolves the URL to be absolute and ensures path segments are properly escaped (e.g. spaces -&gt; %20).
+func safeRSSUrl(urlStr, baseUrl string) string <span class="cov0" title="0">{
+        if urlStr == "" </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+
+        // 1. Resolve to absolute URL if needed
+        <span class="cov0" title="0">targetUrl := urlStr
+        if !strings.HasPrefix(urlStr, "http://") &amp;&amp; !strings.HasPrefix(urlStr, "https://") &amp;&amp; !strings.HasPrefix(urlStr, "//") </span><span class="cov0" title="0">{
+                // Clean and join
+                cleanBase := strings.TrimSuffix(baseUrl, "/")
+                cleanPath := strings.TrimPrefix(urlStr, "/")
+                targetUrl = fmt.Sprintf("%s/%s", cleanBase, cleanPath)
+        }</span>
+
+        // 2. Parse the URL to handle escaping correctly
+        <span class="cov0" title="0">u, err := url.Parse(targetUrl)
+        if err != nil </span><span class="cov0" title="0">{
+                // Fallback: simple escape if parse fails, though rare for valid input
+                return EncodePathSegments(targetUrl)
+        }</span>
+
+        // 3. Re-encode the path to ensure spaces and special chars are valid for XML/RSS
+        // url.Parse decodes %20 back to space in u.Path, so we re-encode it safely.
+        // EncodePathSegments splits by / and escapes each segment.
+        <span class="cov0" title="0">u.Path = EncodePathSegments(u.Path)
+
+        return u.String()</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package parse
+
+import (
+        "fmt"
+        "html/template"
+        "io/fs"
+        "log"
+        "net/url"
+        "os"
+        "path"
+        "path/filepath"
+        "regexp"
+        "slices"
+        "strconv"
+        "strings"
+        "time"
+
+        "golang.org/x/net/html"
+)
+
+// regexPatterns defines a list of regular expression patterns to identify dates in strings.
+var regexPatterns = []*regexp.Regexp{
+        regexp.MustCompile(`(?P&lt;year&gt;\d{4})\D+(?P&lt;month&gt;\d{1,2})\D+(?P&lt;day&gt;\d{1,2})`),
+        regexp.MustCompile(`(?P&lt;day&gt;\d{1,2})\D+(?P&lt;month&gt;\d{1,2})\D+(?P&lt;year&gt;\d{4})`),
+        regexp.MustCompile(`(?P&lt;hour&gt;\d{2}):(?P&lt;min&gt;\d{2}):(?P&lt;sec&gt;\d{2})`),
+}
+
+var themesPath = "src/assets/themes"
+
+// regexColorScheme finds the standard CSS color-scheme property (e.g., color-scheme: dark;).
+var regexColorScheme = regexp.MustCompile(`(?i)color-scheme\s*:\s*([^;]+);`)
+
+// regexHashtagCleanup matches characters that are NOT letters, numbers, or underscores.
+// Used to sanitize tags for hashtag generation (e.g. "C++" -&gt; "C", "Go Lang" -&gt; "GoLang").
+var regexHashtagCleanup = regexp.MustCompile(`[^\p{L}\p{N}_]+`)
+
+// IsImage reports whether a filename has a common image extension.
+// It is exported so it can be used by main and templates.
+func IsImage(s string) bool <span class="cov0" title="0">{
+        s = strings.ToLower(s)
+        exts := []string{".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".bmp", ".tiff"}
+        for _, e := range exts </span><span class="cov0" title="0">{
+                if strings.HasSuffix(s, e) </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+        }
+        <span class="cov0" title="0">return false</span>
+}
+
+// MimeTypeFromFilename returns a best-effort MIME type for a given filename or path.
+// It falls back to "image/jpeg" to preserve backwards-compatible behavior for unknown types.
+func MimeTypeFromFilename(s string) string <span class="cov0" title="0">{
+        s = strings.ToLower(s)
+
+        switch </span>{
+        case strings.HasSuffix(s, ".jpg"), strings.HasSuffix(s, ".jpeg"):<span class="cov0" title="0">
+                return "image/jpeg"</span>
+        case strings.HasSuffix(s, ".png"):<span class="cov0" title="0">
+                return "image/png"</span>
+        case strings.HasSuffix(s, ".gif"):<span class="cov0" title="0">
+                return "image/gif"</span>
+        case strings.HasSuffix(s, ".webp"):<span class="cov0" title="0">
+                return "image/webp"</span>
+        case strings.HasSuffix(s, ".svg"):<span class="cov0" title="0">
+                return "image/svg+xml"</span>
+        case strings.HasSuffix(s, ".ico"):<span class="cov0" title="0">
+                return "image/x-icon"</span>
+        case strings.HasSuffix(s, ".bmp"):<span class="cov0" title="0">
+                return "image/bmp"</span>
+        case strings.HasSuffix(s, ".tif"), strings.HasSuffix(s, ".tiff"):<span class="cov0" title="0">
+                return "image/tiff"</span>
+        default:<span class="cov0" title="0">
+                // Sensible default that matches the previous hard-coded behavior.
+                return "image/jpeg"</span>
+        }
+}
+
+// RemoveDateFromPath attempts to remove date patterns from a given string.
+func RemoveDateFromPath(stringWithDate string) string <span class="cov0" title="0">{
+        for _, regexPattern := range regexPatterns </span><span class="cov0" title="0">{
+                stringWithDate = regexPattern.ReplaceAllString(stringWithDate, "")
+        }</span>
+        <span class="cov0" title="0">stringWithDate = strings.Trim(stringWithDate, "-_ ")
+        return stringWithDate</span>
+}
+
+// DateTimeFromString attempts to parse a date and time from a string using predefined regex patterns.
+func DateTimeFromString(date string) (time.Time, error) <span class="cov8" title="1">{
+        m := make(map[string]int)
+        foundMatch := false
+        for _, pattern := range regexPatterns </span><span class="cov8" title="1">{
+                matches := pattern.FindStringSubmatch(date)
+                if len(matches) &gt; 0 </span><span class="cov0" title="0">{
+                        foundMatch = true
+                        for i, name := range pattern.SubexpNames()[1:] </span><span class="cov0" title="0">{
+                                if name == "" </span><span class="cov0" title="0">{
+                                        continue</span>
+                                }
+                                <span class="cov0" title="0">integer, err := strconv.Atoi(matches[i+1])
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return time.Time{}, fmt.Errorf("failed to convert '%s' to integer in '%s': %w", matches[i+1], date, err)
+                                }</span>
+                                <span class="cov0" title="0">m[name] = integer</span>
+                        }
+                }
+        }
+
+        <span class="cov8" title="1">if !foundMatch </span><span class="cov8" title="1">{
+                return time.Time{}, fmt.Errorf("no date information found in '%s'", date)
+        }</span>
+
+        <span class="cov0" title="0">year := m["year"]
+        month := time.Month(m["month"])
+        day := m["day"]
+        hour := m["hour"]
+        min := m["min"]
+        sec := m["sec"]
+        dateTime := time.Date(year, month, day, hour, min, sec, 0, time.UTC)
+        return dateTime, nil</span>
+}
+
+// GetPaths retrieves all file paths within a directory and its subdirectories
+// matching the provided list of file extensions.
+func GetPaths(root string, extensions []string) ([]string, error) <span class="cov0" title="0">{
+        var files []string
+        extMap := make(map[string]bool)
+        for _, ext := range extensions </span><span class="cov0" title="0">{
+                extLower := strings.ToLower(strings.TrimSpace(ext))
+                extMap[extLower] = true
+        }</span>
+
+        <span class="cov0" title="0">err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error </span><span class="cov0" title="0">{
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">if !d.IsDir() </span><span class="cov0" title="0">{
+                        ext := strings.ToLower(filepath.Ext(path))
+                        if extMap[ext] </span><span class="cov0" title="0">{
+                                files = append(files, path)
+                        }</span>
+                }
+                <span class="cov0" title="0">return nil</span>
+        })
+        <span class="cov0" title="0">return files, err</span>
+}
+
+// cleanString normalizes path-like strings by removing non-alphanumeric characters
+// and redundant separators, making them safe to use as URL fragments.
+func cleanString(url string) string <span class="cov0" title="0">{
+        // Pre-process specific programming symbols before stripping to prevent
+        // collisions (e.g. "C#" vs "C++" vs "C")
+        url = strings.ReplaceAll(url, "#", "sharp")
+        url = strings.ReplaceAll(url, "+", "plus")
+
+        var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9\/\\\. ]+`)
+        url = nonAlphanumericRegex.ReplaceAllString(url, "")
+        url = strings.ReplaceAll(url, "\\", "/")
+        pieces := strings.Split(url, "/")
+        for i, piece := range pieces </span><span class="cov0" title="0">{
+                pieces[i] = strings.Trim(piece, "-_ ")
+        }</span>
+        <span class="cov0" title="0">url = strings.Join(pieces, "/")
+        pieces = strings.Fields(url)
+        for i, piece := range pieces </span><span class="cov0" title="0">{
+                pieces[i] = strings.Trim(piece, "-_ ")
+        }</span>
+        <span class="cov0" title="0">url = strings.Join(pieces, "-")
+        url = strings.Trim(url, "-")
+        return url</span>
+}
+
+// copyDirectoryRecursively copies all contents of srcDir to destDir.
+func copyDirectoryRecursively(srcDir, destDir string) error <span class="cov0" title="0">{
+        return filepath.WalkDir(srcDir, func(path string, d fs.DirEntry, err error) error </span><span class="cov0" title="0">{
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                // Calculate the relative path from the source directory
+                <span class="cov0" title="0">relPath, err := filepath.Rel(srcDir, path)
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">destPath := filepath.Join(destDir, relPath)
+
+                if d.IsDir() </span><span class="cov0" title="0">{
+                        return os.MkdirAll(destPath, 0755)
+                }</span>
+
+                // Read the source file
+                <span class="cov0" title="0">input, err := os.ReadFile(path)
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("error reading file '%s': %w", path, err)
+                }</span>
+
+                // Write to the destination file
+                <span class="cov0" title="0">if err := os.WriteFile(destPath, input, 0644); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("error writing file '%s': %w", destPath, err)
+                }</span>
+                <span class="cov0" title="0">return nil</span>
+        })
+}
+
+// CopyHtmlResources copies associated resources for an article and determines
+// the article's output path. Resources include images and other linked assets.
+func CopyHtmlResources(settings Settings, article *Article, resources []string) error <span class="cov0" title="0">{
+        relativeInputPath, err := filepath.Rel(settings.InputPath, article.OriginalPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to get relative path for '%s': %w", article.OriginalPath, err)
+        }</span>
+
+        <span class="cov0" title="0">if !settings.DoNotRemoveDateFromTitles </span><span class="cov0" title="0">{
+                datelessTitle := RemoveDateFromPath(article.Title)
+                if datelessTitle != "" </span><span class="cov0" title="0">{
+                        article.Title = datelessTitle
+                }</span>
+        }
+
+        <span class="cov0" title="0">if !settings.DoNotExtractTagsFromPaths </span><span class="cov0" title="0">{
+                relativeInputPathNoDate := RemoveDateFromPath(relativeInputPath)
+                relativeInputPathNoDate = filepath.Clean(relativeInputPathNoDate)
+                pathTags := strings.Split(relativeInputPathNoDate, string(os.PathSeparator))
+                for i, tag := range pathTags </span><span class="cov0" title="0">{
+                        pathTags[i] = strings.Trim(tag, "-_ ")
+                }</span>
+                <span class="cov0" title="0">if len(pathTags) &gt; 1 </span><span class="cov0" title="0">{
+                        pathTags = pathTags[:len(pathTags)-1]
+                        for _, tag := range pathTags </span><span class="cov0" title="0">{
+                                if !slices.Contains(article.Tags, tag) </span><span class="cov0" title="0">{
+                                        article.Tags = append(article.Tags, tag)
+                                }</span>
+                        }
+                }
+        }
+
+        <span class="cov0" title="0">outputPath := filepath.Join(settings.OutputPath, relativeInputPath)
+        outputPath = strings.TrimSuffix(outputPath, filepath.Ext(outputPath))
+        outputPath = filepath.Join(outputPath, settings.IndexName)
+
+        if !settings.DoNotRemoveDateFromPaths </span><span class="cov0" title="0">{
+                datelessOutputPath := RemoveDateFromPath(outputPath)
+                if !(strings.Contains(datelessOutputPath, "\\") || strings.Contains(datelessOutputPath, "//")) </span><span class="cov0" title="0">{
+                        outputPath = datelessOutputPath
+                }</span>
+        }
+        <span class="cov0" title="0">outputPath = cleanString(outputPath)
+        outputDirectory := filepath.Dir(outputPath)
+        if err := os.MkdirAll(outputDirectory, os.ModePerm); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create output directory '%s': %w", outputDirectory, err)
+        }</span>
+
+        <span class="cov0" title="0">originalDirectory := filepath.Dir(article.OriginalPath)
+
+        // SPECIAL CASE: If this is an HTML file marked as "PAGE", copy the entire directory contents.
+        // This ensures complex HTML pages with relative dependencies (js, css, media) are preserved.
+        if strings.HasSuffix(strings.ToLower(article.OriginalPath), ".html") &amp;&amp; slices.Contains(article.Tags, "PAGE") </span><span class="cov0" title="0">{
+                if err := copyDirectoryRecursively(originalDirectory, outputDirectory); err != nil </span><span class="cov0" title="0">{
+                        if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to copy directory for HTML PAGE '%s': %w", article.Title, err)
+                        }</span>
+                        <span class="cov0" title="0">log.Printf("Warning: Failed to copy directory for HTML PAGE '%s': %v", article.Title, err)</span>
+                }
+                // We still fall through to handle cover image metadata updates below,
+                // but we skip the manual resource copy loop since we just copied everything.
+        } else<span class="cov0" title="0"> {
+                // STANDARD CASE: Extract and copy specific resources.
+                for _, resourceOrigRelPath := range resources </span><span class="cov0" title="0">{
+                        resourceOrigRelPath = strings.TrimSpace(resourceOrigRelPath)
+                        if resourceOrigRelPath == "" </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">resourceOrigRelPathLower := strings.ToLower(resourceOrigRelPath)
+
+                        // 1. Skip absolute external URLs (http/https/ftp)
+                        if strings.HasPrefix(resourceOrigRelPathLower, "http://") ||
+                                strings.HasPrefix(resourceOrigRelPathLower, "https://") ||
+                                strings.HasPrefix(resourceOrigRelPathLower, "ftp://") ||
+                                strings.HasPrefix(resourceOrigRelPathLower, "//") </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+
+                        // 2. Skip non-resource links (anchors, mailto, tel, sms, www.)
+                        <span class="cov0" title="0">if strings.HasPrefix(resourceOrigRelPathLower, "#") ||
+                                strings.HasPrefix(resourceOrigRelPathLower, "mailto:") ||
+                                strings.HasPrefix(resourceOrigRelPathLower, "tel:") ||
+                                strings.HasPrefix(resourceOrigRelPathLower, "sms:") ||
+                                strings.HasPrefix(resourceOrigRelPathLower, "www.") </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+
+                        // Strip query string and fragment, and normalize root-relative paths
+                        <span class="cov0" title="0">cleanPath := resourceOrigRelPath
+                        if u, err := url.Parse(resourceOrigRelPath); err == nil </span><span class="cov0" title="0">{
+                                if u.Path != "" </span><span class="cov0" title="0">{
+                                        cleanPath = u.Path
+                                }</span> else<span class="cov0" title="0"> {
+                                        // If path is empty (e.g. "?query" or "#anchor"), skip it
+                                        continue</span>
+                                }
+                        }
+
+                        // Treat leading "/" as project-root-relative, not filesystem-root
+                        <span class="cov0" title="0">cleanPath = strings.TrimPrefix(cleanPath, "/")
+                        if cleanPath == "" </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+
+                        // 3. Skip internal navigation to other source files (.md, .html)
+                        // These are likely links to other posts, not assets to be copied raw.
+                        <span class="cov0" title="0">ext := strings.ToLower(filepath.Ext(cleanPath))
+                        if ext == ".md" || ext == ".markdown" || ext == ".html" || ext == ".htm" </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+
+                        // 4. Skip links without extensions (likely navigation links e.g., [About](about))
+                        // Unless they are explicit file references, we assume they are internal routes.
+                        <span class="cov0" title="0">if ext == "" </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">resourceOrigPath := filepath.Join(originalDirectory, cleanPath)
+                        resourceDestPath := filepath.Join(outputDirectory, cleanPath)
+
+                        // Check if resource exists before reading
+                        stat, err := os.Stat(resourceOrigPath)
+                        if err != nil </span><span class="cov0" title="0">{
+                                if os.IsNotExist(err) </span><span class="cov0" title="0">{
+                                        // If strictly missing a file with an extension (e.g. image.png), fail/warn.
+                                        if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                                return fmt.Errorf("resource file '%s' not found (referenced in '%s')", resourceOrigPath, article.Title)
+                                        }</span>
+                                        <span class="cov0" title="0">log.Printf("Warning: Resource file '%s' not found (referenced in '%s')", resourceOrigPath, article.Title)
+                                        continue</span>
+                                }
+                                // Other error
+                                <span class="cov0" title="0">if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("failed to stat resource file '%s': %w", resourceOrigPath, err)
+                                }</span>
+                                <span class="cov0" title="0">continue</span>
+                        }
+
+                        // Skip if it is a directory
+                        <span class="cov0" title="0">if stat.IsDir() </span><span class="cov0" title="0">{
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">input, err := os.ReadFile(resourceOrigPath)
+                        if err != nil </span><span class="cov0" title="0">{
+                                if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("failed to read resource file '%s': %w", resourceOrigPath, err)
+                                }</span>
+                                <span class="cov0" title="0">log.Printf("Warning: Failed to read resource file '%s': %v", resourceOrigPath, err)
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">if err := os.MkdirAll(filepath.Dir(filepath.FromSlash(resourceDestPath)), 0755); err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to create directory for resource '%s': %w", resourceDestPath, err)
+                        }</span>
+
+                        <span class="cov0" title="0">if err := os.WriteFile(resourceDestPath, input, 0644); err != nil </span><span class="cov0" title="0">{
+                                return fmt.Errorf("failed to write resource file to '%s': %w", resourceDestPath, err)
+                        }</span>
+                }
+        }
+
+        <span class="cov0" title="0">linkToSelf, err := filepath.Rel(settings.OutputPath, outputPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to get relative link from '%s' to '%s': %w", settings.OutputPath, outputPath, err)
+        }</span>
+        <span class="cov0" title="0">article.LinkToSelf = filepath.ToSlash(linkToSelf)
+        article.LinkToSave = filepath.ToSlash(outputPath)
+
+        // If a cover image was specified, normalize its path to be relative to the article's output
+        // location so templates and Open Graph tags can reference it consistently.
+        // Only update if it was a local path.
+        originalCoverRel := article.CoverImage
+        if originalCoverRel != "" &amp;&amp; !strings.HasPrefix(strings.ToLower(originalCoverRel), "http") </span><span class="cov0" title="0">{
+                // Even if we copied the whole folder, we ensure the cover image path logic is consistent.
+                // If we DIDN'T copy the whole folder (standard case), we must copy the cover image specifically.
+                isHtmlPage := strings.HasSuffix(strings.ToLower(article.OriginalPath), ".html") &amp;&amp; slices.Contains(article.Tags, "PAGE")
+
+                if !isHtmlPage </span><span class="cov0" title="0">{
+                        coverImageOrigPath := filepath.Join(originalDirectory, originalCoverRel)
+                        coverImageArticleDestPath := filepath.Join(outputDirectory, originalCoverRel)
+
+                        file, err := os.ReadFile(coverImageOrigPath)
+                        if err != nil </span><span class="cov0" title="0">{
+                                if !settings.IgnoreErrors </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("failed to read cover image '%s' for article '%s': %w", coverImageOrigPath, article.Title, err)
+                                }</span>
+                                <span class="cov0" title="0">log.Printf("Warning: Could not read cover image '%s' for article '%s': %v", coverImageOrigPath, article.Title, err)</span>
+                        } else<span class="cov0" title="0"> {
+                                if err := os.MkdirAll(filepath.Dir(coverImageArticleDestPath), 0755); err != nil </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("error creating directory for cover image '%s': %w", coverImageArticleDestPath, err)
+                                }</span>
+                                <span class="cov0" title="0">if err := os.WriteFile(coverImageArticleDestPath, file, 0644); err != nil </span><span class="cov0" title="0">{
+                                        return fmt.Errorf("error writing cover image file '%s': %w", coverImageArticleDestPath, err)
+                                }</span>
+                        }
+                }
+
+                <span class="cov0" title="0">coverRootRel := filepath.Join(filepath.Dir(article.LinkToSelf), originalCoverRel)
+                article.CoverImage = filepath.ToSlash(coverRootRel)</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// genRelativeLink computes a relative link from linkToSelf to name, unless name is absolute.
+func genRelativeLink(linkToSelf string, name string) string <span class="cov0" title="0">{
+        if strings.HasPrefix(name, "http://") || strings.HasPrefix(name, "https://") </span><span class="cov0" title="0">{
+                return name
+        }</span>
+
+        <span class="cov0" title="0">linkToSelf = strings.ToLower(linkToSelf)
+        linkToSelf = strings.ReplaceAll(linkToSelf, "http://", "")
+        linkToSelf = strings.ReplaceAll(linkToSelf, "https://", "")
+        linkToSelf = strings.ReplaceAll(linkToSelf, "\\", "/")
+        parts := strings.Split(linkToSelf, "/")
+        upDir := strings.Repeat("../", len(parts)-1)
+        return upDir + name</span>
+}
+
+// ExtractResources traverses an HTML node tree and extracts src/href/data values
+// from tags like img, script, link, video, audio, source, track, object, iframe, and a.
+func ExtractResources(n *html.Node) []string <span class="cov8" title="1">{
+        var resources []string
+        var f func(*html.Node)
+        f = func(n *html.Node) </span><span class="cov8" title="1">{
+                if n.Type == html.ElementNode </span><span class="cov8" title="1">{
+                        // Define tags and the attributes we want to extract from them.
+                        // This now includes standard media tags and generic links/anchors.
+                        targetAttrs := map[string][]string{
+                                "img":    {"src"},
+                                "script": {"src"},
+                                "link":   {"href"},
+                                "video":  {"src", "poster"},
+                                "audio":  {"src"},
+                                "source": {"src"},
+                                "track":  {"src"},
+                                "object": {"data"},
+                                "iframe": {"src"},
+                                "embed":  {"src"},
+                                "a":      {"href"},
+                        }
+
+                        if attrsToScan, found := targetAttrs[n.Data]; found </span><span class="cov0" title="0">{
+                                for _, attr := range n.Attr </span><span class="cov0" title="0">{
+                                        for _, target := range attrsToScan </span><span class="cov0" title="0">{
+                                                if attr.Key == target </span><span class="cov0" title="0">{
+                                                        resources = append(resources, attr.Val)
+                                                }</span>
+                                        }
+                                }
+                        }
+                }
+                <span class="cov8" title="1">for c := n.FirstChild; c != nil; c = c.NextSibling </span><span class="cov8" title="1">{
+                        f(c)
+                }</span>
+        }
+        <span class="cov8" title="1">f(n)
+        return resources</span>
+}
+
+// extractFirstLink parses HTML content and returns the value of the first "href" attribute
+// found in an anchor "a" tag. It returns an empty string if no link is found.
+func extractFirstLink(htmlContent string) string <span class="cov0" title="0">{
+        doc, err := html.Parse(strings.NewReader(htmlContent))
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+
+        <span class="cov0" title="0">var link string
+        var f func(*html.Node)
+        f = func(n *html.Node) </span><span class="cov0" title="0">{
+                if link != "" </span><span class="cov0" title="0">{
+                        return
+                }</span>
+                <span class="cov0" title="0">if n.Type == html.ElementNode &amp;&amp; n.Data == "a" </span><span class="cov0" title="0">{
+                        for _, attr := range n.Attr </span><span class="cov0" title="0">{
+                                if attr.Key == "href" </span><span class="cov0" title="0">{
+                                        link = attr.Val
+                                        return
+                                }</span>
+                        }
+                }
+                <span class="cov0" title="0">for c := n.FirstChild; c != nil; c = c.NextSibling </span><span class="cov0" title="0">{
+                        f(c)
+                }</span>
+        }
+        <span class="cov0" title="0">f(doc)
+        return link</span>
+}
+
+// encodeComponent encodes a string for use in a URL query, replacing '+' with '%20'.
+func encodeComponent(s string) string <span class="cov0" title="0">{
+        return strings.ReplaceAll(url.QueryEscape(s), "+", "%20")
+}</span>
+
+// EncodePathSegments splits a path by slashes and URL-encodes each segment,
+// preserving the structure for valid URIs (e.g. "foo bar/baz.jpg" -&gt; "foo%20bar/baz.jpg").
+// It assumes forward slashes are the separator.
+func EncodePathSegments(path string) string <span class="cov0" title="0">{
+        parts := strings.Split(path, "/")
+        for i, part := range parts </span><span class="cov0" title="0">{
+                // PathEscape converts space to %20 (correct for path components)
+                parts[i] = url.PathEscape(part)
+        }</span>
+        <span class="cov0" title="0">return strings.Join(parts, "/")</span>
+}
+
+// toAbsoluteUrl handles logic to prevent double-concatenation of BaseURL
+// It is used by BuildShareUrl and registered as "absURL" in templates.
+func toAbsoluteUrl(urlStr string, baseUrl string) string <span class="cov0" title="0">{
+        if urlStr == "" </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov0" title="0">if strings.HasPrefix(urlStr, "http://") || strings.HasPrefix(urlStr, "https://") </span><span class="cov0" title="0">{
+                return urlStr
+        }</span>
+        <span class="cov0" title="0">return fmt.Sprintf("%s/%s", strings.TrimSuffix(baseUrl, "/"), strings.TrimPrefix(urlStr, "/"))</span>
+}
+
+// BuildShareUrl replaces placeholders in the urlTemplate with encoded article data,
+// and returns the final URL as a template.URL value.
+func BuildShareUrl(urlTemplate string, article Article, settings Settings) template.URL <span class="cov0" title="0">{
+        // 1. Determine the "Official" URL of the post.
+        finalUrl := article.ExternalLink
+        if finalUrl == "" </span><span class="cov0" title="0">{
+                finalUrl = toAbsoluteUrl(article.LinkToSelf, settings.BaseUrl)
+        }</span>
+
+        // 2. Determine the "Target Link" ({LINK}).
+        // This uses the 'ExternalLink' if present.
+        // If not, it tries to find the first link inside the article body (smart link-blog behavior).
+        // If neither, it remains empty.
+        <span class="cov0" title="0">targetLink := article.ExternalLink
+        if targetLink == "" </span><span class="cov0" title="0">{
+                targetLink = extractFirstLink(article.HtmlContent)
+        }</span>
+
+        // 3. Determine the Image URL ({IMAGE}).
+        <span class="cov0" title="0">imageUrl := toAbsoluteUrl(article.CoverImage, settings.BaseUrl)
+
+        // 4. Build Hashtags List ({TAGS}) and First Tag ({TAG})
+        // We strip non-alphanumeric chars (except underscore) to create valid hashtags for most platforms.
+        var cleanedTags []string
+        var cleanedFirstTag string
+
+        for _, tag := range article.Tags </span><span class="cov0" title="0">{
+                // e.g. "C++" -&gt; "C", "Web Dev" -&gt; "WebDev"
+                clean := regexHashtagCleanup.ReplaceAllString(tag, "")
+                if clean != "" </span><span class="cov0" title="0">{
+                        cleanedTags = append(cleanedTags, "#"+clean)
+                        if cleanedFirstTag == "" </span><span class="cov0" title="0">{
+                                cleanedFirstTag = clean
+                        }</span>
+                }
+        }
+
+        <span class="cov0" title="0">tagsString := strings.Join(cleanedTags, " ")
+
+        //Ensure all components are trimmed of whitespace before encoding.
+        encodedUrl := encodeComponent(strings.TrimSpace(finalUrl))
+        encodedTitle := encodeComponent(strings.TrimSpace(article.Title))
+        encodedDesc := encodeComponent(strings.TrimSpace(article.Description))
+        encodedText := encodeComponent(strings.TrimSpace(article.TextContent))
+        encodedTargetLink := encodeComponent(strings.TrimSpace(targetLink))
+        encodedImage := encodeComponent(strings.TrimSpace(imageUrl))
+        encodedTags := encodeComponent(strings.TrimSpace(tagsString))
+        encodedFirstTag := encodeComponent(strings.TrimSpace(cleanedFirstTag))
+
+        result := strings.ReplaceAll(urlTemplate, "{URL}", encodedUrl)
+        result = strings.ReplaceAll(result, "{TITLE}", encodedTitle)
+        result = strings.ReplaceAll(result, "{DESCRIPTION}", encodedDesc)
+        result = strings.ReplaceAll(result, "{TEXT}", encodedText)
+        result = strings.ReplaceAll(result, "{LINK}", encodedTargetLink)
+        result = strings.ReplaceAll(result, "{IMAGE}", encodedImage)
+        // Replace {TAGS} -&gt; space-separated list of hash-prefixed tags
+        result = strings.ReplaceAll(result, "{TAGS}", encodedTags)
+        // Replace {TAG} -&gt; just the text of the first tag (no hash), good for specific category params
+        result = strings.ReplaceAll(result, "{TAG}", encodedFirstTag)
+
+        return template.URL(result)</span>
+}
+
+// SaveThemeCSS copies the selected theme CSS file from embedded assets to style.css in the output directory.
+// If themeName is empty or invalid, it attempts to use "default.css".
+func SaveThemeCSS(assets fs.FS, themeName string, outputDirectory string, ignoreErrors bool) error <span class="cov0" title="0">{
+        if themeName == "" </span><span class="cov0" title="0">{
+                themeName = "default"
+        }</span>
+
+        <span class="cov0" title="0">themeFile := themeName + ".css"
+        srcPath := path.Join(themesPath, themeFile)
+
+        fileContent, err := fs.ReadFile(assets, srcPath)
+        if err != nil </span><span class="cov0" title="0">{
+                available, _ := GetAvailableThemes(assets)
+                if !ignoreErrors </span><span class="cov0" title="0">{
+                        return fmt.Errorf("theme '%s' not found (Available: %s)", themeName, strings.Join(available, ", "))
+                }</span>
+                <span class="cov0" title="0">log.Printf("Warning: Theme '%s' not found (Available: %s). Falling back to default theme.", themeName, strings.Join(available, ", "))
+
+                // Fallback to default
+                srcPath = path.Join(themesPath, "default.css")
+                fileContent, err = fs.ReadFile(assets, srcPath)
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to load default theme CSS: %w", err)
+                }</span>
+        } else<span class="cov0" title="0"> {
+                log.Printf("Using theme: %s", themeName)
+        }</span>
+
+        <span class="cov0" title="0">if err := os.MkdirAll(outputDirectory, 0755); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("failed to create output directory '%s': %w", outputDirectory, err)
+        }</span>
+
+        <span class="cov0" title="0">destPath := filepath.Join(outputDirectory, "style.css")
+        if err := os.WriteFile(destPath, fileContent, 0644); err != nil </span><span class="cov0" title="0">{
+                return fmt.Errorf("error writing style.css: %w", err)
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// GetAvailableThemes scans the embedded assets for available CSS themes.
+// It returns a sorted list of theme names (filenames without extension).
+func GetAvailableThemes(assets fs.FS) ([]string, error) <span class="cov0" title="0">{
+        entries, err := fs.ReadDir(assets, themesPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">var themes []string
+        for _, entry := range entries </span><span class="cov0" title="0">{
+                if !entry.IsDir() &amp;&amp; strings.HasSuffix(entry.Name(), ".css") </span><span class="cov0" title="0">{
+                        name := strings.TrimSuffix(entry.Name(), ".css")
+                        themes = append(themes, name)
+                }</span>
+        }
+        <span class="cov0" title="0">slices.Sort(themes)
+        return themes, nil</span>
+}
+
+// GetThemeType determines if a theme is "light" or "dark" by inspecting the CSS file.
+func GetThemeType(assets fs.FS, themeName string) string <span class="cov0" title="0">{
+        themeFile := themeName + ".css"
+        srcPath := path.Join(themesPath, themeFile)
+
+        content, err := fs.ReadFile(assets, srcPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return "dark"
+        }</span>
+
+        <span class="cov0" title="0">match := regexColorScheme.FindStringSubmatch(string(content))
+        if len(match) &gt; 1 </span><span class="cov0" title="0">{
+                val := strings.ToLower(strings.TrimSpace(match[1]))
+                if strings.Contains(val, "dark") </span><span class="cov0" title="0">{
+                        return "dark"
+                }</span>
+                <span class="cov0" title="0">return "light"</span>
+        }
+        <span class="cov0" title="0">return "dark"</span>
+}
+
+// ParseSortOrder converts a string into a SortOrder, validating supported options.
+func ParseSortOrder(s string) (SortOrder, error) <span class="cov0" title="0">{
+        s = strings.ToLower(strings.TrimSpace(s))
+        switch SortOrder(s) </span>{
+        case SortDateCreated,
+                SortReverseDateCreated,
+                SortDateUpdated,
+                SortReverseDateUpdated,
+                SortTitle,
+                SortReverseTitle,
+                SortPath,
+                SortReversePath:<span class="cov0" title="0">
+                return SortOrder(s), nil</span>
+        default:<span class="cov0" title="0">
+                return "", fmt.Errorf("unsupported sort order: %s", s)</span>
+        }
+}
+
+// ArticleSchemaType determines which schema.org type to use for an article.
+func ArticleSchemaType(a Article) string <span class="cov0" title="0">{
+        for _, tag := range a.Tags </span><span class="cov0" title="0">{
+                t := strings.ToLower(strings.TrimSpace(tag))
+                if t == "news" || t == "article" </span><span class="cov0" title="0">{
+                        return "NewsArticle"
+                }</span>
+        }
+        <span class="cov0" title="0">return "BlogPosting"</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

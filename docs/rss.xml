@@ -27,7 +27,7 @@ This is a sample blog created with DSBG from the source at [github.com/tesserato
         <language>en</language>
         <ttl>60</ttl>
 		<generator>Dead Simple Blog Generator</generator>
-		<lastBuildDate>Wed, 11 Feb 2026 12:26:35 +0000</lastBuildDate>
+		<lastBuildDate>Wed, 11 Feb 2026 12:40:36 +0000</lastBuildDate>
 		<item>
 			<title>HTML page with custom CSS example</title>
 			<link>https://tesserato.github.io/DSBG/htmlpageexample/customcss/index.html</link>
@@ -860,16 +860,6 @@ The output for the current repository can be found <a href="https://github.com/t
             <category>example</category>
 		</item>
 		<item>
-			<title>Markdown page example</title>
-			<link>https://tesserato.github.io/DSBG/markdown-page-example/index.html</link>
-			<guid isPermaLink="true">https://tesserato.github.io/DSBG/markdown-page-example/index.html</guid>
-			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
-			<description>This is a markdown page example</description>
-            <content:encoded><![CDATA[<p>Page created from a markdown file</p>
-]]></content:encoded>
-            <category>PAGE</category>
-		</item>
-		<item>
 			<title>Themes</title>
 			<link>https://tesserato.github.io/DSBG/04themes/index.html</link>
 			<guid isPermaLink="true">https://tesserato.github.io/DSBG/04themes/index.html</guid>
@@ -887,6 +877,16 @@ The output for the current repository can be found <a href="https://github.com/t
 				type="image/png"
 			/>
             <category>themes</category>
+		</item>
+		<item>
+			<title>Markdown page example</title>
+			<link>https://tesserato.github.io/DSBG/markdown-page-example/index.html</link>
+			<guid isPermaLink="true">https://tesserato.github.io/DSBG/markdown-page-example/index.html</guid>
+			<pubDate>Sat, 04 Jan 2025 00:00:00 +0000</pubDate>
+			<description>This is a markdown page example</description>
+            <content:encoded><![CDATA[<p>Page created from a markdown file</p>
+]]></content:encoded>
+            <category>PAGE</category>
 		</item>
 		<item>
 			<title>README - Getting Started with DSBG</title>
