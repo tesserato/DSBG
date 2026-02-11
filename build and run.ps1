@@ -1,3 +1,13 @@
+﻿# Best-effort: try to update local Go installation before building.
+if (Get-Command winget -ErrorAction SilentlyContinue) {
+    winget upgrade --id GoLang.Go -e --silent --accept-source-agreements --accept-package-agreements
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "Go upgrade via winget failed or no newer version is available. Continuing..."
+    }
+} else {
+    Write-Warning "winget not found. Skipping Go upgrade attempt."
+}
+
 go get -u
 go get -u ./...
 go mod tidy
